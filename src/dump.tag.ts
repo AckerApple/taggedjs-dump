@@ -1,20 +1,24 @@
-import { copyText } from "./app.component.utils"
-import { html, onInit, state, tag } from "taggedjs"
+import { copyText } from "./copyText.function"
+import { html, onInit, state, tag, Tag } from "taggedjs"
+
+type ShowChange = (show: boolean) => any
+type OnHeaderClick = () => any
+type FormatChange = (format: 'json' | 'small') => unknown
 
 type DumpProps = {
   value: any
-  key: string // dump a key within the provided value
-  show: boolean // hide entire results
-  showKids: boolean // force children to be shown by true value
-  showLevels: number // unfolded shown levels of depth. Default is auto decide
+  key?: string // dump a key within the provided value
+  show?: boolean // hide entire results
+  showKids?: boolean // force children to be shown by true value
+  showLevels?: number // unfolded shown levels of depth. Default is auto decide
 
-  format: 'json' | 'small' // do not pass in, used to detect when first dump
-  formatChange: (format: 'json' | 'small') => unknown
+  format?: 'json' | 'small' // do not pass in, used to detect when first dump
+  formatChange: FormatChange
   
   isRootDump: boolean // do not pass in, used to detect when first dump
   
-  showChange: (show: boolean) => any
-  onHeaderClick: () => any
+  showChange?: ShowChange
+  onHeaderClick?: () => any
   // showAll: boolean
 }
 
@@ -33,7 +37,7 @@ export const dump = tag(({
   onHeaderClick = () => undefined
 }: DumpProps) => {
   if(!showChange) {
-    show = state(false)(x => [show, show=x])
+    show = state(false)(x => [show as boolean, show=x])
     console.log('first', show)
     showChange = x => {
       show = x
@@ -41,6 +45,8 @@ export const dump = tag(({
       return show
     }
   }
+
+  const showChangeValue = showChange as ShowChange
 
   const isObject = () => value && value instanceof Object
   const typing = value === null ? 'null' : typeof(value)
@@ -68,19 +74,23 @@ export const dump = tag(({
   /* IF 2: simple value ELSE goto objectTemplate */
   function simpleTemplate() {
     if(['boolean','number','string'].includes(typing)) {
-      return dumpSimple({key:key, value:value, onHeaderClick})
+      return dumpSimple({key:key as string, value:value, onHeaderClick})
     }
 
     return objectTemplate()
   }
 
   /* IF 3: object value */
-  function objectTemplate() {
+  function objectTemplate(): Tag {
     if(value === null) {
       if(!showKids) {
-        return ''
+        return html``
       }
-      return dumpSimple({key, value: 'null', onHeaderClick})
+      return dumpSimple({
+        key: key as string,
+        value: 'null',
+        onHeaderClick
+      })
     }
 
     const isArray = (!format || format==='small') && (value.push && value.pop)
@@ -123,7 +133,7 @@ export const dump = tag(({
             <div style="border-color:white;color:white;" class="text-xxs pad-xxs bg-assertive flex-1 flex-apart"
               class.border-bottom=${show}
             >
-              <a style="flex-grow:1" onclick=${() => {showChange(show = !show);console.log('click 485', show)}}>
+              <a style="flex-grow:1" onclick=${() => {showChangeValue(show = !show);console.log('click 485', show)}}>
                 <strong>${key}</strong>
               </a>
               <sup style="opacity:80%;" class="text-xs pad-left-xs">
@@ -135,18 +145,23 @@ export const dump = tag(({
             ${(showAll || show || showKids || (show==undefined && showLevels > 0)) && html`
               <!-- array displays wrap -->
               <div style="display:flex;flex-wrap:wrap" class="child-margin-xxs">
-                ${arraysDisplay({showLevels, showAll, showKids, array: value, arrayView})}
+                ${arraysDisplay({
+                  showLevels, showAll, showKids,
+                  formatChange,
+                  array: value, arrayView: arrayView as string
+                })}
               </div>
             `}
           </div>
         ` : dumpObject({
           key,
           show,
-          showChange: x => showChange(show = x),
+          showChange: x => showChangeValue(show = x),
           showKids,
           showLevels,
           value,
           showAll,
+          formatChange,
           /*
           show,
           showChange: x => {
@@ -161,7 +176,11 @@ export const dump = tag(({
   }
 
   /* IF 1: undefined ELSE goto simpleTemplate */
-  return [null, undefined].includes(value) ? dumpSimple({key, value: typing, onHeaderClick}) : simpleTemplate()
+  return [null, undefined].includes(value) ? dumpSimple({
+    key: key as string,
+    value: typing,
+    onHeaderClick
+  }) : simpleTemplate()
 })
 
 function copyAsJsonText(value: any) {
@@ -172,6 +191,15 @@ function copyAsJsonText(value: any) {
 const arrayTable = tag(({
   array, showLevels, showAll,
   showKids, toggleColumnDialog, columnNames,
+  formatChange,
+}: {
+  array: any[]
+  showLevels: number
+  showAll: boolean
+  showKids: boolean
+  toggleColumnDialog: any
+  columnNames: string[],
+  formatChange: FormatChange
 }) => {  
   return html`<!-- array table -->
     <!-- overflow-y: scroll; -->
@@ -195,7 +223,8 @@ const arrayTable = tag(({
                     value: row[name],
                     showLevels,
                     showKids:showAll || showKids,
-                    isRootDump:false
+                    isRootDump:false,
+                    formatChange,
                   })}
                 </td>
               `.key(row[name]))}
@@ -208,7 +237,16 @@ const arrayTable = tag(({
 })
 
 const arraysDisplay = tag(({
-  showLevels, showAll, showKids, array, arrayView,
+  showLevels, showAll, showKids,
+  array, arrayView,
+  formatChange,
+}: {
+  formatChange: FormatChange
+  array: any[]
+  arrayView: string
+  showLevels: number
+  showAll: boolean
+  showKids: boolean
 }) => {
   const allColumnNames = array.length ? Object.keys(array[0]) : []
   let columnNames = state(allColumnNames)(x => [columnNames, columnNames = x])
@@ -229,7 +267,12 @@ const arraysDisplay = tag(({
   const arrayTag = arrayView === 'table' ? arrayTable({
     showLevels, showAll, showKids,
     array, toggleColumnDialog, columnNames,
-  }) : arrayDisplay({array, showLevels, showAll, showKids, columnNames, toggleColumnDialog})
+    formatChange,
+  }) : arrayDisplay({
+    array, showLevels, showAll, showKids,
+    formatChange,
+    columnNames, toggleColumnDialog
+  })
 
   return html`
     ${arrayTag}
@@ -284,13 +327,15 @@ const arrayDisplay = ({
   array, showLevels,
   showAll, showKids,
   columnNames,
+  formatChange,
   toggleColumnDialog,
 }: {
   array: any[]
-  showLevels: boolean
+  showLevels: number
   showAll: boolean
   showKids: boolean
   columnNames: string[]
+  formatChange: FormatChange
   toggleColumnDialog: () => any
 }) => {
   return array.map((
@@ -301,6 +346,7 @@ const arrayDisplay = ({
     showLevels,
     showKids:showAll || showKids,
     isRootDump:false,
+    formatChange,
     onHeaderClick: () => {
       console.log('0')
       toggleColumnDialog()
@@ -308,8 +354,11 @@ const arrayDisplay = ({
   })}`.key({item: item, index} as any))
 }
 
-function filterObjectByKeys(inputObject, keysArray) {
-  const filteredObject = {};
+function filterObjectByKeys(
+  inputObject: Record<string, any>,
+  keysArray: string[]
+) {
+  const filteredObject: Record<string, any> = {};
 
   keysArray.forEach(key => {
     if (inputObject.hasOwnProperty(key)) {
@@ -346,7 +395,17 @@ const dumpObject = tag(({
   value,
   showAll,
   onHeaderClick,
-  // showChange,
+  formatChange,
+}:{
+  key?: string
+  value: any
+  showAll: boolean
+  showKids: boolean
+  show?: boolean
+  showLevels: number
+  showChange: ShowChange
+  formatChange: FormatChange
+  onHeaderClick: OnHeaderClick
 }) => {
   // console.log('show 1',show)
   // let showLower = state(show)(x => [showLower, showLower = x])
@@ -394,6 +453,7 @@ const dumpObject = tag(({
                   showLevels: showLevels - 1,
                   showKids: showAll || showKids,
                   isRootDump: false,
+                  formatChange,
                   onHeaderClick,
                 })}
             `.key([key, value]))}
@@ -407,7 +467,7 @@ const dumpObject = tag(({
 function dumpSimple({key, value, onHeaderClick}: {
   key: string
   value: any
-  onHeaderClick: () => any
+  onHeaderClick: OnHeaderClick
 }) {
   function simpleValue() {
     return html`
