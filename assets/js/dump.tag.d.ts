@@ -1,4 +1,3 @@
-import { Tag } from "taggedjs";
 type ShowChange = (show: boolean) => any;
 type FormatChange = (format: 'json' | 'small') => unknown;
 type DumpProps = {
@@ -8,10 +7,11 @@ type DumpProps = {
     showKids?: boolean;
     showLevels?: number;
     format?: 'json' | 'small';
-    formatChange: FormatChange;
-    isRootDump: boolean;
+    formatChange?: FormatChange;
+    isRootDump?: boolean;
     showChange?: ShowChange;
     onHeaderClick?: () => any;
+    showAll?: boolean;
 };
-export declare const dump: (props?: DumpProps | undefined, children?: import("taggedjs").TagChildrenInput | undefined) => Tag;
+export declare const dump: import("taggedjs").TagComponentBase<[DumpProps]>;
 export {};

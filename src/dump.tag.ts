@@ -1,5 +1,5 @@
 import { copyText } from "./copyText.function"
-import { html, onInit, state, tag, Tag } from "taggedjs"
+import { html, onInit, set, setLet, setProp, tag, Tag, watch } from "taggedjs"
 
 type ShowChange = (show: boolean) => any
 type OnHeaderClick = () => any
@@ -13,50 +13,35 @@ type DumpProps = {
   showLevels?: number // unfolded shown levels of depth. Default is auto decide
 
   format?: 'json' | 'small' // do not pass in, used to detect when first dump
-  formatChange: FormatChange
+  formatChange?: FormatChange
   
-  isRootDump: boolean // do not pass in, used to detect when first dump
+  isRootDump?: boolean // do not pass in, used to detect when first dump
   
   showChange?: ShowChange
   onHeaderClick?: () => any
-  // showAll: boolean
+  showAll?: boolean
 }
 
 export const dump = tag(({
   key, value,
   
-  show,
-  showChange,
+  // show,
+  // showChange,
   
   showKids = false,
   showLevels = -1,
-  // showAll,
+  showAll,
   format = 'small',
   formatChange = () => undefined,
   isRootDump = true,
   onHeaderClick = () => undefined
 }: DumpProps) => {
-  if(!showChange) {
-    show = state(false)(x => [show as boolean, show=x])
-    console.log('first', show)
-    showChange = x => {
-      show = x
-      console.log('showChange', x)
-      return show
-    }
-  }
-
-  const showChangeValue = showChange as ShowChange
-
   const isObject = () => value && value instanceof Object
   const typing = value === null ? 'null' : typeof(value)
-  // let showValue = state(show)(x => [showValue, showValue = x])
-  
-  console.log('showValue 00', {show})
-  format = state(format)(x => [format, format = x])
-
-  let showAll = state(false)(x => [showAll, showAll = x])
-  let arrayView = state(undefined as undefined | 'table')(x => [arrayView, arrayView = x])
+  let show = setLet(false)(x => [show, show = x])
+  setProp(x => [format, format = x])
+  setProp(x => [showAll, showAll = x])
+  let arrayView = setLet(undefined as undefined | 'table')(x => [arrayView, arrayView = x])
 
   onInit(() => {
     const levelsDefined = (showLevels>=0 && showLevels)
@@ -65,8 +50,7 @@ export const dump = tag(({
     showLevels = levelsDefined || (autoShowObjectLevels ? 2 : 0)
 
     if (showLevels > 0) {
-      //showValue = true
-      // showChange(show = !show)
+      show = true
     }
   })
 
@@ -95,83 +79,75 @@ export const dump = tag(({
 
     const isArray = (!format || format==='small') && (value.push && value.pop)
 
-    console.log('isArray, show', {show})
-
-    return html`  
+    return html`
       ${isRootDump && html`
         <div style="width: 100%;line-height: 90%;">
           <div style="position:relative;">
-            <div class="text-xxxs child-margin-1 flex" style="position:absolute;top:-18px;right:-6px">
+            <div style="display:flex;font-size:50%;position:absolute;top:-18px;right:-6px">
               ${!format || format==='small' && html`
-                <a style="border-radius:5px;color:white;" class=${'flex-valign-center pad-h-xxs hover-bg-balanced ' + (showAll ? 'bg-balanced' : 'bg-dark')}
+                <a
+                  style=${
+                    "margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
+                    (showAll ? 'background-color:#33cd5f;' : 'background-color:#444444')
+                  }
+                  class="hover-bg-balanced"
                   onclick=${() => showAll = !showAll}
                   title="hide/show all sub objects"
                 >👁</a>
               `}
-              <a style="border-radius:5px;color:white;" class=${'flex-valign-center pad-h-xxs hover-bg-balanced ' + (!format || format==='small' ? 'bg-positive' : 'bg-dark')}
+              <a
+                style=${
+                  "margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
+                  (!format || format==='small' ? 'background-color:#33cd5f;' : 'background-color:#444444')
+                }
+                class="hover-bg-balanced"
                 onclick=${() => formatChange(format='small')}
               >small</a>
-              <a style="border-radius:5px;color:white;" class=${"flex-valign-center pad-h-xxs hover-bg-balanced " + (format==='json' ? 'bg-positive' : 'bg-dark')}
+              <a style=${
+                "margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
+                (format==='json' ? 'background-color:#33cd5f;' : 'background-color:#444444')
+                }
+                class="hover-bg-balanced"
                 onclick=${() => formatChange(format='json')}
               >json</a>
-              <a style="border-radius:5px;color:white;" class=${"flex-valign-center pad-h-xxs hover-bg-balanced active-bg-energized " + (format==='json' ? 'bg-positive' : 'bg-dark')}
+              <a style=${
+                  "margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
+                  (format==='json' ? 'background-color:#33cd5f;' : 'background-color:#444444')
+                }
+                class="hover-bg-balanced active-bg-energized"
                 onclick=${() => copyAsJsonText(value)}
               >copy</a>
             </div>
           </div>
-          ${format==='json' && html`
-            <textarea *ngIf="" disabled wrap="off" style="width:100%;height:25vh;min-height:400px"
-            >${ JSON.stringify(value, null, 2) }</textarea>
-          `}
         </div>
       `}
-      
-      ${isArray ? html`
-          <!-- array -->
-          <div style="border:1px solid black;border-radius:5px" class="bg-danger flex-stacked text-dark">
-            
-            <div style="border-color:white;color:white;" class="text-xxs pad-xxs bg-assertive flex-1 flex-apart"
-              class.border-bottom=${show}
-            >
-              <a style="flex-grow:1" onclick=${() => {showChangeValue(show = !show);console.log('click 485', show)}}>
-                <strong>${key}</strong>
-              </a>
-              <sup style="opacity:80%;" class="text-xs pad-left-xs">
-                <a onclick=${() => (arrayView = arrayView === 'table' ? undefined : 'table')}>table</a>
-              </sup>
-              <sup style="opacity:80%;" class="text-xs pad-left-xs">[${value.length}]</sup>
-            </div>
-            
-            ${(showAll || show || showKids || (show==undefined && showLevels > 0)) && html`
-              <!-- array displays wrap -->
-              <div style="display:flex;flex-wrap:wrap" class="child-margin-xxs">
-                ${arraysDisplay({
-                  showLevels, showAll, showKids,
-                  formatChange,
-                  array: value, arrayView: arrayView as string
-                })}
-              </div>
-            `}
-          </div>
-        ` : dumpObject({
+      ${(format==='json' && html`
+        <textarea *ngIf="" disabled wrap="off" style="width:100%;height:25vh;min-height:400px;color:white;"
+        >${ JSON.stringify(value, null, 2) }</textarea>
+      `) || (
+        (isArray && dumpArray({
+          key,
+          value,
+          show,
+          // arrayView,
+          showAll,
+          showKids,
+          showLevels,
+          formatChange,
+          // showChangeValue,
+        })) ||
+        dumpObject({
           key,
           show,
-          showChange: x => showChangeValue(show = x),
+          // showChange: x => showChangeValue(show = x),
           showKids,
           showLevels,
           value,
           showAll,
           formatChange,
-          /*
-          show,
-          showChange: x => {
-            console.log('show changed', x)
-            show = x
-          },
-          */
           onHeaderClick,
         })
-      }
+      )}
     `
   }
 
@@ -183,24 +159,93 @@ export const dump = tag(({
   }) : simpleTemplate()
 })
 
+const dumpArray = ({
+  key,
+  value,
+  show,
+  showAll,
+  showKids,
+  // arrayView,
+  showLevels,
+  formatChange,
+  // showChangeValue,
+}: {
+  value: any
+  showLevels: number
+  key?: string
+  show: boolean
+  showAll?: boolean
+  showKids: boolean
+  // arrayView?: string
+  formatChange: FormatChange
+  // showChangeValue: ShowChange
+}) => {
+  let showValue = setLet(false)(x => [showValue, showValue = x])
+  let arrayView = setLet(undefined as undefined | 'table')(x => [arrayView, arrayView = x])
+
+  watch([show], ([show])=> showValue = show)
+
+  return html`<!-- array -->
+  <div
+    style="color:#111111;background-color:#f2dede;border:1px solid black;border-radius:5px;flex-direction: column;display:flex"
+  >
+    <div
+      style=${
+        "padding:0.2em;display:flex;justify-content:space-between;flex-grow:1;font-size:65%;border-color:white;color:white;background-color:#ef473a;" +
+        (showValue ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;':'')
+      }
+    >
+      <a style="flex-grow:1" onclick=${() => {
+        showValue = !showValue
+      }}>
+        <strong>${key}</strong>
+      </a>
+      <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
+        <a style="text-decoration:underline;" style.font-weight=${arrayView === 'table' ? 'bold' : ''}
+          onclick=${() => arrayView = arrayView === 'table' ? undefined : 'table'
+        }>${arrayView === 'table' ? 'flex' : 'table'}</a>
+      </sup>
+      <sup style="opacity:80%;font-size:75%;padding-left:0.4em">[${value.length}]</sup>
+    </div>
+    
+    ${(showAll || showValue || showKids || (showValue==undefined && showLevels > 0)) && html`
+      <!-- array displays wrap -->
+      <div style="text-align:left;display:flex;flex-wrap:wrap;margin:0.2em;gap:0.2em">
+        ${arraysDisplay({
+          showLevels, showAll, showKids,
+          formatChange,
+          array: value,
+          arrayView: arrayView as string
+        })}
+      </div>
+    `}
+  </div>
+  `
+}
+
 function copyAsJsonText(value: any) {
   const text = JSON.stringify(value, null, 2)
   copyText( text )
 }
 
 const arrayTable = tag(({
-  array, showLevels, showAll,
-  showKids, toggleColumnDialog, columnNames,
+  array,
+  // showLevels,
+  showAll,
+  showKids,
+  toggleColumnDialog,
+  columnNames,
   formatChange,
 }: {
   array: any[]
-  showLevels: number
-  showAll: boolean
+  // showLevels: number
+  showAll?: boolean
   showKids: boolean
   toggleColumnDialog: any
   columnNames: string[],
   formatChange: FormatChange
-}) => {  
+}) => {
+  console.log('🍴 array table executed')
   return html`<!-- array table -->
     <!-- overflow-y: scroll; -->
     <div style="max-height: 800px;max-width:100vw;overflow: scroll;">
@@ -221,7 +266,8 @@ const arrayTable = tag(({
                 <td>
                   ${dump({
                     value: row[name],
-                    showLevels,
+                    showLevels: 0,
+                    showAll,
                     showKids:showAll || showKids,
                     isRootDump:false,
                     formatChange,
@@ -237,21 +283,24 @@ const arrayTable = tag(({
 })
 
 const arraysDisplay = tag(({
-  showLevels, showAll, showKids,
-  array, arrayView,
+  showLevels,
+  showAll,
+  showKids,
+  array,
+  arrayView,
   formatChange,
 }: {
   formatChange: FormatChange
   array: any[]
   arrayView: string
   showLevels: number
-  showAll: boolean
+  showAll?: boolean
   showKids: boolean
 }) => {
   const allColumnNames = array.length ? Object.keys(array[0]) : []
-  let columnNames = state(allColumnNames)(x => [columnNames, columnNames = x])
-  let showColumnDialog = state(false)(x => [showColumnDialog, showColumnDialog = x])
-  let uniqueId = state('columnDialog' + performance.now())()
+  let columnNames = setLet(allColumnNames)(x => [columnNames, columnNames = x])
+  let showColumnDialog = setLet(false)(x => [showColumnDialog, showColumnDialog = x])
+  let uniqueId = set('columnDialog' + performance.now())
 
   const toggleColumnDialog = () => {
     showColumnDialog = !showColumnDialog
@@ -263,9 +312,9 @@ const arraysDisplay = tag(({
       element.close()
     }
   }
-
+  
   const arrayTag = arrayView === 'table' ? arrayTable({
-    showLevels, showAll, showKids,
+    showAll, showKids,
     array, toggleColumnDialog, columnNames,
     formatChange,
   }) : arrayDisplay({
@@ -283,7 +332,6 @@ const arraysDisplay = tag(({
       ondrag="const {t,e,dt,d}={e:event,dt:event.dataTransfer,d:this.drag}; if(e.clientX===0) return;d.x = d.x + e.offsetX - d.startX; d.y = d.y + e.offsetY - d.startY; this.style.left = d.x + 'px'; this.style.top = d.y+'px';"
       ondragend="const {t,e,d}={t:this,e:event,d:this.drag};if (d.initX === d.x) {d.x=d.x+e.offsetX-(d.startX-d.x);d.y=d.y+e.offsetY-(d.startY-d.y);this.style.transform=translate3d(d.x+'px', d.y+'px', 0)};this.draggable=false"
       onclose=${() => {
-        console.log('closing')
         showColumnDialog = false
       }}
     >
@@ -295,7 +343,10 @@ const arraysDisplay = tag(({
         ${allColumnNames.map(name => {
           const included = columnNames.includes(name)
           return html`
-            <li style="display:flex;justify-content: space-between" class="hover-bg-warning">
+            <li
+              style="display:flex;justify-content: space-between"
+              class="hover-bg-warning"
+            >
               <a onclick=${() => included ? columnNames=columnNames.filter(n => n !== name) : columnNames.push(name)}
                 style="cursor:pointer;"
               >
@@ -318,6 +369,12 @@ const arraysDisplay = tag(({
       dialog.dump-dialog::backdrop {
         background-color: rgba(0, 0, 0, 0.7); /* Set a semi-transparent black background */
       }
+
+      .child-margin-xxs {margin:0.2em;}
+      
+      .hover-bg-warning:hover {background-color:#fcf8e3}
+      .hover-bg-balanced:hover {background-color:#33cd5f}
+      .active-bg-energized:active {background-color:#ffc900}
     </style>
   `
 })
@@ -332,25 +389,24 @@ const arrayDisplay = ({
 }: {
   array: any[]
   showLevels: number
-  showAll: boolean
+  showAll?: boolean
   showKids: boolean
   columnNames: string[]
   formatChange: FormatChange
   toggleColumnDialog: () => any
 }) => {
+  console.log('🟥 array display executed')
   return array.map((
     item: any,
     index: number
   ) => html`${dump({
     value: filterObjectByKeys(item, columnNames),
     showLevels,
+    showAll,
     showKids:showAll || showKids,
     isRootDump:false,
     formatChange,
-    onHeaderClick: () => {
-      console.log('0')
-      toggleColumnDialog()
-    }
+    onHeaderClick: toggleColumnDialog
   })}`.key({item: item, index} as any))
 }
 
@@ -369,28 +425,10 @@ function filterObjectByKeys(
   return filteredObject;
 }
 
-/*
-const arrayDisplay = tag(({array, showLevels, showAll, showKids}) => {
-  return html`
-    ${
-      array.map((
-        item: any,
-        index: number
-      ) => html`${dump({
-        value: item,
-        showLevels,
-        showKids:showAll || showKids,
-        isRootDump:false
-      })}`.key({item: item, index} as any))
-    }
-  `
-})
-*/
-
 const dumpObject = tag(({
   key, showKids,
   show,
-  showChange,
+  // showChange,
   showLevels,
   value,
   showAll,
@@ -399,39 +437,37 @@ const dumpObject = tag(({
 }:{
   key?: string
   value: any
-  showAll: boolean
+  showAll?: boolean
   showKids: boolean
-  show?: boolean
+  show: boolean
   showLevels: number
-  showChange: ShowChange
+  // showChange: ShowChange
   formatChange: FormatChange
   onHeaderClick: OnHeaderClick
 }) => {
-  // console.log('show 1',show)
-  // let showLower = state(show)(x => [showLower, showLower = x])
-  // let showLower = show // state(show)(x => [showLower, showLower = x])
-  let showLower = state(show)(x => [showLower, showLower = x])
+  let showLower = setLet(false)(x => [showLower, showLower = x])
 
-  // if(show) {
-  //   showLower = true
-  // }
+  watch([show], ([show]) => showLower = show)
 
   const continueDump = !key || showKids || showLower || (showLower==undefined && showLevels > 0)
 
-  if(showLower) {
-    console.log(8888, continueDump)
-  }
-
   return html`
-    <div style="flex: 1 1 10em;">
-      <div style="border:1px solid black;border-radius:5px" class="bg-info flex-stacked text-sm text-dark">
+    <div style="flex: 1 1 10em;text-align:left;">
+      <div
+        style="font-size:90%;color:#111111;background-color:#d9edf7;border:1px solid black;border-radius:5px;flex-direction: column;display:flex;"
+      >
         ${key && html`
-          <a style="color:white;border-color:white;flex-grow:1;" class="text-xxs pad-xxs bg-positive flex-apart"
-            class.border-bottom=${showLower}
-            onclick=${() => {showChange(showLower = !showLower);console.log('click', showLower);/*onHeaderClick()*/}}
+          <a
+            style=${
+              "padding:0.2em;display:flex;justify-content:space-between;font-size:65%;color:white;border-color:white;flex-grow:1;background-color:#387ef5;" +
+              (showLower ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;' : '')
+            }
+            onclick=${() => {
+              showLower = !showLower
+            }}
           >
             <strong>${key}</strong>
-            <sup style="opacity:80%;" class="text-xs pad-left-xs">
+            <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
               {${Object.keys(value).length}}
             </sup>
           </a>
@@ -441,15 +477,23 @@ const dumpObject = tag(({
           <div style="display:flex;flex-wrap:wrap">
             ${Object.entries(value).map(([key, value]) => html`
               <!-- recurse -->
-              <div
-                class="child-margin-xxs pad-xxs"
-                style=${'overflow:auto;display:flex;flex-wrap:wrap;' + (!value || typeof(value) !== 'object' ? 'flex: 1 1 10em;' : 'flex-grow:1;')}
+              <div class="child-margin-xxs"
+                style=${
+                  'padding:0.2em;overflow:auto;display:flex;flex-wrap:wrap;' +
+                  (!value || typeof(value) !== 'object' ? 'flex: 1 1 10em;' : 'flex-grow:1;')
+                }
               >
                 ${dump({
                   value,
                   key,
                   show: showLower,
-                  showChange: x => showChange(showLower = x),
+                  /*
+                  showChange: x => {
+                    showLower = x
+                    // showChange(showLower = x)
+                  },
+                  */
+                  showAll,
                   showLevels: showLevels - 1,
                   showKids: showAll || showKids,
                   isRootDump: false,
@@ -472,25 +516,29 @@ function dumpSimple({key, value, onHeaderClick}: {
   function simpleValue() {
     return html`
       <div onclick=${() => copyText(value)}
-        style="cursor:pointer;"
+        style=${
+          "cursor:pointer;" +
+          (value === true ? 'color:#28a54c' : '') +
+          (value === false ? 'color:#e42112' : '')
+        }
         class="hover-bg-warning active-bg-energized"
-        class.text-balanced=${value === true}
-        class.text-assertive=${value === false}
         title = ${value.constructor?.name === 'Number' && value > 1000000000 ? value > 946702800000 ? 'Milliseconds > Unix epoch:\n' + (new Date(value).toLocaleString()) : 'Seconds > Unix epoch:\n' + (new Date(value*1000).toLocaleString()) : ''}
       >${value === null && 'null' || value === false && 'false' || value === undefined && 'undefined' || value}</div>
     `  
   }
   
   return html`
-    <div class="text-xs text-dark" style="flex:1 1 10em">
+    <div style="font-size:75%;flex:1 1 10em;color:#111111">
       ${key && html`
-        <div class="text-xxs border-bottom" style="border-color:white;line-height: 95%;font-weight:bold;"
+        <div style="border-bottom-width:1px;border-bottom-style:solid;border-color:black;font-size:65%;border-color:white;line-height: 95%;font-weight:bold;"
           onclick=${() => onHeaderClick()}
         >${key}</div>
       `}
 
       ${value.search && (value.slice(0,8)==='https://' || value.slice(0,7)==='http://') ? html`
-        <a onclick=${() => copyText(value)} href=${value} target="_blank" class="hover-bg-warning active-bg-energized"
+        <a onclick=${() => copyText(value)} href=${value}
+          target="_blank"
+          class="hover-bg-warning active-bg-energized"
           title="tap to copy"
         >${value}</a>
       ` : simpleValue()}
