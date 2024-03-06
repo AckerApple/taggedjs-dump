@@ -1,4 +1,4 @@
-import { copyText } from "./copyText.function";
+import { copyText } from "./copyText.function.js";
 import { html, onInit, set, setLet, setProp, tag, watch } from "taggedjs";
 export const dump = tag(({ key, value, 
 // show,
@@ -381,4 +381,4 @@ function dumpSimple({ key, value, onHeaderClick }) {
     </div>
   `;
 }
-//# sourceMappingURL=dump.tag.js.map
+//# sourceMappingURL=index.js.map
