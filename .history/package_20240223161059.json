@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "save": "git add . && git commit -m \"patch\" && git push",
+    "start": "npm run build:js:watch & echo \"now start a live server\"",
+    "build": "npm run build:js",
+    "build:bundle": "node runBundleScript.js",
+    "build:js": "tsc -p tsconfig.json",
+    "build:js:watch": "tsc -p tsconfig.json --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "taggedjs": "github:ackerapple/taggedjs",
+    "taggedjs-common": "github:ackerapple/taggedjs-common"
+  }
+}
