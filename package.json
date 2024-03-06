@@ -21,7 +21,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "taggedjs": "^2.4.2",
+    "taggedjs": "github:ackerapple/taggedjs",
     "taggedjs-dump": "github:ackerapple/taggedjs-dump"
   }
 }
