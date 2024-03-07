@@ -156,7 +156,6 @@ function copyAsJsonText(value) {
 const arrayTable = tag(({ array, 
 // showLevels,
 showAll, showKids, toggleColumnDialog, columnNames, formatChange, }) => {
-    console.log('🍴 array table executed');
     return html `<!-- array table -->
     <!-- overflow-y: scroll; -->
     <div style="max-height: 800px;max-width:100vw;overflow: scroll;">
@@ -204,7 +203,7 @@ const arraysDisplay = tag(({ showLevels, showAll, showKids, array, arrayView, fo
             element.showModal();
         }
         else {
-            element.close();
+            element.close(); // <- element has onclose event that is called slow
         }
     };
     const arrayTag = arrayView === 'table' ? arrayTable({
@@ -272,9 +271,9 @@ const arraysDisplay = tag(({ showLevels, showAll, showKids, array, arrayView, fo
   `;
 });
 /** recurser */
-const arrayDisplay = ({ array, showLevels, showAll, showKids, columnNames, formatChange, toggleColumnDialog, }) => {
-    console.log('🟥 array display executed');
-    return array.map((item, index) => html `${dump({
+const arrayDisplay = tag(({ array, showLevels, showAll, showKids, columnNames, formatChange, toggleColumnDialog, }) => {
+    return html `
+    ${array.map((item, index) => html `${dump({
         value: filterObjectByKeys(item, columnNames),
         showLevels,
         showAll,
@@ -282,8 +281,9 @@ const arrayDisplay = ({ array, showLevels, showAll, showKids, columnNames, forma
         isRootDump: false,
         formatChange,
         onHeaderClick: toggleColumnDialog
-    })}`.key({ item: item, index }));
-};
+    })}`.key({ item: item, index }))}
+  `;
+});
 function filterObjectByKeys(inputObject, keysArray) {
     const filteredObject = {};
     keysArray.forEach(key => {
