@@ -1,5 +1,6 @@
 type ShowChange = (show: boolean) => any;
-type FormatChange = (format: 'json' | 'small') => unknown;
+export type OnHeaderClick = () => any;
+export type FormatChange = (format: 'json' | 'small') => unknown;
 type DumpProps = {
     value: any;
     key?: string;
