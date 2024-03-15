@@ -143,7 +143,6 @@ export const dump = tag(({// dump tag
 
   /* IF 1: undefined ELSE goto simpleTemplate */
   if([null, undefined].includes(value)) {
-    console.log('---- dump simple --- 0')
     return dumpSimple({
       key: key as string,
       value: typing,
@@ -153,11 +152,9 @@ export const dump = tag(({// dump tag
   
   /* IF 2: simple value ELSE goto objectTemplate */
   if(['boolean','number','string'].includes(typing)) {
-    console.log('---- dump simple --- 1', {key,value})
     return dumpSimple({key:key as string, value, onHeaderClick})
   }
 
-  console.log('---- objectTemplate --- 0', {key, value})
   return objectTemplate()
 })
 

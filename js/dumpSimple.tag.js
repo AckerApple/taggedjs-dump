@@ -10,7 +10,6 @@ export function dumpSimple({ key, value, onHeaderClick }) {
           onclick=${onHeaderClick}
         >${key}</div>
       `}
-
       ${isLinkValue ? linkValue(value) : simpleValue(value)}
     </div>
   `;
@@ -28,7 +27,7 @@ const simpleValue = (value) => {
       style.color = ${(value === true && '#28a54c') ||
         (value === false && '#e42112') ||
         isLikeNull && 'white' || ''}
-      title = ${title}
+      title=${title}
     >${value === null && 'null' || value === false && 'false' || value === undefined && 'undefined' || value}</div>
   `;
 };
