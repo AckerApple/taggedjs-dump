@@ -12,13 +12,13 @@ export const Dump = tag(() => {
   
   return html`
     <h3>🔭 TaggedJs Dump</h3>
-    <div style="display:flex;align-item:center;justify-content: center;">
+    <div style="display:flex;flex-wrap:wrap;align-item:center;justify-content: center;gap:1em;">
       <div>
         <textarea wrap="off" placeholder="past json here" onchange=${(event: any) => userJsonString = event.target.value}
         >${userJsonString}</textarea>
       </div>
       
-      <div style="width:100%;max-width:900px;background-color:rgba(255,255,255,.5);">
+      <div style="min-width:110px;width:100%;max-width:900px;background-color:rgba(255,255,255,.5);">
         ${dump({
           value: userJson
         })}
