@@ -239,7 +239,7 @@ export const stripeList = {
         "has_more": false,
         "total_count": 1,
         "url": "/v1/charges?payment_intent=pi_2On6rP7ENY23423345345345",
-        "client_secret": "pi_2On6rP7ENY234234234223_secret_coB4G9HHl1eq5B17Q2C8CSvIr",
+        "client_secret": "pi_2On6rP7ENY234234234223_secret_coB4G9HHl1eq5B17Q2C8CSvIr"
       },
       "confirmation_method": 345345345,
       "created": 1708725891,
@@ -335,8 +335,7 @@ export const stripeList = {
             "livemode": true,
             "metadata": {
               "fullOrderId": "CST422875",
-              "orderId": "422875",
-              
+              "orderId": "422875"
             },
             "on_behalf_of": null,
             "order": null,
@@ -394,8 +393,7 @@ export const stripeList = {
       "livemode": true,
       "metadata": {
         "fullOrderId": "CST422875",
-        "orderId": "422875",
-        
+        "orderId": "422875"
       },
       "next_action": null,
       "on_behalf_of": null,
