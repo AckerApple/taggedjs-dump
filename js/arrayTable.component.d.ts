@@ -1,4 +1,4 @@
-import { FormatChange } from "./index.js";
+import { FormatChange } from "./index";
 export declare const arrayTable: import("taggedjs").TagComponentBase<[{
     array: any[];
     showAll?: boolean | undefined;

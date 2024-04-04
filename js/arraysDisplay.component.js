@@ -1,7 +1,7 @@
-import { columnEditor } from "./columnEditor.component.js";
+import { columnEditor } from "./columnEditor.component";
 import { html, set, setLet, tag } from "taggedjs";
-import { arrayTable } from "./arrayTable.component.js";
-import { arrayDisplay } from "./arrayDisplay.tag.js";
+import { arrayTable } from "./arrayTable.component";
+import { arrayDisplay } from "./arrayDisplay.tag";
 export const arraysDisplay = tag(({ showLevels, showAll, showKids, array, arrayView, formatChange, }) => {
     const allColumnNames = array.length ? Object.keys(array[0]) : [];
     let columnNames = setLet(allColumnNames)(x => [columnNames, columnNames = x]);

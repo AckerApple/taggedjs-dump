@@ -1,4 +1,4 @@
-import { arraysDisplay } from "./arraysDisplay.component.js";
+import { arraysDisplay } from "./arraysDisplay.component";
 import { html, setLet, tag, watch } from "taggedjs";
 export const dumpArray = tag(({ // dumpArray
 key, value, show, showAll, showKids, 

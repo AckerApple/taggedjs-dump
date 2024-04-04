@@ -1,4 +1,4 @@
-import { FormatChange } from "./index.js";
+import { FormatChange } from "./index";
 export declare const arrayDisplay: import("taggedjs").TagComponentBase<[{
     array: any[];
     showLevels: number;

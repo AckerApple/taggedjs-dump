@@ -1,5 +1,5 @@
 import { html, tag } from "taggedjs";
-import { dump } from "./index.js";
+import { dump } from "./index";
 export const arrayTable = tag(({ array, 
 // showLevels,
 showAll, showKids, toggleColumnDialog, columnNames, formatChange, }) => {

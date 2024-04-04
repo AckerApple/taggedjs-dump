@@ -1,5 +1,5 @@
 import { html, setLet } from "taggedjs";
-import { copyText } from "./copyText.function.js";
+import { copyText } from "./copyText.function";
 export function dumpSimple({ key, value, onHeaderClick }) {
     const isLinkValue = value.search && (value.slice(0, 8) === 'https://' || value.slice(0, 7) === 'http://');
     return html `

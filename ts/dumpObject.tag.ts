@@ -1,5 +1,5 @@
 import { html, setLet, tag, watch } from "taggedjs"
-import { FormatChange, OnHeaderClick, dump } from "./index.js"
+import { FormatChange, OnHeaderClick, dump } from "./index"
 
 export const dumpObject = tag(({// dumpObject
   key, showKids,

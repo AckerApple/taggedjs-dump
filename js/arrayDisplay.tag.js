@@ -1,5 +1,5 @@
 import { html, tag } from "taggedjs";
-import { dump } from "./index.js";
+import { dump } from "./index";
 export const arrayDisplay = tag(({ array, showLevels, showAll, showKids, columnNames, formatChange, toggleColumnDialog, }) => {
     return html `
     ${array.map((item, index) => html `${dump({

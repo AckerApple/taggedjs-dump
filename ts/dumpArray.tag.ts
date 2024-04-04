@@ -1,5 +1,5 @@
-import { arraysDisplay } from "./arraysDisplay.component.js"
-import { html, onInit, setLet, setProp, tag, Tag, watch } from "taggedjs"
+import { arraysDisplay } from "./arraysDisplay.component"
+import { html, setLet, tag, watch } from "taggedjs"
 import { FormatChange } from "./index.js"
 
 export const dumpArray = tag(({// dumpArray

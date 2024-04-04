@@ -1,8 +1,8 @@
-import { columnEditor } from "./columnEditor.component.js"
+import { columnEditor } from "./columnEditor.component"
 import { html, set, setLet, tag } from "taggedjs"
-import { FormatChange } from "./index.js"
-import { arrayTable } from "./arrayTable.component.js"
-import { arrayDisplay } from "./arrayDisplay.tag.js"
+import { FormatChange } from "./index"
+import { arrayTable } from "./arrayTable.component"
+import { arrayDisplay } from "./arrayDisplay.tag"
 
 export const arraysDisplay = tag(({
   showLevels,

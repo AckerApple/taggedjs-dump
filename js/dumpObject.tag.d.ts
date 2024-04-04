@@ -1,4 +1,4 @@
-import { FormatChange, OnHeaderClick } from "./index.js";
+import { FormatChange, OnHeaderClick } from "./index";
 export declare const dumpObject: import("taggedjs").TagComponentBase<[{
     key?: string | undefined;
     value: any;

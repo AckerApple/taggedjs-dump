@@ -1,8 +1,8 @@
-import { copyText } from "./copyText.function.js";
+import { copyText } from "./copyText.function";
 import { html, onInit, setLet, setProp, tag } from "taggedjs";
-import { dumpArray } from "./dumpArray.tag.js";
-import { dumpSimple } from "./dumpSimple.tag.js";
-import { dumpObject } from "./dumpObject.tag.js";
+import { dumpArray } from "./dumpArray.tag";
+import { dumpSimple } from "./dumpSimple.tag";
+import { dumpObject } from "./dumpObject.tag";
 export const dump = tag(({ // dump tag
 key, value, showKids = false, showLevels = -1, showAll, format = 'small', formatChange = () => undefined, isRootDump = true, onHeaderClick, }) => {
     const isObject = () => value && value instanceof Object;

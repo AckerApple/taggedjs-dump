@@ -1,4 +1,4 @@
-import { FormatChange } from "./index.js";
+import { FormatChange } from "./index";
 export declare const arraysDisplay: import("taggedjs").TagComponentBase<[{
     formatChange: FormatChange;
     array: any[];

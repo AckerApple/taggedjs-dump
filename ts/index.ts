@@ -1,8 +1,8 @@
-import { copyText } from "./copyText.function.js"
-import { html, onInit, setLet, setProp, tag, Tag, watch } from "taggedjs"
-import { dumpArray } from "./dumpArray.tag.js"
-import { dumpSimple } from "./dumpSimple.tag.js"
-import { dumpObject } from "./dumpObject.tag.js"
+import { copyText } from "./copyText.function"
+import { html, onInit, setLet, setProp, tag, Tag } from "taggedjs"
+import { dumpArray } from "./dumpArray.tag"
+import { dumpSimple } from "./dumpSimple.tag"
+import { dumpObject } from "./dumpObject.tag"
 
 type ShowChange = (show: boolean) => any
 export type OnHeaderClick = () => any

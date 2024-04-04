@@ -1,5 +1,5 @@
 import { html, tag } from "taggedjs"
-import { FormatChange, dump } from "./index.js"
+import { FormatChange, dump } from "./index"
 
 export const arrayTable = tag(({
   array,

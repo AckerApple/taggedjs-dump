@@ -5,7 +5,7 @@ console.debug(`🖊️ Writing bundle to ${outPath}`)
 
 module.exports = {
   mode: 'production',
-  entry: './js/index.js', // Your entry file
+  entry: './ts/index.ts', // Your entry file
   output: {
     filename: 'index.js',
     path: outPath,
@@ -15,5 +15,17 @@ module.exports = {
   experiments: {
     outputModule: true, // Enable experiments.outputModule
   },
-  target: 'node'
+  target: 'node',
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'], // Include '.js' extension
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
 }

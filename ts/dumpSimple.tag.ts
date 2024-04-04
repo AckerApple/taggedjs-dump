@@ -1,6 +1,6 @@
 import { html, setLet } from "taggedjs"
-import { OnHeaderClick } from "./index.js"
-import { copyText } from "./copyText.function.js"
+import { OnHeaderClick } from "./index"
+import { copyText } from "./copyText.function"
 
 export function dumpSimple({key, value, onHeaderClick}: {
   key: string

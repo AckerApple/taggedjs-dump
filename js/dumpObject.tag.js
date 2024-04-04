@@ -1,5 +1,5 @@
 import { html, setLet, tag, watch } from "taggedjs";
-import { dump } from "./index.js";
+import { dump } from "./index";
 export const dumpObject = tag(({ // dumpObject
 key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, }) => {
     let showLower = setLet(false)(x => [showLower, showLower = x]);
