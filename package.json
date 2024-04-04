@@ -1,9 +1,8 @@
 {
   "name": "taggedjs-dump",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "visually dump and interact with javascript and json objects",
   "main": "js/index.js",
-  "type": "module",
   "keywords": [
     "react",
     "angular",
@@ -19,6 +18,6 @@
   "author": "Acker Dawn Apple",
   "license": "MIT",
   "peerDependencies": {
-    "taggedjs": ">=2.4"
+    "taggedjs": "github:ackerapple/taggedjs"
   }
 }
