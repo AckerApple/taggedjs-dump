@@ -2473,11 +2473,13 @@ function processRegularValue(value, subject, // could be tag via subject.tag
 template) {
     subject.template = template;
     const before = subject.clone || template; // Either the template is on the doc OR its the first element we last put on doc
+    if (subject.lastValue === value) {
+        return; // no need to update display, its the same
+    }
     subject.lastValue = value;
     // Processing of regular values
     const clone = (0,_interpolateTemplate__WEBPACK_IMPORTED_MODULE_0__.updateBetweenTemplates)(value, before);
     subject.clone = clone; // remember single element put down, for future updates
-    return [];
 }
 
 
@@ -2592,20 +2594,19 @@ function getValueType(value) {
 function processSubjectValue(value, subject, // could be tag via result.tag
 template, // <template end interpolate /> (will be removed)
 ownerTag, // owner
-options, // {added:0, removed:0}
-test = false) {
+options) {
     const valueType = getValueType(value);
     switch (valueType) {
         case ValueTypes.tag:
             processTag(value, subject, template, ownerTag);
-            return [];
+            return;
         case ValueTypes.tagArray:
             return (0,_processTagArray__WEBPACK_IMPORTED_MODULE_2__.processTagArray)(subject, value, template, ownerTag, options);
         case ValueTypes.tagComponent:
             (0,_processSubjectComponent_function__WEBPACK_IMPORTED_MODULE_0__.processSubjectComponent)(value, subject, template, ownerTag, options);
-            return [];
+            return;
     }
-    return (0,_processRegularValue_function__WEBPACK_IMPORTED_MODULE_5__.processRegularValue)(value, subject, template);
+    (0,_processRegularValue_function__WEBPACK_IMPORTED_MODULE_5__.processRegularValue)(value, subject, template);
 }
 /** Could be a regular tag or a component. Both are Tag.class */
 function processTag(tag, subject, // could be tag via result.tag
@@ -4023,317 +4024,6 @@ function watch(currentValues, callback) {
 
 /***/ }),
 
-/***/ "./node_modules/taggedjs-dump/js/arrayDisplay.tag.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/taggedjs-dump/js/arrayDisplay.tag.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   arrayDisplay: () => (/* binding */ arrayDisplay)
-/* harmony export */ });
-/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
-/* harmony import */ var _index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.js */ "./node_modules/taggedjs-dump/js/index.js");
-
-
-const arrayDisplay = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.tag)(({ array, showLevels, showAll, showKids, columnNames, formatChange, toggleColumnDialog, }) => {
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-    ${array.map((item, index) => (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `${(0,_index_js__WEBPACK_IMPORTED_MODULE_1__.dump)({
-        value: filterObjectByKeys(item, columnNames),
-        showLevels,
-        showAll,
-        showKids: showAll || showKids,
-        isRootDump: false,
-        formatChange,
-        onHeaderClick: toggleColumnDialog
-    })}`.key({ item: item, index }))}
-  `;
-});
-function filterObjectByKeys(inputObject, keysArray) {
-    const filteredObject = {};
-    keysArray.forEach(key => {
-        if (inputObject.hasOwnProperty(key)) {
-            filteredObject[key] = inputObject[key];
-        }
-    });
-    return filteredObject;
-}
-//# sourceMappingURL=arrayDisplay.tag.js.map
-
-/***/ }),
-
-/***/ "./node_modules/taggedjs-dump/js/arrayTable.component.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/taggedjs-dump/js/arrayTable.component.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   arrayTable: () => (/* binding */ arrayTable)
-/* harmony export */ });
-/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
-/* harmony import */ var _index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.js */ "./node_modules/taggedjs-dump/js/index.js");
-
-
-const arrayTable = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.tag)(({ array, 
-// showLevels,
-showAll, showKids, toggleColumnDialog, columnNames, formatChange, }) => {
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `<!-- array table -->
-    <!-- overflow-y: scroll; -->
-    <div style="max-height: 800px;max-width:100vw;overflow: scroll;">
-      <table cellPadding="2" cellSpacing="2" border="0">
-        ${array.length && (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-          <thead style="position: sticky;top: 0;font-size: 0.8em;">
-            <tr>
-              ${columnNames.map(key => (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-                <th
-                  style.cursor=${toggleColumnDialog && 'pointer'}
-                  onclick=${toggleColumnDialog}
-                >${key}</th>
-              `.key(key))}
-            </tr>
-          </thead>
-        `}
-        <tbody>
-          ${array.map(row => (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-            <tr>
-              ${columnNames.map(name => (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-                <td>
-                  ${(0,_index_js__WEBPACK_IMPORTED_MODULE_1__.dump)({
-        value: row[name],
-        showLevels: 0,
-        showAll,
-        showKids: showAll || showKids,
-        isRootDump: false,
-        formatChange,
-    })}
-                </td>
-              `.key(row[name]))}
-            </tr>
-          `.key(row))}
-        </tbody>
-      </table>
-    </div>
-  `;
-});
-//# sourceMappingURL=arrayTable.component.js.map
-
-/***/ }),
-
-/***/ "./node_modules/taggedjs-dump/js/arraysDisplay.component.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/taggedjs-dump/js/arraysDisplay.component.js ***!
-  \******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   arraysDisplay: () => (/* binding */ arraysDisplay)
-/* harmony export */ });
-/* harmony import */ var _columnEditor_component_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./columnEditor.component.js */ "./node_modules/taggedjs-dump/js/columnEditor.component.js");
-/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
-/* harmony import */ var _arrayTable_component_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./arrayTable.component.js */ "./node_modules/taggedjs-dump/js/arrayTable.component.js");
-/* harmony import */ var _arrayDisplay_tag_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./arrayDisplay.tag.js */ "./node_modules/taggedjs-dump/js/arrayDisplay.tag.js");
-
-
-
-
-const arraysDisplay = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ showLevels, showAll, showKids, array, arrayView, formatChange, }) => {
-    const allColumnNames = array.length ? Object.keys(array[0]) : [];
-    let columnNames = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(allColumnNames)(x => [columnNames, columnNames = x]);
-    let showColumnDialog = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(false)(x => [showColumnDialog, showColumnDialog = x]);
-    let uniqueId = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.set)('columnDialog' + performance.now());
-    const toggleColumnDialog = () => {
-        showColumnDialog = !showColumnDialog;
-        const element = document.getElementById(uniqueId);
-        if (showColumnDialog) {
-            element.showModal();
-        }
-        else {
-            element.close(); // <- element has onclose event that is called slow
-        }
-    };
-    const arrayTag = arrayView === 'table' ? (0,_arrayTable_component_js__WEBPACK_IMPORTED_MODULE_2__.arrayTable)({
-        showAll, showKids,
-        array, toggleColumnDialog, columnNames,
-        formatChange,
-    }) : (0,_arrayDisplay_tag_js__WEBPACK_IMPORTED_MODULE_3__.arrayDisplay)({
-        array, showLevels, showAll, showKids,
-        formatChange,
-        columnNames, toggleColumnDialog
-    });
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-    ${arrayTag}
-
-    <dialog id=${uniqueId} class="dump-dialog" style="padding:0"
-      onmousedown="var r = this.getBoundingClientRect();(r.top<=event.clientY&&event.clientY<=r.top+r.height&&r.left<=event.clientX&&event.clientX<=r.left+r.width) || this.close()"
-      ondragstart="const {e,dt,t} = {t:this,e:event,dt:event.dataTransfer};const d=t.drag=t.drag||{x:0,y:0};d.initX=d.x;d.startX=event.clientX-t.offsetLeft;d.startY=event.clientY-t.offsetTop;t.ondragover=e.target.ondragover=(e)=>e.preventDefault();dt.effectAllowed='move';dt.dropEffect='move'"
-      ondrag="const {t,e,dt,d}={e:event,dt:event.dataTransfer,d:this.drag}; if(e.clientX===0) return;d.x = d.x + e.offsetX - d.startX; d.y = d.y + e.offsetY - d.startY; this.style.left = d.x + 'px'; this.style.top = d.y+'px';"
-      ondragend="const {t,e,d}={t:this,e:event,d:this.drag};if (d.initX === d.x) {d.x=d.x+e.offsetX-(d.startX-d.x);d.y=d.y+e.offsetY-(d.startY-d.y);this.style.transform=translate3d(d.x+'px', d.y+'px', 0)};this.draggable=false"
-      onclose=${() => {
-        showColumnDialog = false;
-    }}
-    >
-      <div
-        style="padding:.25em;background-color:#666;color:white;"
-        onmousedown="this.parentNode.draggable=true"
-      >Column Modifier</div>
-      <div style="padding:.25em">
-        ${allColumnNames.map(name => {
-        const included = columnNames.includes(name);
-        return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-            <div
-              style="display:flex;justify-content: space-between;flex-wrap:wrap"
-              class="hover-bg-warning"
-            >
-              ${(0,_columnEditor_component_js__WEBPACK_IMPORTED_MODULE_0__.columnEditor)({
-            name,
-            array,
-            included,
-            columnNames,
-            allColumnNames,
-        })}
-            </div>
-          `.key(name);
-    })}
-        <button style="width:100%" type="button" onclick=${toggleColumnDialog}>🅧 close</button>
-      </div>
-    </dialog>
-
-    <style>
-      dialog.dump-dialog::backdrop {
-        background-color: rgba(0, 0, 0, 0.7); /* Set a semi-transparent black background */
-      }
-
-      .child-margin-xxs {margin:0.2em;}
-      
-      .hover-bg-warning:hover {background-color:#fcf8e3}
-      .hover-bg-balanced:hover {background-color:#33cd5f}
-      .active-bg-energized:active {background-color:#ffc900}
-    </style>
-  `;
-});
-//# sourceMappingURL=arraysDisplay.component.js.map
-
-/***/ }),
-
-/***/ "./node_modules/taggedjs-dump/js/columnEditor.component.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/taggedjs-dump/js/columnEditor.component.js ***!
-  \*****************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   columnEditor: () => (/* binding */ columnEditor)
-/* harmony export */ });
-/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
-
-const columnEditor = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.tag)(({ name, array, included, columnNames, allColumnNames }) => {
-    let mouseOverEditShow = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.setLet)(false)(x => [mouseOverEditShow, mouseOverEditShow = x]);
-    let edit = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.setLet)(false)(x => [edit, edit = x]);
-    let editFormula = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.setLet)(undefined)(x => [editFormula, editFormula = x]);
-    const formulas = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.set)([]);
-    const filterNames = () => {
-        if (included) {
-            columnNames.length = 0;
-            columnNames.push(...columnNames.filter(n => n !== name));
-            return;
-        }
-        columnNames.push(name);
-    };
-    const goAll = () => {
-        columnNames.length = 0;
-        columnNames.push(...allColumnNames);
-    };
-    const goOnly = () => {
-        columnNames.length = 0;
-        columnNames.push(name);
-    };
-    const addSumFormula = () => {
-        const stringFormula = `
-      array.reduce((all, item) => {
-        const value = item['${name}']
-        return isNaN(value) ? all : (all + value)
-      }, 0)
-    `;
-        formulas.push({
-            title: 'sum',
-            stringFormula,
-            value: sandboxRunEval(stringFormula, { array })
-        });
-        console.log('formulas', formulas.length);
-    };
-    const updateFormula = (formula, newFormula) => {
-        formula.stringFormula = newFormula;
-        formula.value = sandboxRunEval(newFormula, { array });
-    };
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-    <a onclick=${filterNames} style="cursor:pointer;">
-      <input type="checkbox" ${included && 'checked'} />&nbsp;${name}
-    </a>
-
-    <div
-      onmouseover=${() => mouseOverEditShow = true}
-      onmouseout=${() => mouseOverEditShow = false}
-    >
-      <a style.visibility=${(edit || mouseOverEditShow) ? 'visible' : 'hidden'}
-        onclick=${() => edit = !edit}
-      >⚙️&nbsp;</a>
-      
-      ${included && columnNames.length !== allColumnNames.length ? (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-        <a style="color:blue;" onclick=${goAll}><small>all</small></a>
-      ` : (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-        <a style="color:blue;" onclick=${goOnly}><small>only</small></a>
-      `}
-    </div>
-
-    ${edit && (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-      <div style="width:100%;padding:0.3em;">
-        <div style="font-size:0.7em;text-align:center;">
-          <strong>Column Settings</strong>
-        </div>
-        <div>
-          ${editFormula && (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-            <div style="padding:0.3em;">
-              <strong>edit formula</strong>
-            </div>
-            <textarea wrap="off"
-              onchange=${(evt) => updateFormula(editFormula, evt.target.value)}
-            >${editFormula.value}</textarea>
-          `}
-          <div style="display:flex;flex-wrap:wrap;gap:1em">
-            ${formulas.map(formula => (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-                <div>
-                  <div>
-                    <strong>${formula.title}</strong>
-                    <a onclick=${() => editFormula = formula}>✏️</a>
-                  </div>
-                  <div>${formula.value}</div>
-                </div>
-              `.key(formula))}
-          </div>
-          <button type="button" onclick=${addSumFormula}>sum</button>
-        </div>
-      </div>
-    `}
-  `;
-});
-function sandboxRunEval(stringFormula, context = {}) {
-    return sandboxEval(stringFormula, { isNaN, Math, Number, Date, ...context });
-}
-// execute script in private context
-function sandboxEval(src, ctx) {
-    ctx = new Proxy(ctx, { has: () => true });
-    let func = (new Function("with(this) { return (" + src + ")}"));
-    return func.call(ctx);
-}
-//# sourceMappingURL=columnEditor.component.js.map
-
-/***/ }),
-
 /***/ "./node_modules/taggedjs-dump/js/copyText.function.js":
 /*!************************************************************!*\
   !*** ./node_modules/taggedjs-dump/js/copyText.function.js ***!
@@ -4357,199 +4047,6 @@ function copyText(text) {
 
 /***/ }),
 
-/***/ "./node_modules/taggedjs-dump/js/dumpArray.tag.js":
-/*!********************************************************!*\
-  !*** ./node_modules/taggedjs-dump/js/dumpArray.tag.js ***!
-  \********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   dumpArray: () => (/* binding */ dumpArray)
-/* harmony export */ });
-/* harmony import */ var _arraysDisplay_component_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arraysDisplay.component.js */ "./node_modules/taggedjs-dump/js/arraysDisplay.component.js");
-/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
-
-
-const dumpArray = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ // dumpArray
-key, value, show, showAll, showKids, 
-// arrayView,
-showLevels, formatChange,
-// showChangeValue,
- }) => {
-    let showValue = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(false)(x => [showValue, showValue = x]);
-    let arrayView = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(undefined)(x => [arrayView, arrayView = x]);
-    (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.watch)([show], ([show]) => showValue = show);
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `<!-- array -->
-  <div
-    style="color:#111111;background-color:#f2dede;border:1px solid black;border-radius:5px;flex-direction: column;display:flex"
-  >
-    <div
-      style=${"padding:0.2em;display:flex;justify-content:space-between;flex-grow:1;font-size:65%;border-color:white;color:white;background-color:#ef473a;" +
-        (showValue ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;' : '')}
-    >
-      <a style="flex-grow:1" onclick=${() => {
-        showValue = !showValue;
-    }}>
-        <strong>${key}</strong>
-      </a>
-      <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
-        <a style="text-decoration:underline;" style.font-weight=${arrayView === 'table' ? 'bold' : ''}
-          onclick=${() => arrayView = arrayView === 'table' ? undefined : 'table'}>${arrayView === 'table' ? 'flex' : 'table'}</a>
-      </sup>
-      <sup style="opacity:80%;font-size:75%;padding-left:0.4em">[${value.length}]</sup>
-    </div>
-    
-    ${(showAll || showValue || showKids || (showValue == undefined && showLevels > 0)) && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-      <!-- array displays wrap -->
-      <div style="text-align:left;display:flex;flex-wrap:wrap;margin:0.2em;gap:0.2em">
-        ${(0,_arraysDisplay_component_js__WEBPACK_IMPORTED_MODULE_0__.arraysDisplay)({
-        showLevels, showAll, showKids,
-        formatChange,
-        array: value,
-        arrayView: arrayView
-    })}
-      </div>
-    `}
-  </div>
-  `;
-});
-//# sourceMappingURL=dumpArray.tag.js.map
-
-/***/ }),
-
-/***/ "./node_modules/taggedjs-dump/js/dumpObject.tag.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/taggedjs-dump/js/dumpObject.tag.js ***!
-  \*********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   dumpObject: () => (/* binding */ dumpObject)
-/* harmony export */ });
-/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
-/* harmony import */ var _index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.js */ "./node_modules/taggedjs-dump/js/index.js");
-
-
-const dumpObject = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.tag)(({ // dumpObject
-key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, }) => {
-    let showLower = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.setLet)(false)(x => [showLower, showLower = x]);
-    (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.watch)([show], ([show]) => showLower = show);
-    const continueDump = !key || showKids || showLower || (showLower == undefined && showLevels > 0);
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-    <div style="flex: 1 1 10em;text-align:left;">
-      <div
-        style="font-size:90%;color:#111111;background-color:#d9edf7;border:1px solid black;border-radius:5px;flex-direction: column;display:flex;"
-      >
-        ${key && (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-          <a
-            style=${"padding:0.2em;display:flex;justify-content:space-between;font-size:65%;color:white;border-color:white;flex-grow:1;background-color:#387ef5;" +
-        (showLower ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;' : '')}
-            onclick=${() => {
-        showLower = !showLower;
-    }}
-          >
-            <strong>${key}</strong>
-            <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
-              {${Object.keys(value).length}}
-            </sup>
-          </a>
-        `}
-        
-        ${continueDump && (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-          <div style="display:flex;flex-wrap:wrap">
-            ${Object.entries(value).map(([key, value]) => (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-              <!-- recurse -->
-              <div class="child-margin-xxs"
-                style=${'padding:0.2em;overflow:auto;display:flex;flex-wrap:wrap;' +
-        (!value || typeof (value) !== 'object' ? 'flex: 1 1 10em;' : 'flex-grow:1;')}
-              >
-                ${(0,_index_js__WEBPACK_IMPORTED_MODULE_1__.dump)({
-        value,
-        key,
-        show: showLower,
-        showAll,
-        showLevels: showLevels - 1,
-        showKids: showAll || showKids,
-        isRootDump: false,
-        formatChange,
-        onHeaderClick,
-    })}
-            `.key([key, value]))}
-          </div>
-        `}
-      </div>
-    </div>
-  `;
-});
-//# sourceMappingURL=dumpObject.tag.js.map
-
-/***/ }),
-
-/***/ "./node_modules/taggedjs-dump/js/dumpSimple.tag.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/taggedjs-dump/js/dumpSimple.tag.js ***!
-  \*********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   dumpSimple: () => (/* binding */ dumpSimple)
-/* harmony export */ });
-/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
-/* harmony import */ var _copyText_function_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./copyText.function.js */ "./node_modules/taggedjs-dump/js/copyText.function.js");
-
-
-function dumpSimple({ key, value, onHeaderClick }) {
-    const isLinkValue = value.search && (value.slice(0, 8) === 'https://' || value.slice(0, 7) === 'http://');
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-    <div style="font-size:75%;flex:1 1 10em;color:#111111">
-      ${key && (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-        <div style="border-bottom-width:1px;border-bottom-style:solid;border-color:black;font-size:65%;border-color:white;line-height: 95%;font-weight:bold;"
-          style.cursor=${onHeaderClick && "pointer"}
-          onclick=${onHeaderClick}
-        >${key}</div>
-      `}
-      ${isLinkValue ? linkValue(value) : simpleValue(value)}
-    </div>
-  `;
-}
-const simpleValue = (value) => {
-    const isLikeNull = [undefined, null, 'null'].includes(value);
-    const number = value;
-    const isLargeNumber = !isNaN(number) && number > 1000000000;
-    const title = !isLargeNumber ? '' : getLargeNumberTitle(number);
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-    <div class="hover-bg-warning active-bg-energized"
-      onclick=${() => (0,_copyText_function_js__WEBPACK_IMPORTED_MODULE_1__.copyText)(value)}
-      style="cursor:pointer;"
-      style.background-color=${isLikeNull ? 'rgba(0,0,0,.5)' : ''}
-      style.color = ${(value === true && '#28a54c') ||
-        (value === false && '#e42112') ||
-        isLikeNull && 'white' || ''}
-      title=${title}
-    >${value === null && 'null' || value === false && 'false' || value === undefined && 'undefined' || value}</div>
-  `;
-};
-function getLargeNumberTitle(number) {
-    return number > 946702800000 ?
-        'Milliseconds > Unix epoch:\n' + (new Date(number).toLocaleString()) :
-        'Seconds > Unix epoch:\n' + (new Date(number * 1000).toLocaleString());
-}
-const linkValue = (value) => {
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
-    <a onclick=${() => (0,_copyText_function_js__WEBPACK_IMPORTED_MODULE_1__.copyText)(value)} href=${value}
-      target="_blank"
-      class="hover-bg-warning active-bg-energized"
-      title="tap to copy"
-    >${value}</a>
-  `;
-};
-//# sourceMappingURL=dumpSimple.tag.js.map
-
-/***/ }),
-
 /***/ "./node_modules/taggedjs-dump/js/index.js":
 /*!************************************************!*\
   !*** ./node_modules/taggedjs-dump/js/index.js ***!
@@ -4562,16 +4059,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _copyText_function_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./copyText.function.js */ "./node_modules/taggedjs-dump/js/copyText.function.js");
 /* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
-/* harmony import */ var _dumpArray_tag_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dumpArray.tag.js */ "./node_modules/taggedjs-dump/js/dumpArray.tag.js");
-/* harmony import */ var _dumpSimple_tag_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dumpSimple.tag.js */ "./node_modules/taggedjs-dump/js/dumpSimple.tag.js");
-/* harmony import */ var _dumpObject_tag_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dumpObject.tag.js */ "./node_modules/taggedjs-dump/js/dumpObject.tag.js");
 
 
-
-
-
-const dump = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ // dump tag
-key, value, showKids = false, showLevels = -1, showAll, format = 'small', formatChange = () => undefined, isRootDump = true, onHeaderClick, }) => {
+const dump = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ key, value, 
+// show,
+// showChange,
+showKids = false, showLevels = -1, showAll, format = 'small', formatChange = () => undefined, isRootDump = true, onHeaderClick = () => undefined }) => {
     const isObject = () => value && value instanceof Object;
     const typing = value === null ? 'null' : typeof (value);
     let show = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(false)(x => [show, show = x]);
@@ -4587,13 +4080,20 @@ key, value, showKids = false, showLevels = -1, showAll, format = 'small', format
             show = true;
         }
     });
+    /* IF 2: simple value ELSE goto objectTemplate */
+    function simpleTemplate() {
+        if (['boolean', 'number', 'string'].includes(typing)) {
+            return dumpSimple({ key: key, value: value, onHeaderClick });
+        }
+        return objectTemplate();
+    }
     /* IF 3: object value */
     function objectTemplate() {
         if (value === null) {
             if (!showKids) {
                 return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) ``;
             }
-            return (0,_dumpSimple_tag_js__WEBPACK_IMPORTED_MODULE_3__.dumpSimple)({
+            return dumpSimple({
                 key: key,
                 value: 'null',
                 onHeaderClick
@@ -4637,7 +4137,7 @@ key, value, showKids = false, showLevels = -1, showAll, format = 'small', format
       ${(format === 'json' && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
         <textarea *ngIf="" disabled wrap="off" style="width:100%;height:25vh;min-height:400px;color:white;"
         >${JSON.stringify(value, null, 2)}</textarea>
-      `) || ((isArray && (0,_dumpArray_tag_js__WEBPACK_IMPORTED_MODULE_2__.dumpArray)({
+      `) || ((isArray && dumpArray({
             key,
             value,
             show,
@@ -4648,7 +4148,7 @@ key, value, showKids = false, showLevels = -1, showAll, format = 'small', format
             formatChange,
             // showChangeValue,
         })) ||
-            (0,_dumpObject_tag_js__WEBPACK_IMPORTED_MODULE_4__.dumpObject)({
+            dumpObject({
                 key,
                 show,
                 // showChange: x => showChangeValue(show = x),
@@ -4662,22 +4162,285 @@ key, value, showKids = false, showLevels = -1, showAll, format = 'small', format
     `;
     }
     /* IF 1: undefined ELSE goto simpleTemplate */
-    if ([null, undefined].includes(value)) {
-        return (0,_dumpSimple_tag_js__WEBPACK_IMPORTED_MODULE_3__.dumpSimple)({
-            key: key,
-            value: typing,
-            onHeaderClick
-        });
-    }
-    /* IF 2: simple value ELSE goto objectTemplate */
-    if (['boolean', 'number', 'string'].includes(typing)) {
-        return (0,_dumpSimple_tag_js__WEBPACK_IMPORTED_MODULE_3__.dumpSimple)({ key: key, value, onHeaderClick });
-    }
-    return objectTemplate();
+    return [null, undefined].includes(value) ? dumpSimple({
+        key: key,
+        value: typing,
+        onHeaderClick
+    }) : simpleTemplate();
 });
+const dumpArray = ({ key, value, show, showAll, showKids, 
+// arrayView,
+showLevels, formatChange,
+// showChangeValue,
+ }) => {
+    let showValue = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(false)(x => [showValue, showValue = x]);
+    let arrayView = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(undefined)(x => [arrayView, arrayView = x]);
+    (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.watch)([show], ([show]) => showValue = show);
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `<!-- array -->
+  <div
+    style="color:#111111;background-color:#f2dede;border:1px solid black;border-radius:5px;flex-direction: column;display:flex"
+  >
+    <div
+      style=${"padding:0.2em;display:flex;justify-content:space-between;flex-grow:1;font-size:65%;border-color:white;color:white;background-color:#ef473a;" +
+        (showValue ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;' : '')}
+    >
+      <a style="flex-grow:1" onclick=${() => {
+        showValue = !showValue;
+    }}>
+        <strong>${key}</strong>
+      </a>
+      <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
+        <a style="text-decoration:underline;" style.font-weight=${arrayView === 'table' ? 'bold' : ''}
+          onclick=${() => arrayView = arrayView === 'table' ? undefined : 'table'}>${arrayView === 'table' ? 'flex' : 'table'}</a>
+      </sup>
+      <sup style="opacity:80%;font-size:75%;padding-left:0.4em">[${value.length}]</sup>
+    </div>
+    
+    ${(showAll || showValue || showKids || (showValue == undefined && showLevels > 0)) && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+      <!-- array displays wrap -->
+      <div style="text-align:left;display:flex;flex-wrap:wrap;margin:0.2em;gap:0.2em">
+        ${arraysDisplay({
+        showLevels, showAll, showKids,
+        formatChange,
+        array: value,
+        arrayView: arrayView
+    })}
+      </div>
+    `}
+  </div>
+  `;
+};
 function copyAsJsonText(value) {
     const text = JSON.stringify(value, null, 2);
     (0,_copyText_function_js__WEBPACK_IMPORTED_MODULE_0__.copyText)(text);
+}
+const arrayTable = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ array, 
+// showLevels,
+showAll, showKids, toggleColumnDialog, columnNames, formatChange, }) => {
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `<!-- array table -->
+    <!-- overflow-y: scroll; -->
+    <div style="max-height: 800px;max-width:100vw;overflow: scroll;">
+      <table cellPadding="2" cellSpacing="2" border="0">
+        ${array.length && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+          <thead style="position: sticky;top: 0;font-size: 0.8em;">
+            <tr>
+              ${columnNames.map(key => (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+                <th onclick=${toggleColumnDialog}>${key}</th>
+              `.key(key))}
+            </tr>
+          </thead>
+        `}
+        <tbody>
+          ${array.map(row => (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+            <tr>
+              ${columnNames.map(name => (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+                <td>
+                  ${dump({
+        value: row[name],
+        showLevels: 0,
+        showAll,
+        showKids: showAll || showKids,
+        isRootDump: false,
+        formatChange,
+    })}
+                </td>
+              `.key(row[name]))}
+            </tr>
+          `.key(row))}
+        </tbody>
+      </table>
+    </div>
+  `;
+});
+const arraysDisplay = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ showLevels, showAll, showKids, array, arrayView, formatChange, }) => {
+    const allColumnNames = array.length ? Object.keys(array[0]) : [];
+    let columnNames = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(allColumnNames)(x => [columnNames, columnNames = x]);
+    let showColumnDialog = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(false)(x => [showColumnDialog, showColumnDialog = x]);
+    let uniqueId = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.set)('columnDialog' + performance.now());
+    const toggleColumnDialog = () => {
+        showColumnDialog = !showColumnDialog;
+        const element = document.getElementById(uniqueId);
+        if (showColumnDialog) {
+            element.showModal();
+        }
+        else {
+            element.close(); // <- element has onclose event that is called slow
+        }
+    };
+    const arrayTag = arrayView === 'table' ? arrayTable({
+        showAll, showKids,
+        array, toggleColumnDialog, columnNames,
+        formatChange,
+    }) : arrayDisplay({
+        array, showLevels, showAll, showKids,
+        formatChange,
+        columnNames, toggleColumnDialog
+    });
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+    ${arrayTag}
+
+    <dialog id=${uniqueId} class="dump-dialog" style="padding:0"
+      onmousedown="var r = this.getBoundingClientRect();(r.top<=event.clientY&&event.clientY<=r.top+r.height&&r.left<=event.clientX&&event.clientX<=r.left+r.width) || this.close()"
+      ondragstart="const {e,dt,t} = {t:this,e:event,dt:event.dataTransfer};const d=t.drag=t.drag||{x:0,y:0};d.initX=d.x;d.startX=event.clientX-t.offsetLeft;d.startY=event.clientY-t.offsetTop;t.ondragover=e.target.ondragover=(e)=>e.preventDefault();dt.effectAllowed='move';dt.dropEffect='move'"
+      ondrag="const {t,e,dt,d}={e:event,dt:event.dataTransfer,d:this.drag}; if(e.clientX===0) return;d.x = d.x + e.offsetX - d.startX; d.y = d.y + e.offsetY - d.startY; this.style.left = d.x + 'px'; this.style.top = d.y+'px';"
+      ondragend="const {t,e,d}={t:this,e:event,d:this.drag};if (d.initX === d.x) {d.x=d.x+e.offsetX-(d.startX-d.x);d.y=d.y+e.offsetY-(d.startY-d.y);this.style.transform=translate3d(d.x+'px', d.y+'px', 0)};this.draggable=false"
+      onclose=${() => {
+        showColumnDialog = false;
+    }}
+    >
+      <div
+        style="padding:.25em;background-color:#666;color:white;"
+        onmousedown="this.parentNode.draggable=true"
+      >Column Modifier</div>
+      <div style="padding:.25em">
+        ${allColumnNames.map(name => {
+        const included = columnNames.includes(name);
+        return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+            <li
+              style="display:flex;justify-content: space-between"
+              class="hover-bg-warning"
+            >
+              <a onclick=${() => included ? columnNames = columnNames.filter(n => n !== name) : columnNames.push(name)}
+                style="cursor:pointer;"
+              >
+                <input type="checkbox" ${included && 'checked'} />&nbsp;${name}
+              </a>
+
+              ${included && columnNames.length !== allColumnNames.length ? (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+                <a style="color:blue;" onclick=${() => columnNames = [...allColumnNames]}><small>all</small></a>
+              ` : (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+                <a style="color:blue;" onclick=${() => columnNames = [name]}><small>only</small></a>
+              `}
+            </li>
+          `.key(name);
+    })}
+        <button type="button" onclick=${toggleColumnDialog}>🅧 close</button>
+      </div>
+    </dialog>
+
+    <style>
+      dialog.dump-dialog::backdrop {
+        background-color: rgba(0, 0, 0, 0.7); /* Set a semi-transparent black background */
+      }
+
+      .child-margin-xxs {margin:0.2em;}
+      
+      .hover-bg-warning:hover {background-color:#fcf8e3}
+      .hover-bg-balanced:hover {background-color:#33cd5f}
+      .active-bg-energized:active {background-color:#ffc900}
+    </style>
+  `;
+});
+/** recurser */
+const arrayDisplay = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ array, showLevels, showAll, showKids, columnNames, formatChange, toggleColumnDialog, }) => {
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+    ${array.map((item, index) => (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `${dump({
+        value: filterObjectByKeys(item, columnNames),
+        showLevels,
+        showAll,
+        showKids: showAll || showKids,
+        isRootDump: false,
+        formatChange,
+        onHeaderClick: toggleColumnDialog
+    })}`.key({ item: item, index }))}
+  `;
+});
+function filterObjectByKeys(inputObject, keysArray) {
+    const filteredObject = {};
+    keysArray.forEach(key => {
+        if (inputObject.hasOwnProperty(key)) {
+            filteredObject[key] = inputObject[key];
+        }
+    });
+    return filteredObject;
+}
+const dumpObject = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ key, showKids, show, 
+// showChange,
+showLevels, value, showAll, onHeaderClick, formatChange, }) => {
+    let showLower = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(false)(x => [showLower, showLower = x]);
+    (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.watch)([show], ([show]) => showLower = show);
+    const continueDump = !key || showKids || showLower || (showLower == undefined && showLevels > 0);
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+    <div style="flex: 1 1 10em;text-align:left;">
+      <div
+        style="font-size:90%;color:#111111;background-color:#d9edf7;border:1px solid black;border-radius:5px;flex-direction: column;display:flex;"
+      >
+        ${key && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+          <a
+            style=${"padding:0.2em;display:flex;justify-content:space-between;font-size:65%;color:white;border-color:white;flex-grow:1;background-color:#387ef5;" +
+        (showLower ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;' : '')}
+            onclick=${() => {
+        showLower = !showLower;
+    }}
+          >
+            <strong>${key}</strong>
+            <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
+              {${Object.keys(value).length}}
+            </sup>
+          </a>
+        `}
+        
+        ${continueDump && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+          <div style="display:flex;flex-wrap:wrap">
+            ${Object.entries(value).map(([key, value]) => (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+              <!-- recurse -->
+              <div class="child-margin-xxs"
+                style=${'padding:0.2em;overflow:auto;display:flex;flex-wrap:wrap;' +
+        (!value || typeof (value) !== 'object' ? 'flex: 1 1 10em;' : 'flex-grow:1;')}
+              >
+                ${dump({
+        value,
+        key,
+        show: showLower,
+        /*
+        showChange: x => {
+          showLower = x
+          // showChange(showLower = x)
+        },
+        */
+        showAll,
+        showLevels: showLevels - 1,
+        showKids: showAll || showKids,
+        isRootDump: false,
+        formatChange,
+        onHeaderClick,
+    })}
+            `.key([key, value]))}
+          </div>
+        `}
+      </div>
+    </div>
+  `;
+});
+function dumpSimple({ key, value, onHeaderClick }) {
+    function simpleValue() {
+        return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+      <div onclick=${() => (0,_copyText_function_js__WEBPACK_IMPORTED_MODULE_0__.copyText)(value)}
+        style=${"cursor:pointer;" +
+            (value === true ? 'color:#28a54c' : '') +
+            (value === false ? 'color:#e42112' : '')}
+        class="hover-bg-warning active-bg-energized"
+        title = ${value.constructor?.name === 'Number' && value > 1000000000 ? value > 946702800000 ? 'Milliseconds > Unix epoch:\n' + (new Date(value).toLocaleString()) : 'Seconds > Unix epoch:\n' + (new Date(value * 1000).toLocaleString()) : ''}
+      >${value === null && 'null' || value === false && 'false' || value === undefined && 'undefined' || value}</div>
+    `;
+    }
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+    <div style="font-size:75%;flex:1 1 10em;color:#111111">
+      ${key && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+        <div style="border-bottom-width:1px;border-bottom-style:solid;border-color:black;font-size:65%;border-color:white;line-height: 95%;font-weight:bold;"
+          onclick=${() => onHeaderClick()}
+        >${key}</div>
+      `}
+
+      ${value.search && (value.slice(0, 8) === 'https://' || value.slice(0, 7) === 'http://') ? (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+        <a onclick=${() => (0,_copyText_function_js__WEBPACK_IMPORTED_MODULE_0__.copyText)(value)} href=${value}
+          target="_blank"
+          class="hover-bg-warning active-bg-energized"
+          title="tap to copy"
+        >${value}</a>
+      ` : simpleValue()}
+    </div>
+  `;
 }
 //# sourceMappingURL=index.js.map
 
