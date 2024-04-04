@@ -1,4 +1,4 @@
-import { html } from "taggedjs";
+import { html, setLet } from "taggedjs";
 import { copyText } from "./copyText.function.js";
 export function dumpSimple({ key, value, onHeaderClick }) {
     const isLinkValue = value.search && (value.slice(0, 8) === 'https://' || value.slice(0, 7) === 'http://');
@@ -19,9 +19,24 @@ const simpleValue = (value) => {
     const number = value;
     const isLargeNumber = !isNaN(number) && number > 1000000000;
     const title = !isLargeNumber ? '' : getLargeNumberTitle(number);
+    let downTime = setLet(0)(x => [downTime, downTime = x]);
+    const startMouseDown = () => {
+        downTime = Date.now();
+    };
+    const markMouseUp = (event) => {
+        if (Date.now() - downTime > 300) {
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('xx');
+            return true; // a manual drag copy is taking place
+        }
+        console.log('copied');
+        copyText(value); // a regular click took place
+    };
     return html `
     <div class="hover-bg-warning active-bg-energized"
-      onclick=${() => copyText(value)}
+      onmousedown=${startMouseDown}
+      onmouseup=${markMouseUp}
       style="cursor:pointer;"
       style.background-color=${isLikeNull ? 'rgba(0,0,0,.5)' : ''}
       style.color = ${(value === true && '#28a54c') ||

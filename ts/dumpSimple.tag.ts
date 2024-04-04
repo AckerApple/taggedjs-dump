@@ -1,4 +1,4 @@
-import { html } from "taggedjs"
+import { html, setLet } from "taggedjs"
 import { OnHeaderClick } from "./index.js"
 import { copyText } from "./copyText.function.js"
 
@@ -29,10 +29,28 @@ const simpleValue = (
   const number = value as unknown as number
   const isLargeNumber = !isNaN(number) && number > 1000000000
   const title = !isLargeNumber ? '' : getLargeNumberTitle(number)
+  let downTime = setLet(0)(x => [downTime, downTime = x])
+
+  const startMouseDown = () => {
+    downTime = Date.now()
+  }
+
+  const markMouseUp = (event: Event) => {
+    if(Date.now() - downTime > 300) {
+      event.preventDefault()
+      event.stopPropagation()
+      console.log('xx')
+      return true // a manual drag copy is taking place
+    }
+
+    console.log('copied')
+    copyText(value as string) // a regular click took place
+  }
 
   return html`
     <div class="hover-bg-warning active-bg-energized"
-      onclick=${() => copyText(value as string)}
+      onmousedown=${startMouseDown}
+      onmouseup=${markMouseUp}
       style="cursor:pointer;"
       style.background-color=${isLikeNull ? 'rgba(0,0,0,.5)' : ''}
       style.color = ${

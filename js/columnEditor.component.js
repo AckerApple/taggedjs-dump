@@ -32,7 +32,7 @@ export const columnEditor = tag(({ name, array, included, columnNames, allColumn
             stringFormula,
             value: sandboxRunEval(stringFormula, { array })
         });
-        console.log('formulas', formulas.length);
+        // console.log('formulas', formulas.length)
     };
     const updateFormula = (formula, newFormula) => {
         formula.stringFormula = newFormula;

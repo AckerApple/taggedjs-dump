@@ -3,7 +3,7 @@ import { dump } from "./index.js";
 export const arrayDisplay = tag(({ array, showLevels, showAll, showKids, columnNames, formatChange, toggleColumnDialog, }) => {
     return html `
     ${array.map((item, index) => html `${dump({
-        value: filterObjectByKeys(item, columnNames),
+        value: paramValueKeys(item, columnNames),
         showLevels,
         showAll,
         showKids: showAll || showKids,
@@ -13,6 +13,12 @@ export const arrayDisplay = tag(({ array, showLevels, showAll, showKids, columnN
     })}`.key({ item: item, index }))}
   `;
 });
+function paramValueKeys(inputObject, keysArray) {
+    if (['string', 'number', 'boolean'].includes(typeof (inputObject))) {
+        return inputObject;
+    }
+    return filterObjectByKeys(inputObject, keysArray);
+}
 function filterObjectByKeys(inputObject, keysArray) {
     const filteredObject = {};
     keysArray.forEach(key => {

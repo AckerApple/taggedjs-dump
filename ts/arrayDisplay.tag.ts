@@ -21,7 +21,7 @@ export const arrayDisplay = tag(({
       item: any,
       index: number
     ) => html`${dump({
-      value: filterObjectByKeys(item, columnNames),
+      value: paramValueKeys(item, columnNames),
       showLevels,
       showAll,
       showKids:showAll || showKids,
@@ -31,6 +31,17 @@ export const arrayDisplay = tag(({
     })}`.key({item: item, index} as any))}
   `
 })
+
+function paramValueKeys(
+  inputObject: Record<string, any> | string,
+  keysArray: string[]
+) {
+  if(['string','number','boolean'].includes(typeof(inputObject))) {
+    return inputObject
+  }
+
+  return filterObjectByKeys(inputObject as Record<string, any>, keysArray)
+}
 
 function filterObjectByKeys(
   inputObject: Record<string, any>,

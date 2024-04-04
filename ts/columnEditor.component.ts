@@ -58,7 +58,7 @@ export const columnEditor = tag(({
       value: sandboxRunEval(stringFormula, {array})
     })
 
-    console.log('formulas', formulas.length)
+    // console.log('formulas', formulas.length)
   }
 
   const updateFormula = (formula: Formula, newFormula: string) => {
