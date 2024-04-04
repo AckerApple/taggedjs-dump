@@ -11,19 +11,28 @@ export const Dump = tag(() => {
   userJsonString = JSON.stringify(userJson, null, 2)
   
   return html`
-    <h3>🔭 TaggedJs Dump</h3>
+    <h3>🔭 TaggedJs Dump demo page</h3>
+    
+    <p>Use the textarea below to cast JSON into an interactive display</p>
+    
     <div style="display:flex;flex-wrap:wrap;align-item:center;justify-content: center;gap:1em;">
-      <div>
-        <textarea wrap="off" placeholder="past json here" onchange=${(event: any) => userJsonString = event.target.value}
-        >${userJsonString}</textarea>
-      </div>
-      
-      <div style="min-width:110px;width:100%;max-width:900px;background-color:rgba(255,255,255,.5);">
+      <textarea wrap="off" placeholder="past json here" onchange=${(event: any) => userJsonString = event.target.value}
+        style="min-width:400px;min-height:400px;flex-grow:1em"
+      >${userJsonString}</textarea>
+
+      <div style="flex-grow:1em;min-width:110px;width:100%;max-width:900px;background-color:rgba(255,255,255,.5);">
         ${dump({
           value: userJson
         })}
       </div>
-      
+    </div>
+
+    <br />
+
+    <h3>Sample Dumps</h3>
+    <hr />
+
+    <div style="display:flex;flex-wrap:wrap;align-item:center;justify-content: center;gap:1em;">      
       <div style="max-width:900px">
         ${dump({
           value: {
