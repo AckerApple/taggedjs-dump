@@ -15,12 +15,13 @@ export const Dump = tag(() => {
     
     <p>Use the textarea below to cast JSON into an interactive display</p>
     
-    <div style="display:flex;flex-wrap:wrap;align-item:center;justify-content: center;gap:1em;">
-      <textarea wrap="off" placeholder="past json here" onchange=${(event: any) => userJsonString = event.target.value}
-        style="min-width:400px;min-height:400px;flex-grow:1em"
+    <div style="display:flex;flex-wrap:wrap;align-item:center;justify-content: center;gap:.5em;padding:.5em;">
+      <textarea wrap="off" placeholder="past json here"
+        onchange=${(event: any) => userJsonString = event.target.value}
+        style="min-width:400px;min-height:400px;flex:1"
       >${userJsonString}</textarea>
 
-      <div style="flex-grow:1em;min-width:110px;width:100%;max-width:900px;background-color:rgba(255,255,255,.5);">
+      <div style="flex:1;min-width:110px;width:100%;max-width:900px;background-color:rgba(255,255,255,.5);">
         ${dump({
           value: userJson
         })}
