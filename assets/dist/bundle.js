@@ -1,5 +1,686 @@
 /******/ var __webpack_modules__ = ({
 
+/***/ "./node_modules/taggedjs-dump/js/arrayDisplay.tag.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/taggedjs-dump/js/arrayDisplay.tag.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   arrayDisplay: () => (/* binding */ arrayDisplay)
+/* harmony export */ });
+/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index */ "./node_modules/taggedjs-dump/js/index.js");
+
+
+const arrayDisplay = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.tag)(({ array, showLevels, showAll, showKids, columnNames, formatChange, toggleColumnDialog, }) => {
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+    ${array.map((item, index) => (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `${(0,_index__WEBPACK_IMPORTED_MODULE_1__.dump)({
+        value: paramValueKeys(item, columnNames),
+        showLevels,
+        showAll,
+        showKids: showAll || showKids,
+        isRootDump: false,
+        formatChange,
+        onHeaderClick: toggleColumnDialog
+    })}`.key({ item: item, index }))}
+  `;
+});
+function paramValueKeys(inputObject, keysArray) {
+    if (['string', 'number', 'boolean'].includes(typeof (inputObject))) {
+        return inputObject;
+    }
+    return filterObjectByKeys(inputObject, keysArray);
+}
+function filterObjectByKeys(inputObject, keysArray) {
+    const filteredObject = {};
+    keysArray.forEach(key => {
+        if (inputObject.hasOwnProperty(key)) {
+            filteredObject[key] = inputObject[key];
+        }
+    });
+    return filteredObject;
+}
+//# sourceMappingURL=arrayDisplay.tag.js.map
+
+/***/ }),
+
+/***/ "./node_modules/taggedjs-dump/js/arrayTable.component.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/taggedjs-dump/js/arrayTable.component.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   arrayTable: () => (/* binding */ arrayTable)
+/* harmony export */ });
+/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index */ "./node_modules/taggedjs-dump/js/index.js");
+
+
+const arrayTable = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.tag)(({ array, 
+// showLevels,
+showAll, showKids, toggleColumnDialog, columnNames, formatChange, }) => {
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `<!-- array table -->
+    <!-- overflow-y: scroll; -->
+    <div style="max-height: 800px;max-width:100vw;overflow: scroll;">
+      <table cellPadding="2" cellSpacing="2" border="0">
+        ${array.length && (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+          <thead style="position: sticky;top: 0;font-size: 0.8em;">
+            <tr>
+              ${columnNames.map(key => (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+                <th
+                  style.cursor=${toggleColumnDialog && 'pointer'}
+                  onclick=${toggleColumnDialog}
+                >${key}</th>
+              `.key(key))}
+            </tr>
+          </thead>
+        `}
+        <tbody>
+          ${array.map(row => (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+            <tr>
+              ${columnNames.map(name => (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+                <td>
+                  ${(0,_index__WEBPACK_IMPORTED_MODULE_1__.dump)({
+        value: row[name],
+        showLevels: 0,
+        showAll,
+        showKids: showAll || showKids,
+        isRootDump: false,
+        formatChange,
+    })}
+                </td>
+              `.key(row[name]))}
+            </tr>
+          `.key(row))}
+        </tbody>
+      </table>
+    </div>
+  `;
+});
+//# sourceMappingURL=arrayTable.component.js.map
+
+/***/ }),
+
+/***/ "./node_modules/taggedjs-dump/js/arraysDisplay.component.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/taggedjs-dump/js/arraysDisplay.component.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   arraysDisplay: () => (/* binding */ arraysDisplay)
+/* harmony export */ });
+/* harmony import */ var _columnEditor_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./columnEditor.component */ "./node_modules/taggedjs-dump/js/columnEditor.component.js");
+/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
+/* harmony import */ var _arrayTable_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./arrayTable.component */ "./node_modules/taggedjs-dump/js/arrayTable.component.js");
+/* harmony import */ var _arrayDisplay_tag__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./arrayDisplay.tag */ "./node_modules/taggedjs-dump/js/arrayDisplay.tag.js");
+
+
+
+
+const arraysDisplay = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ showLevels, showAll, showKids, array, arrayView, formatChange, }) => {
+    const allColumnNames = array.length ? Object.keys(array[0]) : [];
+    let columnNames = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(allColumnNames)(x => [columnNames, columnNames = x]);
+    let showColumnDialog = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(false)(x => [showColumnDialog, showColumnDialog = x]);
+    let uniqueId = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.set)('columnDialog' + performance.now());
+    const toggleColumnDialog = () => {
+        showColumnDialog = !showColumnDialog;
+        const element = document.getElementById(uniqueId);
+        if (showColumnDialog) {
+            element.showModal();
+        }
+        else {
+            element.close(); // <- element has onclose event that is called slow
+        }
+    };
+    const arrayTag = arrayView === 'table' ? (0,_arrayTable_component__WEBPACK_IMPORTED_MODULE_2__.arrayTable)({
+        showAll, showKids,
+        array, toggleColumnDialog, columnNames,
+        formatChange,
+    }) : (0,_arrayDisplay_tag__WEBPACK_IMPORTED_MODULE_3__.arrayDisplay)({
+        array, showLevels, showAll, showKids,
+        formatChange,
+        columnNames, toggleColumnDialog
+    });
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+    ${arrayTag}
+
+    <dialog id=${uniqueId} class="dump-dialog" style="padding:0"
+      onmousedown="var r = this.getBoundingClientRect();(r.top<=event.clientY&&event.clientY<=r.top+r.height&&r.left<=event.clientX&&event.clientX<=r.left+r.width) || this.close()"
+      ondragstart="const {e,dt,t} = {t:this,e:event,dt:event.dataTransfer};const d=t.drag=t.drag||{x:0,y:0};d.initX=d.x;d.startX=event.clientX-t.offsetLeft;d.startY=event.clientY-t.offsetTop;t.ondragover=e.target.ondragover=(e)=>e.preventDefault();dt.effectAllowed='move';dt.dropEffect='move'"
+      ondrag="const {t,e,dt,d}={e:event,dt:event.dataTransfer,d:this.drag}; if(e.clientX===0) return;d.x = d.x + e.offsetX - d.startX; d.y = d.y + e.offsetY - d.startY; this.style.left = d.x + 'px'; this.style.top = d.y+'px';"
+      ondragend="const {t,e,d}={t:this,e:event,d:this.drag};if (d.initX === d.x) {d.x=d.x+e.offsetX-(d.startX-d.x);d.y=d.y+e.offsetY-(d.startY-d.y);this.style.transform=translate3d(d.x+'px', d.y+'px', 0)};this.draggable=false"
+      onclose=${() => {
+        showColumnDialog = false;
+    }}
+    >
+      <div
+        style="padding:.25em;background-color:#666;color:white;"
+        onmousedown="this.parentNode.draggable=true"
+      >Column Modifier</div>
+      <div style="padding:.25em">
+        ${allColumnNames.map(name => {
+        const included = columnNames.includes(name);
+        return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+            <div
+              style="display:flex;justify-content: space-between;flex-wrap:wrap"
+              class="hover-bg-warning"
+            >
+              ${(0,_columnEditor_component__WEBPACK_IMPORTED_MODULE_0__.columnEditor)({
+            name,
+            array,
+            included,
+            columnNames,
+            allColumnNames,
+        })}
+            </div>
+          `.key(name);
+    })}
+        <button style="width:100%" type="button" onclick=${toggleColumnDialog}>🅧 close</button>
+      </div>
+    </dialog>
+
+    <style>
+      dialog.dump-dialog::backdrop {
+        background-color: rgba(0, 0, 0, 0.7); /* Set a semi-transparent black background */
+      }
+
+      .child-margin-xxs {margin:0.2em;}
+      
+      .hover-bg-warning:hover {background-color:#fcf8e3}
+      .hover-bg-balanced:hover {background-color:#33cd5f}
+      .active-bg-energized:active {background-color:#ffc900}
+    </style>
+  `;
+});
+//# sourceMappingURL=arraysDisplay.component.js.map
+
+/***/ }),
+
+/***/ "./node_modules/taggedjs-dump/js/columnEditor.component.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/taggedjs-dump/js/columnEditor.component.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   columnEditor: () => (/* binding */ columnEditor)
+/* harmony export */ });
+/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
+
+const columnEditor = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.tag)(({ name, array, included, columnNames, allColumnNames }) => {
+    let mouseOverEditShow = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.setLet)(false)(x => [mouseOverEditShow, mouseOverEditShow = x]);
+    let edit = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.setLet)(false)(x => [edit, edit = x]);
+    let editFormula = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.setLet)(undefined)(x => [editFormula, editFormula = x]);
+    const formulas = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.set)([]);
+    const filterNames = () => {
+        if (included) {
+            columnNames.length = 0;
+            columnNames.push(...columnNames.filter(n => n !== name));
+            return;
+        }
+        columnNames.push(name);
+    };
+    const goAll = () => {
+        columnNames.length = 0;
+        columnNames.push(...allColumnNames);
+    };
+    const goOnly = () => {
+        columnNames.length = 0;
+        columnNames.push(name);
+    };
+    const addSumFormula = () => {
+        const stringFormula = `
+      array.reduce((all, item) => {
+        const value = item['${name}']
+        return isNaN(value) ? all : (all + value)
+      }, 0)
+    `;
+        formulas.push({
+            title: 'sum',
+            stringFormula,
+            value: sandboxRunEval(stringFormula, { array })
+        });
+        // console.log('formulas', formulas.length)
+    };
+    const updateFormula = (formula, newFormula) => {
+        formula.stringFormula = newFormula;
+        formula.value = sandboxRunEval(newFormula, { array });
+    };
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+    <a onclick=${filterNames} style="cursor:pointer;">
+      <input type="checkbox" ${included && 'checked'} />&nbsp;${name}
+    </a>
+
+    <div
+      onmouseover=${() => mouseOverEditShow = true}
+      onmouseout=${() => mouseOverEditShow = false}
+    >
+      <a style.visibility=${(edit || mouseOverEditShow) ? 'visible' : 'hidden'}
+        onclick=${() => edit = !edit}
+      >⚙️&nbsp;</a>
+      
+      ${included && columnNames.length !== allColumnNames.length ? (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+        <a style="color:blue;" onclick=${goAll}><small>all</small></a>
+      ` : (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+        <a style="color:blue;" onclick=${goOnly}><small>only</small></a>
+      `}
+    </div>
+
+    ${edit && (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+      <div style="width:100%;padding:0.3em;">
+        <div style="font-size:0.7em;text-align:center;">
+          <strong>Column Settings</strong>
+        </div>
+        <div>
+          ${editFormula && (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+            <div style="padding:0.3em;">
+              <strong>edit formula</strong>
+            </div>
+            <textarea wrap="off"
+              onchange=${(evt) => updateFormula(editFormula, evt.target.value)}
+            >${editFormula.value}</textarea>
+          `}
+          <div style="display:flex;flex-wrap:wrap;gap:1em">
+            ${formulas.map(formula => (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+                <div>
+                  <div>
+                    <strong>${formula.title}</strong>
+                    <a onclick=${() => editFormula = formula}>✏️</a>
+                  </div>
+                  <div>${formula.value}</div>
+                </div>
+              `.key(formula))}
+          </div>
+          <button type="button" onclick=${addSumFormula}>sum</button>
+        </div>
+      </div>
+    `}
+  `;
+});
+function sandboxRunEval(stringFormula, context = {}) {
+    return sandboxEval(stringFormula, { isNaN, Math, Number, Date, ...context });
+}
+// execute script in private context
+function sandboxEval(src, ctx) {
+    ctx = new Proxy(ctx, { has: () => true });
+    let func = (new Function("with(this) { return (" + src + ")}"));
+    return func.call(ctx);
+}
+//# sourceMappingURL=columnEditor.component.js.map
+
+/***/ }),
+
+/***/ "./node_modules/taggedjs-dump/js/copyText.function.js":
+/*!************************************************************!*\
+  !*** ./node_modules/taggedjs-dump/js/copyText.function.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   copyText: () => (/* binding */ copyText)
+/* harmony export */ });
+function copyText(text) {
+    var copyText = document.createElement('textarea');
+    copyText.value = text;
+    document.body.appendChild(copyText);
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    document.body.removeChild(copyText);
+}
+//# sourceMappingURL=copyText.function.js.map
+
+/***/ }),
+
+/***/ "./node_modules/taggedjs-dump/js/dumpArray.tag.js":
+/*!********************************************************!*\
+  !*** ./node_modules/taggedjs-dump/js/dumpArray.tag.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   dumpArray: () => (/* binding */ dumpArray)
+/* harmony export */ });
+/* harmony import */ var _arraysDisplay_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arraysDisplay.component */ "./node_modules/taggedjs-dump/js/arraysDisplay.component.js");
+/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
+
+
+const dumpArray = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ // dumpArray
+key, value, show, showAll, showKids, 
+// arrayView,
+showLevels, formatChange,
+// showChangeValue,
+ }) => {
+    let showValue = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(false)(x => [showValue, showValue = x]);
+    let arrayView = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(undefined)(x => [arrayView, arrayView = x]);
+    (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.watch)([show], ([show]) => showValue = show);
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `<!-- array -->
+  <div
+    style="color:#111111;background-color:#f2dede;border:1px solid black;border-radius:5px;flex-direction: column;display:flex"
+  >
+    <div
+      style=${"padding:0.2em;display:flex;justify-content:space-between;flex-grow:1;font-size:65%;border-color:white;color:white;background-color:#ef473a;" +
+        (showValue ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;' : '')}
+    >
+      <a style="flex-grow:1" onclick=${() => {
+        showValue = !showValue;
+    }}>
+        <strong>${key}</strong>
+      </a>
+      <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
+        <a style="text-decoration:underline;" style.font-weight=${arrayView === 'table' ? 'bold' : ''}
+          onclick=${() => arrayView = arrayView === 'table' ? undefined : 'table'}>${arrayView === 'table' ? 'flex' : 'table'}</a>
+      </sup>
+      <sup style="opacity:80%;font-size:75%;padding-left:0.4em">[${value.length}]</sup>
+    </div>
+    
+    ${(showAll || showValue || showKids || (showValue == undefined && showLevels > 0)) && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+      <!-- array displays wrap -->
+      <div style="text-align:left;display:flex;flex-wrap:wrap;margin:0.2em;gap:0.2em">
+        ${(0,_arraysDisplay_component__WEBPACK_IMPORTED_MODULE_0__.arraysDisplay)({
+        showLevels, showAll, showKids,
+        formatChange,
+        array: value,
+        arrayView: arrayView
+    })}
+      </div>
+    `}
+  </div>
+  `;
+});
+//# sourceMappingURL=dumpArray.tag.js.map
+
+/***/ }),
+
+/***/ "./node_modules/taggedjs-dump/js/dumpObject.tag.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/taggedjs-dump/js/dumpObject.tag.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   dumpObject: () => (/* binding */ dumpObject)
+/* harmony export */ });
+/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index */ "./node_modules/taggedjs-dump/js/index.js");
+
+
+const dumpObject = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.tag)(({ // dumpObject
+key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, }) => {
+    let showLower = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.setLet)(false)(x => [showLower, showLower = x]);
+    (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.watch)([show], ([show]) => showLower = show);
+    const continueDump = !key || showKids || showLower || (showLower == undefined && showLevels > 0);
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+    <div style="flex: 1 1 10em;text-align:left;">
+      <div
+        style="font-size:90%;color:#111111;background-color:#d9edf7;border:1px solid black;border-radius:5px;flex-direction: column;display:flex;"
+      >
+        ${key && (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+          <a
+            style=${"padding:0.2em;display:flex;justify-content:space-between;font-size:65%;color:white;border-color:white;flex-grow:1;background-color:#387ef5;" +
+        (showLower ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;' : '')}
+            onclick=${() => {
+        showLower = !showLower;
+    }}
+          >
+            <strong>${key}</strong>
+            <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
+              {${Object.keys(value).length}}
+            </sup>
+          </a>
+        `}
+        
+        ${continueDump && (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+          <div style="display:flex;flex-wrap:wrap">
+            ${Object.entries(value).map(([key, value]) => (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+              <!-- recurse -->
+              <div class="child-margin-xxs"
+                style=${'padding:0.2em;overflow:auto;display:flex;flex-wrap:wrap;' +
+        (!value || typeof (value) !== 'object' ? 'flex: 1 1 10em;' : 'flex-grow:1;')}
+              >
+                ${(0,_index__WEBPACK_IMPORTED_MODULE_1__.dump)({
+        value,
+        key,
+        show: showLower,
+        showAll,
+        showLevels: showLevels - 1,
+        showKids: showAll || showKids,
+        isRootDump: false,
+        formatChange,
+        onHeaderClick,
+    })}
+            `.key([key, value]))}
+          </div>
+        `}
+      </div>
+    </div>
+  `;
+});
+//# sourceMappingURL=dumpObject.tag.js.map
+
+/***/ }),
+
+/***/ "./node_modules/taggedjs-dump/js/dumpSimple.tag.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/taggedjs-dump/js/dumpSimple.tag.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   dumpSimple: () => (/* binding */ dumpSimple)
+/* harmony export */ });
+/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
+/* harmony import */ var _copyText_function__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./copyText.function */ "./node_modules/taggedjs-dump/js/copyText.function.js");
+
+
+function dumpSimple({ key, value, onHeaderClick }) {
+    const isLinkValue = value.search && (value.slice(0, 8) === 'https://' || value.slice(0, 7) === 'http://');
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+    <div style="font-size:75%;flex:1 1 10em;color:#111111">
+      ${key && (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+        <div style="border-bottom-width:1px;border-bottom-style:solid;border-color:black;font-size:65%;border-color:white;line-height: 95%;font-weight:bold;"
+          style.cursor=${onHeaderClick && "pointer"}
+          onclick=${onHeaderClick}
+        >${key}</div>
+      `}
+      ${isLinkValue ? linkValue(value) : simpleValue(value)}
+    </div>
+  `;
+}
+const simpleValue = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.tag)((value) => {
+    const isLikeNull = [undefined, null, 'null'].includes(value);
+    const number = value;
+    const isLargeNumber = !isNaN(number) && number > 1000000000;
+    const title = !isLargeNumber ? '' : getLargeNumberTitle(number);
+    let downTime = (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.setLet)(0)(x => [downTime, downTime = x]);
+    const startMouseDown = () => {
+        downTime = Date.now();
+    };
+    const markMouseUp = (event) => {
+        if (Date.now() - downTime > 300) {
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('xx');
+            return true; // a manual drag copy is taking place
+        }
+        console.log('copied');
+        (0,_copyText_function__WEBPACK_IMPORTED_MODULE_1__.copyText)(value); // a regular click took place
+    };
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+    <div class="hover-bg-warning active-bg-energized"
+      onmousedown=${startMouseDown}
+      onmouseup=${markMouseUp}
+      style="cursor:pointer;"
+      style.background-color=${isLikeNull ? 'rgba(0,0,0,.5)' : ''}
+      style.color = ${(value === true && '#28a54c') ||
+        (value === false && '#e42112') ||
+        isLikeNull && 'white' || ''}
+      title=${title}
+    >${value === null && 'null' || value === false && 'false' || value === undefined && 'undefined' || value}</div>
+  `;
+});
+function getLargeNumberTitle(number) {
+    return number > 946702800000 ?
+        'Milliseconds > Unix epoch:\n' + (new Date(number).toLocaleString()) :
+        'Seconds > Unix epoch:\n' + (new Date(number * 1000).toLocaleString());
+}
+const linkValue = (value) => {
+    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_0__.html) `
+    <a onclick=${() => (0,_copyText_function__WEBPACK_IMPORTED_MODULE_1__.copyText)(value)} href=${value}
+      target="_blank"
+      class="hover-bg-warning active-bg-energized"
+      title="tap to copy"
+    >${value}</a>
+  `;
+};
+//# sourceMappingURL=dumpSimple.tag.js.map
+
+/***/ }),
+
+/***/ "./node_modules/taggedjs-dump/js/index.js":
+/*!************************************************!*\
+  !*** ./node_modules/taggedjs-dump/js/index.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   dump: () => (/* binding */ dump)
+/* harmony export */ });
+/* harmony import */ var _copyText_function__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./copyText.function */ "./node_modules/taggedjs-dump/js/copyText.function.js");
+/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
+/* harmony import */ var _dumpArray_tag__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dumpArray.tag */ "./node_modules/taggedjs-dump/js/dumpArray.tag.js");
+/* harmony import */ var _dumpSimple_tag__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dumpSimple.tag */ "./node_modules/taggedjs-dump/js/dumpSimple.tag.js");
+/* harmony import */ var _dumpObject_tag__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dumpObject.tag */ "./node_modules/taggedjs-dump/js/dumpObject.tag.js");
+
+
+
+
+
+const dump = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ // dump tag
+key, value, showKids = false, showLevels = -1, showAll = false, format = 'small', formatChange = () => undefined, isRootDump = true, onHeaderClick, }) => {
+    const isObject = () => value && value instanceof Object;
+    const typing = value === null ? 'null' : typeof (value);
+    let show = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(false)(x => [show, show = x]);
+    (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setProp)(x => [format, format = x]);
+    (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setProp)(x => [showAll, showAll = x]);
+    let arrayView = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(undefined)(x => [arrayView, arrayView = x]);
+    (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.onInit)(() => {
+        const levelsDefined = (showLevels >= 0 && showLevels);
+        // detect auto levels (default) and if object lets only show 2 levels deep
+        const autoShowObjectLevels = showLevels === -1 && !key && isObject();
+        showLevels = levelsDefined || (autoShowObjectLevels ? 2 : 0);
+        if (showLevels > 0) {
+            show = true;
+        }
+    });
+    /* IF 3: object value */
+    function objectTemplate() {
+        if (value === null) {
+            if (!showKids) {
+                return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) ``;
+            }
+            return (0,_dumpSimple_tag__WEBPACK_IMPORTED_MODULE_3__.dumpSimple)({
+                key: key,
+                value: 'null',
+                onHeaderClick
+            });
+        }
+        const isArray = (!format || format === 'small') && (value.push && value.pop);
+        return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+      ${isRootDump && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+        <div style="width: 100%;line-height: 90%;">
+          <div style="position:relative;">
+            <div style="display:flex;font-size:50%;position:absolute;top:-18px;right:-6px">
+              ${!format || format === 'small' && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+                <a
+                  style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
+            (showAll ? 'background-color:#33cd5f;' : 'background-color:#444444')}
+                  class="hover-bg-balanced"
+                  onclick=${() => showAll = !showAll}
+                  title="hide/show all sub objects"
+                >👁</a>
+              `}
+              <a
+                style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
+            (!format || format === 'small' ? 'background-color:#33cd5f;' : 'background-color:#444444')}
+                class="hover-bg-balanced"
+                onclick=${() => formatChange(format = 'small')}
+              >small</a>
+              <a style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
+            (format === 'json' ? 'background-color:#33cd5f;' : 'background-color:#444444')}
+                class="hover-bg-balanced"
+                onclick=${() => formatChange(format = 'json')}
+              >json</a>
+              <a style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
+            (format === 'json' ? 'background-color:#33cd5f;' : 'background-color:#444444')}
+                class="hover-bg-balanced active-bg-energized"
+                onclick=${() => copyAsJsonText(value)}
+              >copy</a>
+            </div>
+          </div>
+        </div>
+      `}
+      ${(format === 'json' && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
+        <textarea *ngIf="" disabled wrap="off" style="width:100%;height:25vh;min-height:400px;color:white;"
+        >${JSON.stringify(value, null, 2)}</textarea>
+      `) || ((isArray && (0,_dumpArray_tag__WEBPACK_IMPORTED_MODULE_2__.dumpArray)({
+            key,
+            value,
+            show,
+            // arrayView,
+            showAll,
+            showKids,
+            showLevels,
+            formatChange,
+            // showChangeValue,
+        })) ||
+            (0,_dumpObject_tag__WEBPACK_IMPORTED_MODULE_4__.dumpObject)({
+                key,
+                show,
+                // showChange: x => showChangeValue(show = x),
+                showKids,
+                showLevels,
+                value,
+                showAll,
+                formatChange,
+                onHeaderClick,
+            }))}
+    `;
+    }
+    /* IF 1: undefined ELSE goto simpleTemplate */
+    if ([null, undefined].includes(value)) {
+        return (0,_dumpSimple_tag__WEBPACK_IMPORTED_MODULE_3__.dumpSimple)({
+            key: key,
+            value: typing,
+            onHeaderClick
+        });
+    }
+    /* IF 2: simple value ELSE goto objectTemplate */
+    if (['boolean', 'number', 'string'].includes(typing)) {
+        return (0,_dumpSimple_tag__WEBPACK_IMPORTED_MODULE_3__.dumpSimple)({ key: key, value, onHeaderClick });
+    }
+    return objectTemplate();
+});
+function copyAsJsonText(value) {
+    const text = JSON.stringify(value, null, 2);
+    (0,_copyText_function__WEBPACK_IMPORTED_MODULE_0__.copyText)(text);
+}
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
 /***/ "./src/sampleData.ts":
 /*!***************************!*\
   !*** ./src/sampleData.ts ***!
@@ -550,6 +1231,7 @@ class ArrayValueNeverSet {
 class Tag {
     strings;
     values;
+    version = 0;
     isTag = true;
     hasLiveElements = false;
     clones = []; // elements on document. Needed at destroy process to know what to destroy
@@ -859,14 +1541,16 @@ function updateContextItem(context, variableName, value) {
     const subject = context[variableName];
     const tag = subject.tag;
     if (tag) {
-        const oldWrap = tag.tagSupport.templater.wrapper; // tag versus component
-        if (oldWrap && (0,_isInstance__WEBPACK_IMPORTED_MODULE_6__.isTagComponent)(value)) {
-            const oldValueFn = oldWrap.original;
-            const newValueFn = value.wrapper?.original;
-            const fnMatched = oldValueFn === newValueFn;
-            if (fnMatched) {
-                const newTemp = value;
-                newTemp.global = tag.tagSupport.templater.global;
+        const oldTemp = tag.tagSupport.templater;
+        const oldWrap = oldTemp.wrapper; // tag versus component
+        if (value.global !== oldTemp.global) {
+            if (oldWrap && (0,_isInstance__WEBPACK_IMPORTED_MODULE_6__.isTagComponent)(value)) {
+                const oldValueFn = oldWrap.original;
+                const newValueFn = value.wrapper?.original;
+                const fnMatched = oldValueFn === newValueFn;
+                if (fnMatched) {
+                    value.global = oldTemp.global;
+                }
             }
         }
     }
@@ -1008,16 +1692,10 @@ class TemplaterResult {
 }
 function renderWithSupport(tagSupport, existingTag, subject, ownerTag) {
     const wrapTagSupport = tagSupport; // this.tagSupport
-    // const wrapTagSupport = existingTag?.tagSupport.templater.global.newest?.tagSupport || tagSupport
-    // this.tagSupport = wrapTagSupport
     /* BEFORE RENDER */
-    // signify to other operations that a rendering has occurred so they do not need to render again
-    // ++wrapTagSupport.memory.renderCount
     const runtimeOwnerTag = existingTag?.ownerTag || ownerTag;
     if (existingTag) {
-        // wrapTagSupport.templater.props = existingTag.tagSupport.templater.global.newest?.tagSupport.templater.props || wrapTagSupport.templater.props
         wrapTagSupport.memory.state.newest = [...existingTag.tagSupport.memory.state.newest];
-        // ??? - new
         wrapTagSupport.templater.global = existingTag.tagSupport.templater.global;
         (0,_tagRunner__WEBPACK_IMPORTED_MODULE_0__.runBeforeRedraw)(wrapTagSupport, existingTag);
     }
@@ -1110,8 +1788,7 @@ function alterProps(props, templater, ownerSupport) {
             throw new Error('already rendered');
         }
         const lastestOwner = ownerSupport.templater.global.newest;
-        const newOwner = (0,_renderTagSupport_function__WEBPACK_IMPORTED_MODULE_1__.renderTagSupport)(lastestOwner.tagSupport, // ??? newestOwner.tagSupport, // ??? ownerSupport,
-        true);
+        const newOwner = (0,_renderTagSupport_function__WEBPACK_IMPORTED_MODULE_1__.renderTagSupport)(lastestOwner.tagSupport, true);
         if (newOwner.tagSupport.templater.global.newest != newOwner) {
             throw new Error('newest assignment issue?');
         }
@@ -1417,7 +2094,6 @@ function destroyTagMemory(tag, subject) {
     const oldest = tag.tagSupport.templater.global.oldest;
     oldest.destroy();
     destroyTagSupportPast(oldTagSupport);
-    // ???
     tag.tagSupport.templater.global.context = {};
 }
 function destroyTagSupportPast(oldTagSupport) {
@@ -1542,7 +2218,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let innerCallback = (callback) => () => {
-    throw new Error('The real callback function was called and that should never occur');
+    throw new Error('Callback function was called immediately in sync and must instead be call async');
 };
 const getCallback = () => innerCallback;
 const originalGetter = innerCallback; // getCallback
@@ -1580,7 +2256,6 @@ function triggerStateUpdate(tagSupport, callback, oldState, ...args) {
     // send the oldest state changes into the newest
     updateState(oldState, newest);
     (0,_renderTagSupport_function__WEBPACK_IMPORTED_MODULE_2__.renderTagSupport)(tagSupport, false);
-    // TODO: turn back on below
     if (promise instanceof Promise) {
         promise.finally(() => {
             // send the oldest state changes into the newest
@@ -1678,7 +2353,6 @@ pastCloneProps) {
             return 6; // a change has been detected by function comparisons
         }
     }
-    // ???
     const isEqual = (0,_deepFunctions__WEBPACK_IMPORTED_MODULE_0__.deepEqual)(castedPastProps, castedProps);
     return isEqual ? false : 7; // if equal then no changes
 }
@@ -2261,11 +2935,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _setUse_function__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./setUse.function */ "../../taggedjs/main/ts/setUse.function.ts");
 
 function setCurrentTagSupport(support) {
-    _setUse_function__WEBPACK_IMPORTED_MODULE_0__.setUse.memory.initCurrentSupport = support;
+    _setUse_function__WEBPACK_IMPORTED_MODULE_0__.setUse.memory.initCurrentTemplater = support.templater;
 }
 function onInit(callback) {
-    if (!_setUse_function__WEBPACK_IMPORTED_MODULE_0__.setUse.memory.initCurrentSupport.memory.init) {
-        _setUse_function__WEBPACK_IMPORTED_MODULE_0__.setUse.memory.initCurrentSupport.memory.init = callback;
+    const templater = _setUse_function__WEBPACK_IMPORTED_MODULE_0__.setUse.memory.initCurrentTemplater;
+    if (!templater.global.init) {
+        ;
+        templater.global.init = callback;
         callback(); // fire init
     }
 }
@@ -2507,17 +3183,16 @@ function processSubjectComponent(templater, subject, template, ownerTag, options
     // Check if function component is wrapped in a tag() call
     // TODO: This below check not needed in production mode
     if (templater.tagged !== true) {
-        let name = templater.wrapper.original.name || templater.wrapper.original.constructor?.name;
+        const original = templater.wrapper.original;
+        let name = original.name || original.constructor?.name;
         if (name === 'Function') {
             name = undefined;
         }
-        const label = name || templater.wrapper.original.toString().substring(0, 120);
+        const label = name || original.toString().substring(0, 120);
         const error = new Error(`Not a tag component. Wrap your function with tag(). Example tag(props => html\`\`) on component:\n\n${label}\n\n`);
         throw error;
     }
-    if (!templater.tagSupport) {
-        templater.tagSupport = new _TagSupport_class__WEBPACK_IMPORTED_MODULE_3__.TagSupport(ownerTag.tagSupport, templater, subject);
-    }
+    templater.tagSupport = new _TagSupport_class__WEBPACK_IMPORTED_MODULE_3__.TagSupport(ownerTag.tagSupport, templater, subject);
     // templater.oldest = subject.tag?.tagSupport.oldest || templater.oldest
     templater.global.insertBefore = template;
     let retag = subject.tag;
@@ -2526,7 +3201,8 @@ function processSubjectComponent(templater, subject, template, ownerTag, options
     const isRedraw = !retag || options.forceElement;
     if (isRedraw) {
         const preClones = ownerTag.clones.map(clone => clone);
-        retag = (0,_TemplaterResult_class__WEBPACK_IMPORTED_MODULE_0__.renderWithSupport)(templater.tagSupport, subject.tag, subject, ownerTag);
+        retag = (0,_TemplaterResult_class__WEBPACK_IMPORTED_MODULE_0__.renderWithSupport)(templater.tagSupport, subject.tag, // existing tag
+        subject, ownerTag);
         if (retag.tagSupport.templater.global.newest != retag) {
             throw new Error('mismatch result newest');
         }
@@ -3002,38 +3678,6 @@ function run(tagSupport, ownerTag) {
 
 /***/ }),
 
-/***/ "../../taggedjs/main/ts/redrawTag.function.ts":
-/*!****************************************************!*\
-  !*** ../../taggedjs/main/ts/redrawTag.function.ts ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   redrawTag: () => (/* binding */ redrawTag)
-/* harmony export */ });
-/* harmony import */ var _TemplaterResult_class__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TemplaterResult.class */ "../../taggedjs/main/ts/TemplaterResult.class.ts");
-
-/** for components */
-function redrawTag(subject, templater, ownerTag) {
-    const existingTag = subject.tag || templater.global.newest || templater.global.oldest;
-    if (!templater.global.oldest) {
-        throw new Error('issue before event redraw');
-    }
-    const tagSupport = templater.tagSupport; // || existingTag?.tagSupport
-    if (!templater.tagSupport) {
-        throw new Error('need tag support');
-    }
-    if (!tagSupport.templater.global.oldest) {
-        throw new Error('33333');
-    }
-    let retag = (0,_TemplaterResult_class__WEBPACK_IMPORTED_MODULE_0__.renderWithSupport)(tagSupport, existingTag, subject, ownerTag);
-    return retag;
-}
-
-
-/***/ }),
-
 /***/ "../../taggedjs/main/ts/render.ts":
 /*!****************************************!*\
   !*** ../../taggedjs/main/ts/render.ts ***!
@@ -3075,19 +3719,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   renderExistingTag: () => (/* binding */ renderExistingTag)
 /* harmony export */ });
 /* harmony import */ var _provider_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./provider.utils */ "../../taggedjs/main/ts/provider.utils.ts");
-/* harmony import */ var _isLikeTags_function__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./isLikeTags.function */ "../../taggedjs/main/ts/isLikeTags.function.ts");
-/* harmony import */ var _redrawTag_function__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./redrawTag.function */ "../../taggedjs/main/ts/redrawTag.function.ts");
+/* harmony import */ var _TemplaterResult_class__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TemplaterResult.class */ "../../taggedjs/main/ts/TemplaterResult.class.ts");
+/* harmony import */ var _isLikeTags_function__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./isLikeTags.function */ "../../taggedjs/main/ts/isLikeTags.function.ts");
 
 
 
 /** Returns true when rendering owner is not needed. Returns false when rendering owner should occur */
 function renderExistingTag(oldestTag, // existing tag already there
 newTemplater, tagSupport, subject) {
-    if (subject.tag) {
-        newTemplater.global = subject.tag.tagSupport.templater.global;
-    }
+    newTemplater.global = subject.tag.tagSupport.templater.global;
     if (!oldestTag.hasLiveElements) {
-        throw new Error('1080');
+        throw new Error('1080 - should have live elements');
     }
     const preRenderCount = tagSupport.templater.global.renderCount;
     (0,_provider_utils__WEBPACK_IMPORTED_MODULE_0__.providersChangeCheck)(oldestTag);
@@ -3098,20 +3740,12 @@ newTemplater, tagSupport, subject) {
         return latestTag;
     }
     const oldTemplater = tagSupport.templater || newTemplater;
-    const redraw = (0,_redrawTag_function__WEBPACK_IMPORTED_MODULE_2__.redrawTag)(subject, newTemplater, oldestTag.ownerTag);
+    const redraw = (0,_TemplaterResult_class__WEBPACK_IMPORTED_MODULE_1__.renderWithSupport)(newTemplater.tagSupport, subject.tag || oldTemplater.global.newest || oldTemplater.global.oldest, // hmmmmmm, why not newest?
+    subject, oldestTag.ownerTag);
     const oldest = tagSupport.templater.global.oldest || oldestTag;
     redraw.tagSupport.templater.global.oldest = oldest;
-    if (redraw != redraw.tagSupport.templater.global.newest) {
-        throw new Error('newest mismatched 22');
-    }
-    if (!redraw.tagSupport.templater.global.oldest) {
-        throw new Error('8888888 - 0');
-    }
-    if (!oldTemplater.global.oldest) {
-        throw new Error('8888888');
-    }
-    // ??? - add to ensure setProps causes lower redraw
-    if ((0,_isLikeTags_function__WEBPACK_IMPORTED_MODULE_1__.isLikeTags)(latestTag, redraw)) {
+    if ((0,_isLikeTags_function__WEBPACK_IMPORTED_MODULE_2__.isLikeTags)(latestTag, redraw)) {
+        subject.tag = redraw;
         oldest.updateByTag(redraw);
     }
     return redraw;
@@ -3152,7 +3786,8 @@ function renderTagSupport(tagSupport, renderUp) {
     const newest = subjectTag?.tagSupport.templater.global.newest;
     let ownerTag;
     let selfPropChange = false;
-    if (renderUp && newest) {
+    const shouldRenderUp = renderUp && newest;
+    if (shouldRenderUp) {
         ownerTag = newest.ownerTag;
         if (ownerTag) {
             const nowProps = templater.props;
@@ -3165,17 +3800,8 @@ function renderTagSupport(tagSupport, renderUp) {
         throw new Error('already causing trouble');
     }
     const tag = (0,_renderExistingTag_function__WEBPACK_IMPORTED_MODULE_2__.renderExistingTag)(templater.global.oldest, templater, useTagSupport, subject);
-    /*
-    const tag = exit.redraw
-  
-    if(exit.remit) {
-      return tag
-    }
-    */
-    // Have owner re-render
-    // ??? - recently removed. As causes some sort of owner newest disconnect during prop testing
-    // ??? - restored with condition - must render parent if I modified my props
-    if (ownerTag && selfPropChange) {
+    const renderOwner = ownerTag && selfPropChange;
+    if (renderOwner) {
         const ownerTagSupport = ownerTag.tagSupport;
         renderTagSupport(ownerTagSupport, true);
         return tag;
@@ -3583,9 +4209,7 @@ function getTagWrap(templater, madeSubject) {
         if (oldest && !oldest.hasLiveElements) {
             throw new Error('issue already 22');
         }
-        // ???
         let props = templater.props;
-        // let props = oldTagSetup.propsConfig.latest
         const ownerTagSupport = oldTagSetup.ownerTagSupport;
         const oldTemplater = ownerTagSupport?.templater;
         const oldLatest = oldTemplater?.global.newest;
@@ -3593,11 +4217,11 @@ function getTagWrap(templater, madeSubject) {
         if (oldLatest && !newestOwnerTemplater) {
             throw new Error('what to do here?');
         }
-        // ???
         let castedProps = (0,_alterProps_function__WEBPACK_IMPORTED_MODULE_7__.alterProps)(props, newestOwnerTemplater, oldTagSetup.ownerTagSupport);
         const clonedProps = (0,_deepFunctions__WEBPACK_IMPORTED_MODULE_5__.deepClone)(props); // castedProps
         // CALL ORIGINAL COMPONENT FUNCTION
         const tag = originalFunction(castedProps, childSubject);
+        tag.version = global.renderCount;
         tag.tagSupport = new _TagSupport_class__WEBPACK_IMPORTED_MODULE_6__.TagSupport(oldTagSetup.ownerTagSupport, templater, subject);
         tag.tagSupport.propsConfig = {
             latest: props, // castedProps
@@ -3748,16 +4372,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   updateExistingTagComponent: () => (/* binding */ updateExistingTagComponent)
 /* harmony export */ });
 /* harmony import */ var _hasTagSupportChanged_function__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./hasTagSupportChanged.function */ "../../taggedjs/main/ts/hasTagSupportChanged.function.ts");
-/* harmony import */ var _TagSupport_class__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TagSupport.class */ "../../taggedjs/main/ts/TagSupport.class.ts");
-/* harmony import */ var _processSubjectComponent_function__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./processSubjectComponent.function */ "../../taggedjs/main/ts/processSubjectComponent.function.ts");
-/* harmony import */ var _destroyTag_function__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./destroyTag.function */ "../../taggedjs/main/ts/destroyTag.function.ts");
-/* harmony import */ var _renderTagSupport_function__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./renderTagSupport.function */ "../../taggedjs/main/ts/renderTagSupport.function.ts");
+/* harmony import */ var _processSubjectComponent_function__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./processSubjectComponent.function */ "../../taggedjs/main/ts/processSubjectComponent.function.ts");
+/* harmony import */ var _destroyTag_function__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./destroyTag.function */ "../../taggedjs/main/ts/destroyTag.function.ts");
+/* harmony import */ var _renderTagSupport_function__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./renderTagSupport.function */ "../../taggedjs/main/ts/renderTagSupport.function.ts");
 
 
 
 
-
-function updateExistingTagComponent(ownerTag, tempResult, subject, insertBefore) {
+function updateExistingTagComponent(ownerTag, templater, subject, insertBefore) {
     let existingTag = subject.tag;
     /*
     if(existingTag && !existingTag.hasLiveElements) {
@@ -3765,9 +4387,9 @@ function updateExistingTagComponent(ownerTag, tempResult, subject, insertBefore)
     }
     */
     const oldWrapper = existingTag.tagSupport.templater.wrapper;
-    const newWrapper = tempResult.wrapper;
+    const newWrapper = templater.wrapper;
     let isSameTag = false;
-    if (tempResult.global.oldest && !tempResult.global.oldest.hasLiveElements) {
+    if (templater.global.oldest && !templater.global.oldest.hasLiveElements) {
         throw new Error('88893434');
     }
     if (oldWrapper && newWrapper) {
@@ -3783,38 +4405,35 @@ function updateExistingTagComponent(ownerTag, tempResult, subject, insertBefore)
         throw new Error('stop here no parent node update existing tag');
     }
     if (!isSameTag) {
-        (0,_destroyTag_function__WEBPACK_IMPORTED_MODULE_3__.destroyTagMemory)(oldTagSupport.templater.global.oldest, subject);
-        (0,_processSubjectComponent_function__WEBPACK_IMPORTED_MODULE_2__.processSubjectComponent)(tempResult, subject, oldInsertBefore, ownerTag, {
+        (0,_destroyTag_function__WEBPACK_IMPORTED_MODULE_2__.destroyTagMemory)(oldTagSupport.templater.global.oldest, subject);
+        (0,_processSubjectComponent_function__WEBPACK_IMPORTED_MODULE_1__.processSubjectComponent)(templater, subject, oldInsertBefore, ownerTag, {
             forceElement: false,
             counts: { added: 0, removed: 0 },
         });
         return;
     }
     else {
-        if (!tempResult.tagSupport) {
-            tempResult.tagSupport = new _TagSupport_class__WEBPACK_IMPORTED_MODULE_1__.TagSupport(oldTagSupport.ownerTagSupport, tempResult, subject);
-        }
-        const newTagSupport = tempResult.tagSupport;
-        const hasChanged = (0,_hasTagSupportChanged_function__WEBPACK_IMPORTED_MODULE_0__.hasTagSupportChanged)(oldTagSupport, newTagSupport, tempResult);
+        const newTagSupport = templater.tagSupport;
+        const hasChanged = (0,_hasTagSupportChanged_function__WEBPACK_IMPORTED_MODULE_0__.hasTagSupportChanged)(oldTagSupport, newTagSupport, templater);
         if (!hasChanged) {
             return; // its the same tag component
         }
     }
-    const oldestTag = tempResult.global.oldest; // oldTagSupport.oldest as Tag // existingTag
-    const previous = tempResult.global.newest;
+    const oldestTag = templater.global.oldest; // oldTagSupport.oldest as Tag // existingTag
+    const previous = templater.global.newest;
     if (!previous || !oldestTag) {
         throw new Error('how no previous or oldest nor newest?');
     }
-    const newTag = (0,_renderTagSupport_function__WEBPACK_IMPORTED_MODULE_4__.renderTagSupport)(tempResult.tagSupport, false);
+    const newTag = (0,_renderTagSupport_function__WEBPACK_IMPORTED_MODULE_3__.renderTagSupport)(templater.tagSupport, false);
     existingTag = subject.tag;
     const newOldest = newTag.tagSupport.templater.global.oldest;
     const hasOldest = newOldest ? true : false;
     if (!hasOldest) {
         return buildNewTag(newTag, oldInsertBefore, oldTagSupport, subject);
     }
-    if (newOldest && tempResult.children.value.length) {
+    if (newOldest && templater.children.value.length) {
         const oldKidsSub = newOldest.tagSupport.templater.children;
-        oldKidsSub.set(tempResult.children.value);
+        oldKidsSub.set(templater.children.value);
     }
     // const newTag = tempResult.newest as Tag
     if (previous && !oldestTag) {
@@ -3831,22 +4450,16 @@ function updateExistingTagComponent(ownerTag, tempResult, subject, insertBefore)
             throw new Error('maybe 6');
         }
         subject.tag = newTag;
-        /*
-        if(!newTag.hasLiveElements) {
-          throw new Error('44444 - 6')
-        }
-        */
         oldestTag.updateByTag(newTag); // the oldest tag has element references
+        return;
     }
     else {
         // Although function looked the same it returned a different html result
         if (isSameTag && existingTag) {
-            (0,_destroyTag_function__WEBPACK_IMPORTED_MODULE_3__.destroyTagMemory)(existingTag, subject);
+            (0,_destroyTag_function__WEBPACK_IMPORTED_MODULE_2__.destroyTagMemory)(existingTag, subject);
             newTag.tagSupport.templater.global.context = {}; // do not share previous outputs
         }
         oldest = undefined;
-        // ??? - new remove
-        // subject.tag = newTag
     }
     if (!oldest) {
         buildNewTag(newTag, oldTagSupport.templater.global.insertBefore, oldTagSupport, subject);
@@ -3897,15 +4510,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   updateExistingValue: () => (/* binding */ updateExistingValue)
 /* harmony export */ });
-/* harmony import */ var _isInstance__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./isInstance */ "../../taggedjs/main/ts/isInstance.ts");
-/* harmony import */ var _processSubjectValue_function__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./processSubjectValue.function */ "../../taggedjs/main/ts/processSubjectValue.function.ts");
-/* harmony import */ var _processTagArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./processTagArray */ "../../taggedjs/main/ts/processTagArray.ts");
-/* harmony import */ var _updateExistingTagComponent_function__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./updateExistingTagComponent.function */ "../../taggedjs/main/ts/updateExistingTagComponent.function.ts");
-/* harmony import */ var _processRegularValue_function__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./processRegularValue.function */ "../../taggedjs/main/ts/processRegularValue.function.ts");
-/* harmony import */ var _checkDestroyPrevious_function__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./checkDestroyPrevious.function */ "../../taggedjs/main/ts/checkDestroyPrevious.function.ts");
-/* harmony import */ var _processSubjectComponent_function__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./processSubjectComponent.function */ "../../taggedjs/main/ts/processSubjectComponent.function.ts");
-/* harmony import */ var _isLikeTags_function__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./isLikeTags.function */ "../../taggedjs/main/ts/isLikeTags.function.ts");
-/* harmony import */ var _bindSubjectCallback_function__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./bindSubjectCallback.function */ "../../taggedjs/main/ts/bindSubjectCallback.function.ts");
+/* harmony import */ var _TagSupport_class__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TagSupport.class */ "../../taggedjs/main/ts/TagSupport.class.ts");
+/* harmony import */ var _isInstance__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./isInstance */ "../../taggedjs/main/ts/isInstance.ts");
+/* harmony import */ var _processSubjectValue_function__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./processSubjectValue.function */ "../../taggedjs/main/ts/processSubjectValue.function.ts");
+/* harmony import */ var _processTagArray__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./processTagArray */ "../../taggedjs/main/ts/processTagArray.ts");
+/* harmony import */ var _updateExistingTagComponent_function__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./updateExistingTagComponent.function */ "../../taggedjs/main/ts/updateExistingTagComponent.function.ts");
+/* harmony import */ var _processRegularValue_function__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./processRegularValue.function */ "../../taggedjs/main/ts/processRegularValue.function.ts");
+/* harmony import */ var _checkDestroyPrevious_function__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./checkDestroyPrevious.function */ "../../taggedjs/main/ts/checkDestroyPrevious.function.ts");
+/* harmony import */ var _processSubjectComponent_function__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./processSubjectComponent.function */ "../../taggedjs/main/ts/processSubjectComponent.function.ts");
+/* harmony import */ var _isLikeTags_function__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./isLikeTags.function */ "../../taggedjs/main/ts/isLikeTags.function.ts");
+/* harmony import */ var _bindSubjectCallback_function__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./bindSubjectCallback.function */ "../../taggedjs/main/ts/bindSubjectCallback.function.ts");
+
 
 
 
@@ -3916,34 +4531,37 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function updateExistingValue(subject, value, ownerTag, insertBefore) {
-    const subjectSubTag = subject;
-    const isComponent = (0,_isInstance__WEBPACK_IMPORTED_MODULE_0__.isTagComponent)(value);
-    const oldInsertBefore = subject.template || subjectSubTag.tag?.tagSupport.templater.global.insertBefore || subject.clone;
-    (0,_checkDestroyPrevious_function__WEBPACK_IMPORTED_MODULE_5__.checkDestroyPrevious)(subject, value);
+    const subjectTag = subject;
+    const isComponent = (0,_isInstance__WEBPACK_IMPORTED_MODULE_1__.isTagComponent)(value);
+    const oldInsertBefore = subject.template || subjectTag.tag?.tagSupport.templater.global.insertBefore || subject.clone;
+    (0,_checkDestroyPrevious_function__WEBPACK_IMPORTED_MODULE_6__.checkDestroyPrevious)(subject, value);
     // handle already seen tag components
     if (isComponent) {
         const templater = value;
         // When was something before component
-        if (!subjectSubTag.tag) {
-            (0,_processSubjectComponent_function__WEBPACK_IMPORTED_MODULE_6__.processSubjectComponent)(templater, subject, oldInsertBefore, ownerTag, {
+        if (!subjectTag.tag) {
+            (0,_processSubjectComponent_function__WEBPACK_IMPORTED_MODULE_7__.processSubjectComponent)(templater, subjectTag, oldInsertBefore, ownerTag, {
                 forceElement: true,
                 counts: { added: 0, removed: 0 },
             });
-            return subjectSubTag;
+            return subjectTag;
         }
-        (0,_updateExistingTagComponent_function__WEBPACK_IMPORTED_MODULE_3__.updateExistingTagComponent)(ownerTag, templater, // latest value
-        subjectSubTag, insertBefore);
-        return subjectSubTag;
+        templater.tagSupport = new _TagSupport_class__WEBPACK_IMPORTED_MODULE_0__.TagSupport(
+        // subjectTag.tag.tagSupport.ownerTagSupport,
+        ownerTag.tagSupport, templater, subjectTag);
+        (0,_updateExistingTagComponent_function__WEBPACK_IMPORTED_MODULE_4__.updateExistingTagComponent)(ownerTag, templater, // latest value
+        subjectTag, insertBefore);
+        return subjectTag;
     }
     // was component but no longer
-    const subjectTag = subjectSubTag.tag;
-    if (subjectTag) {
-        handleStillTag(subjectTag, subject, value, ownerTag);
-        return subjectSubTag;
+    const tag = subjectTag.tag;
+    if (tag) {
+        handleStillTag(tag, subject, value, ownerTag);
+        return subjectTag;
     }
     // its another tag array
-    if ((0,_isInstance__WEBPACK_IMPORTED_MODULE_0__.isTagArray)(value)) {
-        (0,_processTagArray__WEBPACK_IMPORTED_MODULE_2__.processTagArray)(subject, value, oldInsertBefore, ownerTag, { counts: {
+    if ((0,_isInstance__WEBPACK_IMPORTED_MODULE_1__.isTagArray)(value)) {
+        (0,_processTagArray__WEBPACK_IMPORTED_MODULE_3__.processTagArray)(subject, value, oldInsertBefore, ownerTag, { counts: {
                 added: 0,
                 removed: 0,
             } });
@@ -3952,39 +4570,39 @@ function updateExistingValue(subject, value, ownerTag, insertBefore) {
     // now its a function
     if (value instanceof Function) {
         // const newSubject = getSubjectFunction(value, ownerTag)
-        const bound = (0,_bindSubjectCallback_function__WEBPACK_IMPORTED_MODULE_8__.bindSubjectCallback)(value, ownerTag);
+        const bound = (0,_bindSubjectCallback_function__WEBPACK_IMPORTED_MODULE_9__.bindSubjectCallback)(value, ownerTag);
         subject.set(bound);
         return subject;
     }
-    if ((0,_isInstance__WEBPACK_IMPORTED_MODULE_0__.isTagInstance)(value)) {
-        subjectSubTag.template = oldInsertBefore;
-        (0,_processSubjectValue_function__WEBPACK_IMPORTED_MODULE_1__.processTag)(value, subjectSubTag, subjectSubTag.template, ownerTag);
-        return subjectSubTag;
+    if ((0,_isInstance__WEBPACK_IMPORTED_MODULE_1__.isTagInstance)(value)) {
+        subjectTag.template = oldInsertBefore;
+        (0,_processSubjectValue_function__WEBPACK_IMPORTED_MODULE_2__.processTag)(value, subjectTag, subjectTag.template, ownerTag);
+        return subjectTag;
     }
     // we have been given a subject
-    if ((0,_isInstance__WEBPACK_IMPORTED_MODULE_0__.isSubjectInstance)(value)) {
+    if ((0,_isInstance__WEBPACK_IMPORTED_MODULE_1__.isSubjectInstance)(value)) {
         return value;
     }
     // This will cause all other values to render
-    (0,_processRegularValue_function__WEBPACK_IMPORTED_MODULE_4__.processRegularValue)(value, subject, oldInsertBefore);
-    return subjectSubTag;
+    (0,_processRegularValue_function__WEBPACK_IMPORTED_MODULE_5__.processRegularValue)(value, subject, oldInsertBefore);
+    return subjectTag;
 }
 function handleStillTag(existingTag, subject, value, ownerTag) {
     // TODO: We shouldn't need both of these
-    const isSameTag = value && (0,_isLikeTags_function__WEBPACK_IMPORTED_MODULE_7__.isLikeTags)(existingTag, value);
+    const isSameTag = value && (0,_isLikeTags_function__WEBPACK_IMPORTED_MODULE_8__.isLikeTags)(existingTag, value);
     const isSameTag2 = value && value.getTemplate && existingTag.isLikeTag(value);
     const tag = value;
     if (!tag.tagSupport) {
-        (0,_processSubjectValue_function__WEBPACK_IMPORTED_MODULE_1__.applyFakeTemplater)(tag, ownerTag, subject);
+        (0,_processSubjectValue_function__WEBPACK_IMPORTED_MODULE_2__.applyFakeTemplater)(tag, ownerTag, subject);
     }
     if (isSameTag) {
         existingTag.updateByTag(tag);
         return;
     }
     if (isSameTag || isSameTag2) {
-        return (0,_processSubjectValue_function__WEBPACK_IMPORTED_MODULE_1__.processTag)(value, subject, subject.template, ownerTag);
+        return (0,_processSubjectValue_function__WEBPACK_IMPORTED_MODULE_2__.processTag)(value, subject, subject.template, ownerTag);
     }
-    return (0,_processRegularValue_function__WEBPACK_IMPORTED_MODULE_4__.processRegularValue)(value, subject, subject.template);
+    return (0,_processRegularValue_function__WEBPACK_IMPORTED_MODULE_5__.processRegularValue)(value, subject, subject.template);
 }
 
 
@@ -4021,428 +4639,6 @@ function watch(currentValues, callback) {
     return currentValues;
 }
 
-
-/***/ }),
-
-/***/ "./node_modules/taggedjs-dump/js/copyText.function.js":
-/*!************************************************************!*\
-  !*** ./node_modules/taggedjs-dump/js/copyText.function.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   copyText: () => (/* binding */ copyText)
-/* harmony export */ });
-function copyText(text) {
-    var copyText = document.createElement('textarea');
-    copyText.value = text;
-    document.body.appendChild(copyText);
-    copyText.select();
-    copyText.setSelectionRange(0, 99999);
-    document.execCommand("copy");
-    document.body.removeChild(copyText);
-}
-//# sourceMappingURL=copyText.function.js.map
-
-/***/ }),
-
-/***/ "./node_modules/taggedjs-dump/js/index.js":
-/*!************************************************!*\
-  !*** ./node_modules/taggedjs-dump/js/index.js ***!
-  \************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   dump: () => (/* binding */ dump)
-/* harmony export */ });
-/* harmony import */ var _copyText_function_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./copyText.function.js */ "./node_modules/taggedjs-dump/js/copyText.function.js");
-/* harmony import */ var taggedjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! taggedjs */ "../../taggedjs/main/ts/index.ts");
-
-
-const dump = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ key, value, 
-// show,
-// showChange,
-showKids = false, showLevels = -1, showAll, format = 'small', formatChange = () => undefined, isRootDump = true, onHeaderClick = () => undefined }) => {
-    const isObject = () => value && value instanceof Object;
-    const typing = value === null ? 'null' : typeof (value);
-    let show = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(false)(x => [show, show = x]);
-    (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setProp)(x => [format, format = x]);
-    (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setProp)(x => [showAll, showAll = x]);
-    let arrayView = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(undefined)(x => [arrayView, arrayView = x]);
-    (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.onInit)(() => {
-        const levelsDefined = (showLevels >= 0 && showLevels);
-        // detect auto levels (default) and if object lets only show 2 levels deep
-        const autoShowObjectLevels = showLevels === -1 && !key && isObject();
-        showLevels = levelsDefined || (autoShowObjectLevels ? 2 : 0);
-        if (showLevels > 0) {
-            show = true;
-        }
-    });
-    /* IF 2: simple value ELSE goto objectTemplate */
-    function simpleTemplate() {
-        if (['boolean', 'number', 'string'].includes(typing)) {
-            return dumpSimple({ key: key, value: value, onHeaderClick });
-        }
-        return objectTemplate();
-    }
-    /* IF 3: object value */
-    function objectTemplate() {
-        if (value === null) {
-            if (!showKids) {
-                return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) ``;
-            }
-            return dumpSimple({
-                key: key,
-                value: 'null',
-                onHeaderClick
-            });
-        }
-        const isArray = (!format || format === 'small') && (value.push && value.pop);
-        return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-      ${isRootDump && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-        <div style="width: 100%;line-height: 90%;">
-          <div style="position:relative;">
-            <div style="display:flex;font-size:50%;position:absolute;top:-18px;right:-6px">
-              ${!format || format === 'small' && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-                <a
-                  style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
-            (showAll ? 'background-color:#33cd5f;' : 'background-color:#444444')}
-                  class="hover-bg-balanced"
-                  onclick=${() => showAll = !showAll}
-                  title="hide/show all sub objects"
-                >👁</a>
-              `}
-              <a
-                style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
-            (!format || format === 'small' ? 'background-color:#33cd5f;' : 'background-color:#444444')}
-                class="hover-bg-balanced"
-                onclick=${() => formatChange(format = 'small')}
-              >small</a>
-              <a style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
-            (format === 'json' ? 'background-color:#33cd5f;' : 'background-color:#444444')}
-                class="hover-bg-balanced"
-                onclick=${() => formatChange(format = 'json')}
-              >json</a>
-              <a style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
-            (format === 'json' ? 'background-color:#33cd5f;' : 'background-color:#444444')}
-                class="hover-bg-balanced active-bg-energized"
-                onclick=${() => copyAsJsonText(value)}
-              >copy</a>
-            </div>
-          </div>
-        </div>
-      `}
-      ${(format === 'json' && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-        <textarea *ngIf="" disabled wrap="off" style="width:100%;height:25vh;min-height:400px;color:white;"
-        >${JSON.stringify(value, null, 2)}</textarea>
-      `) || ((isArray && dumpArray({
-            key,
-            value,
-            show,
-            // arrayView,
-            showAll,
-            showKids,
-            showLevels,
-            formatChange,
-            // showChangeValue,
-        })) ||
-            dumpObject({
-                key,
-                show,
-                // showChange: x => showChangeValue(show = x),
-                showKids,
-                showLevels,
-                value,
-                showAll,
-                formatChange,
-                onHeaderClick,
-            }))}
-    `;
-    }
-    /* IF 1: undefined ELSE goto simpleTemplate */
-    return [null, undefined].includes(value) ? dumpSimple({
-        key: key,
-        value: typing,
-        onHeaderClick
-    }) : simpleTemplate();
-});
-const dumpArray = ({ key, value, show, showAll, showKids, 
-// arrayView,
-showLevels, formatChange,
-// showChangeValue,
- }) => {
-    let showValue = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(false)(x => [showValue, showValue = x]);
-    let arrayView = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(undefined)(x => [arrayView, arrayView = x]);
-    (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.watch)([show], ([show]) => showValue = show);
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `<!-- array -->
-  <div
-    style="color:#111111;background-color:#f2dede;border:1px solid black;border-radius:5px;flex-direction: column;display:flex"
-  >
-    <div
-      style=${"padding:0.2em;display:flex;justify-content:space-between;flex-grow:1;font-size:65%;border-color:white;color:white;background-color:#ef473a;" +
-        (showValue ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;' : '')}
-    >
-      <a style="flex-grow:1" onclick=${() => {
-        showValue = !showValue;
-    }}>
-        <strong>${key}</strong>
-      </a>
-      <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
-        <a style="text-decoration:underline;" style.font-weight=${arrayView === 'table' ? 'bold' : ''}
-          onclick=${() => arrayView = arrayView === 'table' ? undefined : 'table'}>${arrayView === 'table' ? 'flex' : 'table'}</a>
-      </sup>
-      <sup style="opacity:80%;font-size:75%;padding-left:0.4em">[${value.length}]</sup>
-    </div>
-    
-    ${(showAll || showValue || showKids || (showValue == undefined && showLevels > 0)) && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-      <!-- array displays wrap -->
-      <div style="text-align:left;display:flex;flex-wrap:wrap;margin:0.2em;gap:0.2em">
-        ${arraysDisplay({
-        showLevels, showAll, showKids,
-        formatChange,
-        array: value,
-        arrayView: arrayView
-    })}
-      </div>
-    `}
-  </div>
-  `;
-};
-function copyAsJsonText(value) {
-    const text = JSON.stringify(value, null, 2);
-    (0,_copyText_function_js__WEBPACK_IMPORTED_MODULE_0__.copyText)(text);
-}
-const arrayTable = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ array, 
-// showLevels,
-showAll, showKids, toggleColumnDialog, columnNames, formatChange, }) => {
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `<!-- array table -->
-    <!-- overflow-y: scroll; -->
-    <div style="max-height: 800px;max-width:100vw;overflow: scroll;">
-      <table cellPadding="2" cellSpacing="2" border="0">
-        ${array.length && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-          <thead style="position: sticky;top: 0;font-size: 0.8em;">
-            <tr>
-              ${columnNames.map(key => (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-                <th onclick=${toggleColumnDialog}>${key}</th>
-              `.key(key))}
-            </tr>
-          </thead>
-        `}
-        <tbody>
-          ${array.map(row => (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-            <tr>
-              ${columnNames.map(name => (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-                <td>
-                  ${dump({
-        value: row[name],
-        showLevels: 0,
-        showAll,
-        showKids: showAll || showKids,
-        isRootDump: false,
-        formatChange,
-    })}
-                </td>
-              `.key(row[name]))}
-            </tr>
-          `.key(row))}
-        </tbody>
-      </table>
-    </div>
-  `;
-});
-const arraysDisplay = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ showLevels, showAll, showKids, array, arrayView, formatChange, }) => {
-    const allColumnNames = array.length ? Object.keys(array[0]) : [];
-    let columnNames = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(allColumnNames)(x => [columnNames, columnNames = x]);
-    let showColumnDialog = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(false)(x => [showColumnDialog, showColumnDialog = x]);
-    let uniqueId = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.set)('columnDialog' + performance.now());
-    const toggleColumnDialog = () => {
-        showColumnDialog = !showColumnDialog;
-        const element = document.getElementById(uniqueId);
-        if (showColumnDialog) {
-            element.showModal();
-        }
-        else {
-            element.close(); // <- element has onclose event that is called slow
-        }
-    };
-    const arrayTag = arrayView === 'table' ? arrayTable({
-        showAll, showKids,
-        array, toggleColumnDialog, columnNames,
-        formatChange,
-    }) : arrayDisplay({
-        array, showLevels, showAll, showKids,
-        formatChange,
-        columnNames, toggleColumnDialog
-    });
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-    ${arrayTag}
-
-    <dialog id=${uniqueId} class="dump-dialog" style="padding:0"
-      onmousedown="var r = this.getBoundingClientRect();(r.top<=event.clientY&&event.clientY<=r.top+r.height&&r.left<=event.clientX&&event.clientX<=r.left+r.width) || this.close()"
-      ondragstart="const {e,dt,t} = {t:this,e:event,dt:event.dataTransfer};const d=t.drag=t.drag||{x:0,y:0};d.initX=d.x;d.startX=event.clientX-t.offsetLeft;d.startY=event.clientY-t.offsetTop;t.ondragover=e.target.ondragover=(e)=>e.preventDefault();dt.effectAllowed='move';dt.dropEffect='move'"
-      ondrag="const {t,e,dt,d}={e:event,dt:event.dataTransfer,d:this.drag}; if(e.clientX===0) return;d.x = d.x + e.offsetX - d.startX; d.y = d.y + e.offsetY - d.startY; this.style.left = d.x + 'px'; this.style.top = d.y+'px';"
-      ondragend="const {t,e,d}={t:this,e:event,d:this.drag};if (d.initX === d.x) {d.x=d.x+e.offsetX-(d.startX-d.x);d.y=d.y+e.offsetY-(d.startY-d.y);this.style.transform=translate3d(d.x+'px', d.y+'px', 0)};this.draggable=false"
-      onclose=${() => {
-        showColumnDialog = false;
-    }}
-    >
-      <div
-        style="padding:.25em;background-color:#666;color:white;"
-        onmousedown="this.parentNode.draggable=true"
-      >Column Modifier</div>
-      <div style="padding:.25em">
-        ${allColumnNames.map(name => {
-        const included = columnNames.includes(name);
-        return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-            <li
-              style="display:flex;justify-content: space-between"
-              class="hover-bg-warning"
-            >
-              <a onclick=${() => included ? columnNames = columnNames.filter(n => n !== name) : columnNames.push(name)}
-                style="cursor:pointer;"
-              >
-                <input type="checkbox" ${included && 'checked'} />&nbsp;${name}
-              </a>
-
-              ${included && columnNames.length !== allColumnNames.length ? (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-                <a style="color:blue;" onclick=${() => columnNames = [...allColumnNames]}><small>all</small></a>
-              ` : (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-                <a style="color:blue;" onclick=${() => columnNames = [name]}><small>only</small></a>
-              `}
-            </li>
-          `.key(name);
-    })}
-        <button type="button" onclick=${toggleColumnDialog}>🅧 close</button>
-      </div>
-    </dialog>
-
-    <style>
-      dialog.dump-dialog::backdrop {
-        background-color: rgba(0, 0, 0, 0.7); /* Set a semi-transparent black background */
-      }
-
-      .child-margin-xxs {margin:0.2em;}
-      
-      .hover-bg-warning:hover {background-color:#fcf8e3}
-      .hover-bg-balanced:hover {background-color:#33cd5f}
-      .active-bg-energized:active {background-color:#ffc900}
-    </style>
-  `;
-});
-/** recurser */
-const arrayDisplay = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ array, showLevels, showAll, showKids, columnNames, formatChange, toggleColumnDialog, }) => {
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-    ${array.map((item, index) => (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `${dump({
-        value: filterObjectByKeys(item, columnNames),
-        showLevels,
-        showAll,
-        showKids: showAll || showKids,
-        isRootDump: false,
-        formatChange,
-        onHeaderClick: toggleColumnDialog
-    })}`.key({ item: item, index }))}
-  `;
-});
-function filterObjectByKeys(inputObject, keysArray) {
-    const filteredObject = {};
-    keysArray.forEach(key => {
-        if (inputObject.hasOwnProperty(key)) {
-            filteredObject[key] = inputObject[key];
-        }
-    });
-    return filteredObject;
-}
-const dumpObject = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.tag)(({ key, showKids, show, 
-// showChange,
-showLevels, value, showAll, onHeaderClick, formatChange, }) => {
-    let showLower = (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.setLet)(false)(x => [showLower, showLower = x]);
-    (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.watch)([show], ([show]) => showLower = show);
-    const continueDump = !key || showKids || showLower || (showLower == undefined && showLevels > 0);
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-    <div style="flex: 1 1 10em;text-align:left;">
-      <div
-        style="font-size:90%;color:#111111;background-color:#d9edf7;border:1px solid black;border-radius:5px;flex-direction: column;display:flex;"
-      >
-        ${key && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-          <a
-            style=${"padding:0.2em;display:flex;justify-content:space-between;font-size:65%;color:white;border-color:white;flex-grow:1;background-color:#387ef5;" +
-        (showLower ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;' : '')}
-            onclick=${() => {
-        showLower = !showLower;
-    }}
-          >
-            <strong>${key}</strong>
-            <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
-              {${Object.keys(value).length}}
-            </sup>
-          </a>
-        `}
-        
-        ${continueDump && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-          <div style="display:flex;flex-wrap:wrap">
-            ${Object.entries(value).map(([key, value]) => (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-              <!-- recurse -->
-              <div class="child-margin-xxs"
-                style=${'padding:0.2em;overflow:auto;display:flex;flex-wrap:wrap;' +
-        (!value || typeof (value) !== 'object' ? 'flex: 1 1 10em;' : 'flex-grow:1;')}
-              >
-                ${dump({
-        value,
-        key,
-        show: showLower,
-        /*
-        showChange: x => {
-          showLower = x
-          // showChange(showLower = x)
-        },
-        */
-        showAll,
-        showLevels: showLevels - 1,
-        showKids: showAll || showKids,
-        isRootDump: false,
-        formatChange,
-        onHeaderClick,
-    })}
-            `.key([key, value]))}
-          </div>
-        `}
-      </div>
-    </div>
-  `;
-});
-function dumpSimple({ key, value, onHeaderClick }) {
-    function simpleValue() {
-        return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-      <div onclick=${() => (0,_copyText_function_js__WEBPACK_IMPORTED_MODULE_0__.copyText)(value)}
-        style=${"cursor:pointer;" +
-            (value === true ? 'color:#28a54c' : '') +
-            (value === false ? 'color:#e42112' : '')}
-        class="hover-bg-warning active-bg-energized"
-        title = ${value.constructor?.name === 'Number' && value > 1000000000 ? value > 946702800000 ? 'Milliseconds > Unix epoch:\n' + (new Date(value).toLocaleString()) : 'Seconds > Unix epoch:\n' + (new Date(value * 1000).toLocaleString()) : ''}
-      >${value === null && 'null' || value === false && 'false' || value === undefined && 'undefined' || value}</div>
-    `;
-    }
-    return (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-    <div style="font-size:75%;flex:1 1 10em;color:#111111">
-      ${key && (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-        <div style="border-bottom-width:1px;border-bottom-style:solid;border-color:black;font-size:65%;border-color:white;line-height: 95%;font-weight:bold;"
-          onclick=${() => onHeaderClick()}
-        >${key}</div>
-      `}
-
-      ${value.search && (value.slice(0, 8) === 'https://' || value.slice(0, 7) === 'http://') ? (0,taggedjs__WEBPACK_IMPORTED_MODULE_1__.html) `
-        <a onclick=${() => (0,_copyText_function_js__WEBPACK_IMPORTED_MODULE_0__.copyText)(value)} href=${value}
-          target="_blank"
-          class="hover-bg-warning active-bg-energized"
-          title="tap to copy"
-        >${value}</a>
-      ` : simpleValue()}
-    </div>
-  `;
-}
-//# sourceMappingURL=index.js.map
 
 /***/ })
 
