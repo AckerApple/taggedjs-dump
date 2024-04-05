@@ -3,6 +3,7 @@ import { html, onInit, setLet, setProp, tag, Tag } from "taggedjs"
 import { dumpArray } from "./dumpArray.tag"
 import { dumpSimple } from "./dumpSimple.tag"
 import { dumpObject } from "./dumpObject.tag"
+import { controlPanel } from "./controlPanel.tag"
 
 type ShowChange = (show: boolean) => any
 export type OnHeaderClick = () => any
@@ -70,47 +71,7 @@ export const dump = tag(({// dump tag
     const isArray = (!format || format==='small') && (value.push && value.pop)
 
     return html`
-      ${isRootDump && html`
-        <div style="width: 100%;line-height: 90%;">
-          <div style="position:relative;">
-            <div style="display:flex;font-size:50%;position:absolute;top:-18px;right:-6px">
-              ${!format || format==='small' && html`
-                <a
-                  style=${
-                    "margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
-                    (showAll ? 'background-color:#33cd5f;' : 'background-color:#444444')
-                  }
-                  class="hover-bg-balanced"
-                  onclick=${() => showAll = !showAll}
-                  title="hide/show all sub objects"
-                >👁</a>
-              `}
-              <a
-                style=${
-                  "margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
-                  (!format || format==='small' ? 'background-color:#33cd5f;' : 'background-color:#444444')
-                }
-                class="hover-bg-balanced"
-                onclick=${() => formatChange(format='small')}
-              >small</a>
-              <a style=${
-                "margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
-                (format==='json' ? 'background-color:#33cd5f;' : 'background-color:#444444')
-                }
-                class="hover-bg-balanced"
-                onclick=${() => formatChange(format='json')}
-              >json</a>
-              <a style=${
-                  "margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
-                  (format==='json' ? 'background-color:#33cd5f;' : 'background-color:#444444')
-                }
-                class="hover-bg-balanced active-bg-energized"
-                onclick=${() => copyAsJsonText(value)}
-              >copy</a>
-            </div>
-          </div>
-        </div>
-      `}
+      ${isRootDump && controlPanel({value, format, showAll, formatChange,})}
       ${(format==='json' && html`
         <textarea *ngIf="" disabled wrap="off" style="width:100%;height:25vh;min-height:400px;color:white;"
         >${ JSON.stringify(value, null, 2) }</textarea>
@@ -157,8 +118,3 @@ export const dump = tag(({// dump tag
 
   return objectTemplate()
 })
-
-function copyAsJsonText(value: any) {
-  const text = JSON.stringify(value, null, 2)
-  copyText( text )
-}
