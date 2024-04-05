@@ -30,7 +30,7 @@ export const dump = tag(({// dump tag
   key, value,
   showKids = false,
   showLevels = -1,
-  showAll,
+  showAll = false,
   format = 'small',
   formatChange = () => undefined,
   isRootDump = true,
@@ -38,6 +38,7 @@ export const dump = tag(({// dump tag
 }: DumpProps) => {
   const isObject = () => value && value instanceof Object
   const typing = value === null ? 'null' : typeof(value)
+  
   let show = setLet(false)(x => [show, show = x])
   setProp(x => [format, format = x])
   setProp(x => [showAll, showAll = x])

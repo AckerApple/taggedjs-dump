@@ -1,4 +1,4 @@
-import { html, setLet } from "taggedjs"
+import { html, setLet, tag } from "taggedjs"
 import { OnHeaderClick } from "./index"
 import { copyText } from "./copyText.function"
 
@@ -22,7 +22,7 @@ export function dumpSimple({key, value, onHeaderClick}: {
   `
 }
 
-const simpleValue = (
+const simpleValue = tag((
   value: string | undefined | null | boolean
 ) => {
   const isLikeNull = [undefined,null,'null'].includes(value as null | undefined)
@@ -61,7 +61,7 @@ const simpleValue = (
       title=${title}
     >${value === null && 'null' || value === false && 'false' || value === undefined && 'undefined' || value}</div>
   `
-}
+})
 
 function getLargeNumberTitle(number: number) {
   return number > 946702800000 ?
