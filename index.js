@@ -150,7 +150,7 @@ var e={d:(t,r)=>{for(var o in r)e.o(r,o)&&!e.o(t,o)&&Object.defineProperty(t,o,{
       `}
       ${!t.search||"https://"!==t.slice(0,8)&&"http://"!==t.slice(0,7)?_e(t):He(t)}
     </div>
-  `}const _e=e=>{const t=[void 0,null,"null"].includes(e),o=e,n=!isNaN(o)&&o>1e9?function(e){return e>9467028e5?"Milliseconds > Unix epoch:\n"+new Date(e).toLocaleString():"Seconds > Unix epoch:\n"+new Date(1e3*e).toLocaleString()}(o):"";let a=$e(0)((e=>[a,a=e]));return Se`
+  `}const _e=R((e=>{const t=[void 0,null,"null"].includes(e),o=e,n=!isNaN(o)&&o>1e9?function(e){return e>9467028e5?"Milliseconds > Unix epoch:\n"+new Date(e).toLocaleString():"Seconds > Unix epoch:\n"+new Date(1e3*e).toLocaleString()}(o):"";let a=$e(0)((e=>[a,a=e]));return Se`
     <div class="hover-bg-warning active-bg-energized"
       onmousedown=${()=>{a=Date.now()}}
       onmouseup=${t=>{if(Date.now()-a>300)return t.preventDefault(),t.stopPropagation(),console.log("xx"),!0;console.log("copied"),r(e)}}
@@ -159,7 +159,7 @@ var e={d:(t,r)=>{for(var o in r)e.o(r,o)&&!e.o(t,o)&&Object.defineProperty(t,o,{
       style.color = ${(!0===e?"#28a54c":!1===e&&"#e42112")||t&&"white"||""}
       title=${n}
     >${(null===e?"null":!1===e&&"false")||void 0===e&&"undefined"||e}</div>
-  `},He=e=>Se`
+  `})),He=e=>Se`
     <a onclick=${()=>r(e)} href=${e}
       target="_blank"
       class="hover-bg-warning active-bg-energized"
@@ -195,7 +195,7 @@ var e={d:(t,r)=>{for(var o in r)e.o(r,o)&&!e.o(t,o)&&Object.defineProperty(t,o,{
         `}
       </div>
     </div>
-  `})),Ie=R((({key:e,value:t,showKids:o=!1,showLevels:n=-1,showAll:a,format:l="small",formatChange:s=(()=>{}),isRootDump:i=!0,onHeaderClick:c})=>{const u=null===t?"null":typeof t;let d=$e(!1)((e=>[d,d=e]));Ne((e=>[l,l=e])),Ne((e=>[a,a=e]));let g=$e(void 0)((e=>[g,g=e]));var p;return p=()=>{(n=n>=0&&n||(-1===n&&!e&&t&&t instanceof Object?2:0))>0&&(d=!0)},f.memory.initCurrentSupport.memory.init||(f.memory.initCurrentSupport.memory.init=p,p()),[null,void 0].includes(t)?Ue({key:e,value:u,onHeaderClick:c}):["boolean","number","string"].includes(u)?Ue({key:e,value:t,onHeaderClick:c}):function(){if(null===t)return o?Ue({key:e,value:"null",onHeaderClick:c}):Se``;const u=(!l||"small"===l)&&t.push&&t.pop;return Se`
+  `})),Ie=R((({key:e,value:t,showKids:o=!1,showLevels:n=-1,showAll:a=!1,format:l="small",formatChange:s=(()=>{}),isRootDump:i=!0,onHeaderClick:c})=>{const u=null===t?"null":typeof t;let d=$e(!1)((e=>[d,d=e]));Ne((e=>[l,l=e])),Ne((e=>[a,a=e]));let g=$e(void 0)((e=>[g,g=e]));var p;return p=()=>{(n=n>=0&&n||(-1===n&&!e&&t&&t instanceof Object?2:0))>0&&(d=!0)},f.memory.initCurrentSupport.memory.init||(f.memory.initCurrentSupport.memory.init=p,p()),[null,void 0].includes(t)?Ue({key:e,value:u,onHeaderClick:c}):["boolean","number","string"].includes(u)?Ue({key:e,value:t,onHeaderClick:c}):function(){if(null===t)return o?Ue({key:e,value:"null",onHeaderClick:c}):Se``;const u=(!l||"small"===l)&&t.push&&t.pop;return Se`
       ${i&&Se`
         <div style="width: 100%;line-height: 90%;">
           <div style="position:relative;">

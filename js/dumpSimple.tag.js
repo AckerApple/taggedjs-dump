@@ -1,4 +1,4 @@
-import { html, setLet } from "taggedjs";
+import { html, setLet, tag } from "taggedjs";
 import { copyText } from "./copyText.function";
 export function dumpSimple({ key, value, onHeaderClick }) {
     const isLinkValue = value.search && (value.slice(0, 8) === 'https://' || value.slice(0, 7) === 'http://');
@@ -14,7 +14,7 @@ export function dumpSimple({ key, value, onHeaderClick }) {
     </div>
   `;
 }
-const simpleValue = (value) => {
+const simpleValue = tag((value) => {
     const isLikeNull = [undefined, null, 'null'].includes(value);
     const number = value;
     const isLargeNumber = !isNaN(number) && number > 1000000000;
@@ -45,7 +45,7 @@ const simpleValue = (value) => {
       title=${title}
     >${value === null && 'null' || value === false && 'false' || value === undefined && 'undefined' || value}</div>
   `;
-};
+});
 function getLargeNumberTitle(number) {
     return number > 946702800000 ?
         'Milliseconds > Unix epoch:\n' + (new Date(number).toLocaleString()) :

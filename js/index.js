@@ -4,7 +4,7 @@ import { dumpArray } from "./dumpArray.tag";
 import { dumpSimple } from "./dumpSimple.tag";
 import { dumpObject } from "./dumpObject.tag";
 export const dump = tag(({ // dump tag
-key, value, showKids = false, showLevels = -1, showAll, format = 'small', formatChange = () => undefined, isRootDump = true, onHeaderClick, }) => {
+key, value, showKids = false, showLevels = -1, showAll = false, format = 'small', formatChange = () => undefined, isRootDump = true, onHeaderClick, }) => {
     const isObject = () => value && value instanceof Object;
     const typing = value === null ? 'null' : typeof (value);
     let show = setLet(false)(x => [show, show = x]);
