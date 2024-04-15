@@ -47,7 +47,7 @@ var e={d:(t,r)=>{for(var o in r)e.o(r,o)&&!e.o(t,o)&&Object.defineProperty(t,o,{
         </div>
       </div>
     `}
-  `}));function Ke(e,t={}){return r=e,o={isNaN,Math,Number,Date,...t},o=new Proxy(o,{has:()=>!0}),new Function("with(this) { return ("+r+")}").call(o);var r,o}const ze=P((({array:e,showAll:t,showKids:r,toggleColumnDialog:o,columnNames:n,formatChange:a})=>Ce`<!-- array table -->
+  `}));function Ke(e,t={}){return r=e,o={isNaN,Math,Number,Date,...t},r?(o=new Proxy(o,{has:()=>!0}),new Function("with(this) { return ("+r+")}").call(o)):r;var r,o}const ze=P((({array:e,showAll:t,showKids:r,toggleColumnDialog:o,columnNames:n,formatChange:a})=>Ce`<!-- array table -->
     <!-- overflow-y: scroll; -->
     <div style="max-height: 800px;max-width:100vw;overflow: scroll;">
       <table cellPadding="2" cellSpacing="2" border="0">
@@ -104,18 +104,6 @@ var e={d:(t,r)=>{for(var o in r)e.o(r,o)&&!e.o(t,o)&&Object.defineProperty(t,o,{
         <button style="width:100%" type="button" onclick=${u}>🅧 close</button>
       </div>
     </dialog>
-
-    <style>
-      dialog.dump-dialog::backdrop {
-        background-color: rgba(0, 0, 0, 0.7); /* Set a semi-transparent black background */
-      }
-
-      .child-margin-xxs {margin:0.2em;}
-      
-      .hover-bg-warning:hover {background-color:#fcf8e3}
-      .hover-bg-balanced:hover {background-color:#33cd5f}
-      .active-bg-energized:active {background-color:#ffc900}
-    </style>
   `})),Ue=P((({key:e,value:t,show:r,showAll:o,showKids:n,showLevels:a,formatChange:s})=>{let l=Ae(!1)((e=>[l,l=e])),i=Ae(void 0)((e=>[i,i=e]));return Ne([r],(([e])=>l=e)),Ce`<!-- array -->
   <div
     style="color:#111111;background-color:#f2dede;border:1px solid black;border-radius:5px;flex-direction: column;display:flex"
@@ -195,38 +183,53 @@ var e={d:(t,r)=>{for(var o in r)e.o(r,o)&&!e.o(t,o)&&Object.defineProperty(t,o,{
         `}
       </div>
     </div>
-  `})),qe=P((({value:e,format:t,showAll:r,formatChange:o})=>Ce`
-  <div style="width: 100%;line-height: 90%;">
-    <div style="position:relative;">
-      <div style="display:flex;font-size:50%;position:absolute;top:-18px;right:-6px">
-        ${!t||"small"===t&&Ce`
+  `})),qe=P((({value:e,format:t,showAll:r,formatChange:o,showAllChange:n})=>Ce`
+    <style>
+      dialog.dump-dialog::backdrop {
+        background-color: rgba(0, 0, 0, 0.7); /* Set a semi-transparent black background */
+      }
+
+      .child-margin-xxs {margin:0.2em;}
+      
+      .taggedjs-dump .hover-bg-warning:hover {background-color:#fcf8e3}
+      .taggedjs-dump .hover-bg-balanced:hover {background-color:#33cd5f}
+      .taggedjs-dump .active-bg-energized:active {background-color:#ffc900}
+      .taggedjs-dump .bg-dark {background-color:#444444}
+      .taggedjs-dump .bg-balanced {background-color:#33cd5f}
+    </style>
+    <div style="width: 100%;line-height: 90%;">
+      <div style="position:relative;">
+        <div style="display:flex;font-size:50%;position:absolute;top:-18px;right:-6px">
+          ${!t||"flex"===t&&Ce`
+            <a
+              style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;"+(r?"background-color:#33cd5f;":"background-color:#444444")}
+              class="hover-bg-balanced"
+              onclick=${()=>n(r=!r)}
+              title="hide/show all sub objects"
+            >👁</a>
+          `}
           <a
-            style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;"+(r?"background-color:#33cd5f;":"background-color:#444444")}
+            style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;"+(t&&"flex"!==t?"background-color:#444444":"background-color:#33cd5f;")}
             class="hover-bg-balanced"
-            onclick=${()=>r=!r}
-            title="hide/show all sub objects"
-          >👁</a>
-        `}
-        <a
-          style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;"+(t&&"small"!==t?"background-color:#444444":"background-color:#33cd5f;")}
-          class="hover-bg-balanced"
-          onclick=${()=>o(t="small")}
-        >small</a>
-        <a style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;"+("json"===t?"background-color:#33cd5f;":"background-color:#444444")}
-          class="hover-bg-balanced"
-          onclick=${()=>o(t="json")}
-        >json</a>
-        <a style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;"+("json"===t?"background-color:#33cd5f;":"background-color:#444444")}
-          class="hover-bg-balanced active-bg-energized"
-          onclick=${()=>function(e){_e(JSON.stringify(e,null,2))}(e)}
-        >copy</a>
+            onclick=${()=>o(t="flex")}
+          >flex</a>
+          <a style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;"+("json"===t?"background-color:#33cd5f;":"background-color:#444444")}
+            class="hover-bg-balanced"
+            onclick=${()=>o(t="json")}
+          >json</a>
+          <a style="margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;"
+            class="bg-dark hover-bg-balanced active-bg-energized"
+            onclick=${()=>function(e){_e(JSON.stringify(e,null,2))}(e)}
+          >copy</a>
+        </div>
       </div>
     </div>
-  </div>
-  `)),Ge=P((({key:e,value:t,showKids:r=!1,showLevels:o=-1,showAll:n=!1,format:a="small",formatChange:s=(()=>{}),isRootDump:l=!0,onHeaderClick:i})=>{const c=null===t?"null":typeof t;let u=Ae(!1)((e=>[u,u=e]));Ve((e=>[a,a=e])),Ve((e=>[n,n=e]));let d=Ae(void 0)((e=>[d,d=e]));return function(e){const t=g.memory.initCurrentTemplater;t.global.init||(t.global.init=e,e())}((()=>{(o=o>=0&&o||(-1===o&&!e&&t&&t instanceof Object?2:0))>0&&(u=!0)})),[null,void 0].includes(t)?Ye({key:e,value:c,onHeaderClick:i}):["boolean","number","string"].includes(c)?Ye({key:e,value:t,onHeaderClick:i}):function(){if(null===t)return r?Ye({key:e,value:"null",onHeaderClick:i}):Ce``;const c=(!a||"small"===a)&&t.push&&t.pop;return Ce`
-      ${l&&qe({value:t,format:a,showAll:n,formatChange:s})}
-      ${"json"===a&&Ce`
-        <textarea *ngIf="" disabled wrap="off" style="width:100%;height:25vh;min-height:400px;color:white;"
-        >${JSON.stringify(t,null,2)}</textarea>
-      `||c&&Ue({key:e,value:t,show:u,showAll:n,showKids:r,showLevels:o,formatChange:s})||Je({key:e,show:u,showKids:r,showLevels:o,value:t,showAll:n,formatChange:s,onHeaderClick:i})}
+  `)),Ge=P((({key:e,value:t,showKids:r=!1,showLevels:o=-1,showAll:n=!1,format:a="flex",formatChange:s=(e=>a=e),isRootDump:l=!0,onHeaderClick:i})=>{const c=null===t?"null":typeof t;let u=Ae(!1)((e=>[u,u=e]));Ve((e=>[a,a=e])),Ve((e=>[n,n=e]));let d=Ae(void 0)((e=>[d,d=e]));return function(e){const t=g.memory.initCurrentTemplater;t.global.init||(t.global.init=e,e())}((()=>{(o=o>=0&&o||(-1===o&&!e&&t&&t instanceof Object?2:0))>0&&(u=!0)})),[null,void 0].includes(t)?Ye({key:e,value:c,onHeaderClick:i}):["boolean","number","string"].includes(c)?Ye({key:e,value:t,onHeaderClick:i}):function(){if(null===t)return r?Ye({key:e,value:"null",onHeaderClick:i}):Ce``;const c=(!a||"flex"===a)&&t.push&&t.pop;return Ce`
+      <div class="taggedjs-dump">
+        ${l&&qe({value:t,format:a,showAll:n,showAllChange:e=>n=e,formatChange:s})}
+        ${"json"===a&&Ce`
+          <textarea *ngIf="" disabled wrap="off" style="width:100%;height:25vh;min-height:400px;color:white;"
+          >${JSON.stringify(t,null,2)}</textarea>
+        `||c&&Ue({key:e,value:t,show:u,showAll:n,showKids:r,showLevels:o,formatChange:s})||Je({key:e,show:u,showKids:r,showLevels:o,value:t,showAll:n,formatChange:s,onHeaderClick:i})}
+      </div>
     `}()}));var Qe=t.B;export{Qe as dump};

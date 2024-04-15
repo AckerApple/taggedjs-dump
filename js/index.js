@@ -4,7 +4,7 @@ import { dumpSimple } from "./dumpSimple.tag";
 import { dumpObject } from "./dumpObject.tag";
 import { controlPanel } from "./controlPanel.tag";
 export const dump = tag(({ // dump tag
-key, value, showKids = false, showLevels = -1, showAll = false, format = 'small', formatChange = () => undefined, isRootDump = true, onHeaderClick, }) => {
+key, value, showKids = false, showLevels = -1, showAll = false, format = 'flex', formatChange = x => format = x, isRootDump = true, onHeaderClick, }) => {
     const isObject = () => value && value instanceof Object;
     const typing = value === null ? 'null' : typeof (value);
     let show = setLet(false)(x => [show, show = x]);
@@ -32,13 +32,20 @@ key, value, showKids = false, showLevels = -1, showAll = false, format = 'small'
                 onHeaderClick
             });
         }
-        const isArray = (!format || format === 'small') && (value.push && value.pop);
+        const isArray = (!format || format === 'flex') && (value.push && value.pop);
         return html `
-      ${isRootDump && controlPanel({ value, format, showAll, formatChange, })}
-      ${(format === 'json' && html `
-        <textarea *ngIf="" disabled wrap="off" style="width:100%;height:25vh;min-height:400px;color:white;"
-        >${JSON.stringify(value, null, 2)}</textarea>
-      `) || ((isArray && dumpArray({
+      <div class="taggedjs-dump">
+        ${isRootDump && controlPanel({
+            value,
+            format,
+            showAll,
+            showAllChange: x => showAll = x,
+            formatChange,
+        })}
+        ${(format === 'json' && html `
+          <textarea *ngIf="" disabled wrap="off" style="width:100%;height:25vh;min-height:400px;color:white;"
+          >${JSON.stringify(value, null, 2)}</textarea>
+        `) || ((isArray && dumpArray({
             key,
             value,
             show,
@@ -60,6 +67,7 @@ key, value, showKids = false, showLevels = -1, showAll = false, format = 'small'
                 formatChange,
                 onHeaderClick,
             }))}
+      </div>
     `;
     }
     /* IF 1: undefined ELSE goto simpleTemplate */
