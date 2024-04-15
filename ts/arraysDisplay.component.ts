@@ -82,17 +82,5 @@ export const arraysDisplay = tag(({
         <button style="width:100%" type="button" onclick=${toggleColumnDialog}>🅧 close</button>
       </div>
     </dialog>
-
-    <style>
-      dialog.dump-dialog::backdrop {
-        background-color: rgba(0, 0, 0, 0.7); /* Set a semi-transparent black background */
-      }
-
-      .child-margin-xxs {margin:0.2em;}
-      
-      .hover-bg-warning:hover {background-color:#fcf8e3}
-      .hover-bg-balanced:hover {background-color:#33cd5f}
-      .active-bg-energized:active {background-color:#ffc900}
-    </style>
   `
 })

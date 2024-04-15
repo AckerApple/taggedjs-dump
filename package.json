@@ -1,7 +1,7 @@
 {
   "name": "taggedjs-dump",
   "private": true,
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "visually dump and interact with javascript and json objects",
   "main": "js/index.js",
   "scripts": {
@@ -9,7 +9,8 @@
     "build": "npm-run-all --sequential build:js build:webpack build:dist:only build:gh-pages && echo \"✅ Build completed\"",
     "build:webpack": "npx webpack",
     "build:gh-pages": "cp -R js/. ../gh-pages/node_modules/taggedjs-dump/js && cd ../gh-pages && npm run build && echo \"🔭 Built gh-pages\"",
-    "build:watch:gh-pages": "chokidar 'ts/**/*' -c 'npm run build:js && npm run build:dist:only && npm run build:gh-pages'",
+    "build:gh-pages:full": "npm run build:js && npm run build:dist:only && npm run build:gh-pages",
+    "build:watch:gh-pages": "chokidar 'ts/**/*' -c 'npm run build:gh-pages:full'",
     "build:dist": "run-s build build:dist:only",
     "build:dist:only": "cp README.MD ./dist/README.md && npm run build:dist:pack && rm -rf ./dist/js && cp -R js ./dist && cp -R ./dist/. ../dist",
     "test": "echo \"Error: no test specified\" && exit 1",

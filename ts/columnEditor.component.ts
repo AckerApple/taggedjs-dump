@@ -129,6 +129,10 @@ function sandboxEval(
   src: string,
   ctx: Record<string, any>
 ){
+  if(!src) {
+    return src
+  }
+
   ctx = new Proxy(ctx, {has: () => true})
   let func = (new Function("with(this) { return (" + src + ")}"));
   return func.call(ctx)

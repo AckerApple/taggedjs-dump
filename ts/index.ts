@@ -7,7 +7,7 @@ import { controlPanel } from "./controlPanel.tag"
 
 type ShowChange = (show: boolean) => any
 export type OnHeaderClick = () => any
-export type FormatChange = (format: 'json' | 'small') => unknown
+export type FormatChange = (format: 'json' | 'flex') => unknown
 
 type DumpProps = {
   value: any
@@ -16,7 +16,7 @@ type DumpProps = {
   showKids?: boolean // force children to be shown by true value
   showLevels?: number // unfolded shown levels of depth. Default is auto decide
 
-  format?: 'json' | 'small' // do not pass in, used to detect when first dump
+  format?: 'json' | 'flex' // do not pass in, used to detect when first dump
   formatChange?: FormatChange
   
   isRootDump?: boolean // do not pass in, used to detect when first dump
@@ -31,8 +31,8 @@ export const dump = tag(({// dump tag
   showKids = false,
   showLevels = -1,
   showAll = false,
-  format = 'small',
-  formatChange = () => undefined,
+  format = 'flex',
+  formatChange = x => format = x,
   isRootDump = true,
   onHeaderClick,
 }: DumpProps) => {
@@ -69,37 +69,45 @@ export const dump = tag(({// dump tag
       })
     }
 
-    const isArray = (!format || format==='small') && (value.push && value.pop)
+    const isArray = (!format || format==='flex') && (value.push && value.pop)
 
     return html`
-      ${isRootDump && controlPanel({value, format, showAll, formatChange,})}
-      ${(format==='json' && html`
-        <textarea *ngIf="" disabled wrap="off" style="width:100%;height:25vh;min-height:400px;color:white;"
-        >${ JSON.stringify(value, null, 2) }</textarea>
-      `) || (
-        (isArray && dumpArray({
-          key,
+      <div class="taggedjs-dump">
+        ${isRootDump && controlPanel({
           value,
-          show,
-          // arrayView,
+          format,
           showAll,
-          showKids,
-          showLevels,
+          showAllChange: x => showAll = x,
           formatChange,
-          // showChangeValue,
-        })) ||
-        dumpObject({
-          key,
-          show,
-          // showChange: x => showChangeValue(show = x),
-          showKids,
-          showLevels,
-          value,
-          showAll,
-          formatChange,
-          onHeaderClick,
-        })
-      )}
+        })}
+        ${(format==='json' && html`
+          <textarea *ngIf="" disabled wrap="off" style="width:100%;height:25vh;min-height:400px;color:white;"
+          >${ JSON.stringify(value, null, 2) }</textarea>
+        `) || (
+          (isArray && dumpArray({
+            key,
+            value,
+            show,
+            // arrayView,
+            showAll,
+            showKids,
+            showLevels,
+            formatChange,
+            // showChangeValue,
+          })) ||
+          dumpObject({
+            key,
+            show,
+            // showChange: x => showChangeValue(show = x),
+            showKids,
+            showLevels,
+            value,
+            showAll,
+            formatChange,
+            onHeaderClick,
+          })
+        )}
+      </div>
     `
   }
 
