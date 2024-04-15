@@ -36,7 +36,7 @@ export const Dump = tag(() => {
     `}
     
     <div style="display:flex;flex-wrap:wrap;align-item:center;justify-content: center;gap:.5em;padding:.5em;">
-      <textarea wrap="off" placeholder="past json here"
+      <textarea wrap="off" placeholder="paste json here"
         onchange=${change}
         style="min-width:400px;min-height:400px;flex:1"
       >${userJson === "" ? "" : userJsonString}</textarea>
