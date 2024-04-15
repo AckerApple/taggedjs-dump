@@ -5,13 +5,10 @@
     "build": "run-s build:bundle",
     "build:watch": "npm run bundle:watch",
     "build:bundle": "node runBundleScript.js",
-    "build:dist": "run-s build build:dist:only",
-    "build:dist:only": "cp README.MD ./dist/README.md && npm run build:dist:pack && rm -rf ./dist/js && cp -R js ./dist && cp -R ./dist ../dist",
     "save:dist": "npm run patch:version && npm run build:dist && cd ../dist && git add . && git commit -m \"dist patch\" && git push",
     "_build:js": "tsc -p tsconfig.build.json",
     "_build:js:watch": "tsc -p tsconfig.build.json --watch",
-    "bundle:watch": "nodemon --exec 'npm run build:bundle' --watch src/.",
-    "publish": "npm run build:dist && npm run save:dist && cd ../dist && npm publish"
+    "bundle:watch": "nodemon --exec 'npm run build:bundle' --watch src/."
   },
   "devDependencies": {
     "nodemon": "^3.1.0",
