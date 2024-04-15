@@ -1,8 +1,8 @@
-import { copyText } from "./copyText.function";
 import { html, onInit, setLet, setProp, tag } from "taggedjs";
 import { dumpArray } from "./dumpArray.tag";
 import { dumpSimple } from "./dumpSimple.tag";
 import { dumpObject } from "./dumpObject.tag";
+import { controlPanel } from "./controlPanel.tag";
 export const dump = tag(({ // dump tag
 key, value, showKids = false, showLevels = -1, showAll = false, format = 'small', formatChange = () => undefined, isRootDump = true, onHeaderClick, }) => {
     const isObject = () => value && value instanceof Object;
@@ -34,39 +34,7 @@ key, value, showKids = false, showLevels = -1, showAll = false, format = 'small'
         }
         const isArray = (!format || format === 'small') && (value.push && value.pop);
         return html `
-      ${isRootDump && html `
-        <div style="width: 100%;line-height: 90%;">
-          <div style="position:relative;">
-            <div style="display:flex;font-size:50%;position:absolute;top:-18px;right:-6px">
-              ${!format || format === 'small' && html `
-                <a
-                  style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
-            (showAll ? 'background-color:#33cd5f;' : 'background-color:#444444')}
-                  class="hover-bg-balanced"
-                  onclick=${() => showAll = !showAll}
-                  title="hide/show all sub objects"
-                >👁</a>
-              `}
-              <a
-                style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
-            (!format || format === 'small' ? 'background-color:#33cd5f;' : 'background-color:#444444')}
-                class="hover-bg-balanced"
-                onclick=${() => formatChange(format = 'small')}
-              >small</a>
-              <a style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
-            (format === 'json' ? 'background-color:#33cd5f;' : 'background-color:#444444')}
-                class="hover-bg-balanced"
-                onclick=${() => formatChange(format = 'json')}
-              >json</a>
-              <a style=${"margin:1px;border-radius:5px;color:white;align-items:center;display:flex;padding-left:0.2em;padding-right:0.2em;" +
-            (format === 'json' ? 'background-color:#33cd5f;' : 'background-color:#444444')}
-                class="hover-bg-balanced active-bg-energized"
-                onclick=${() => copyAsJsonText(value)}
-              >copy</a>
-            </div>
-          </div>
-        </div>
-      `}
+      ${isRootDump && controlPanel({ value, format, showAll, formatChange, })}
       ${(format === 'json' && html `
         <textarea *ngIf="" disabled wrap="off" style="width:100%;height:25vh;min-height:400px;color:white;"
         >${JSON.stringify(value, null, 2)}</textarea>
@@ -108,8 +76,4 @@ key, value, showKids = false, showLevels = -1, showAll = false, format = 'small'
     }
     return objectTemplate();
 });
-function copyAsJsonText(value) {
-    const text = JSON.stringify(value, null, 2);
-    copyText(text);
-}
 //# sourceMappingURL=index.js.map
