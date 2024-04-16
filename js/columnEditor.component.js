@@ -1,9 +1,9 @@
-import { html, set, setLet, tag } from "taggedjs";
+import { html, state, letState, tag } from "taggedjs";
 export const columnEditor = tag(({ name, array, included, columnNames, allColumnNames }) => {
-    let mouseOverEditShow = setLet(false)(x => [mouseOverEditShow, mouseOverEditShow = x]);
-    let edit = setLet(false)(x => [edit, edit = x]);
-    let editFormula = setLet(undefined)(x => [editFormula, editFormula = x]);
-    const formulas = set([]);
+    let mouseOverEditShow = letState(false)(x => [mouseOverEditShow, mouseOverEditShow = x]);
+    let edit = letState(false)(x => [edit, edit = x]);
+    let editFormula = letState(undefined)(x => [editFormula, editFormula = x]);
+    const formulas = state([]);
     const filterNames = () => {
         if (included) {
             columnNames.length = 0;

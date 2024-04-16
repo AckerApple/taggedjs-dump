@@ -1,4 +1,4 @@
-import { html, setLet, tag } from "taggedjs";
+import { html, letState, tag } from "taggedjs";
 import { copyText } from "./copyText.function";
 export function dumpSimple({ key, value, onHeaderClick }) {
     const isLinkValue = value.search && (value.slice(0, 8) === 'https://' || value.slice(0, 7) === 'http://');
@@ -19,7 +19,7 @@ const simpleValue = tag((value) => {
     const number = value;
     const isLargeNumber = !isNaN(number) && number > 1000000000;
     const title = !isLargeNumber ? '' : getLargeNumberTitle(number);
-    let downTime = setLet(0)(x => [downTime, downTime = x]);
+    let downTime = letState(0)(x => [downTime, downTime = x]);
     const startMouseDown = () => {
         downTime = Date.now();
     };

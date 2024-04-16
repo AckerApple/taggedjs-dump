@@ -1,4 +1,4 @@
-import { html, onInit, setLet, setProp, tag } from "taggedjs";
+import { html, onInit, letState, setProp, tag } from "taggedjs";
 import { dumpArray } from "./dumpArray.tag";
 import { dumpSimple } from "./dumpSimple.tag";
 import { dumpObject } from "./dumpObject.tag";
@@ -7,10 +7,10 @@ export const dump = tag(({ // dump tag
 key, value, showKids = false, showLevels = -1, showAll = false, format = 'flex', formatChange = x => format = x, isRootDump = true, onHeaderClick, }) => {
     const isObject = () => value && value instanceof Object;
     const typing = value === null ? 'null' : typeof (value);
-    let show = setLet(false)(x => [show, show = x]);
+    let show = letState(false)(x => [show, show = x]);
     setProp(x => [format, format = x]);
     setProp(x => [showAll, showAll = x]);
-    let arrayView = setLet(undefined)(x => [arrayView, arrayView = x]);
+    let arrayView = letState(undefined)(x => [arrayView, arrayView = x]);
     onInit(() => {
         const levelsDefined = (showLevels >= 0 && showLevels);
         // detect auto levels (default) and if object lets only show 2 levels deep
