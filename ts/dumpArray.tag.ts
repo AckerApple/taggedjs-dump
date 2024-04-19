@@ -1,5 +1,5 @@
 import { arraysDisplay } from "./arraysDisplay.component"
-import { html, setLet, tag, watch } from "taggedjs"
+import { html, letState, tag, watch } from "taggedjs"
 import { FormatChange } from "./index.js"
 
 export const dumpArray = tag(({// dumpArray
@@ -11,7 +11,7 @@ export const dumpArray = tag(({// dumpArray
   // arrayView,
   showLevels,
   formatChange,
-  // showChangeValue,
+  allowMaximize,
 }: {
   value: any
   showLevels: number
@@ -21,10 +21,10 @@ export const dumpArray = tag(({// dumpArray
   showKids: boolean
   // arrayView?: string
   formatChange: FormatChange
-  // showChangeValue: ShowChange
+  allowMaximize?: boolean
 }) => {
-  let showValue = setLet(false)(x => [showValue, showValue = x])
-  let arrayView = setLet(undefined as undefined | 'table')(x => [arrayView, arrayView = x])
+  let showValue = letState(false)(x => [showValue, showValue = x])
+  let arrayView = letState(undefined as undefined | 'table')(x => [arrayView, arrayView = x])
 
   watch([show], ([show])=> showValue = show)
 
@@ -49,6 +49,7 @@ export const dumpArray = tag(({// dumpArray
         }>${arrayView === 'table' ? 'flex' : 'table'}</a>
       </sup>
       <sup style="opacity:80%;font-size:75%;padding-left:0.4em">[${value.length}]</sup>
+      ${allowMaximize && '🪟'}
     </div>
     
     ${(showAll || showValue || showKids || (showValue==undefined && showLevels > 0)) && html`
@@ -58,7 +59,8 @@ export const dumpArray = tag(({// dumpArray
           showLevels, showAll, showKids,
           formatChange,
           array: value,
-          arrayView: arrayView as string
+          arrayView: arrayView as string,
+          allowMaximize,
         })}
       </div>
     `}

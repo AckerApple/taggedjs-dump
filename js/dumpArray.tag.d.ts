@@ -7,4 +7,5 @@ export declare const dumpArray: import("taggedjs").TagComponentBase<[{
     showAll?: boolean | undefined;
     showKids: boolean;
     formatChange: FormatChange;
+    allowMaximize?: boolean | undefined;
 }]>;

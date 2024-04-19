@@ -9,6 +9,7 @@ export const arrayTable = tag(({
   toggleColumnDialog,
   columnNames,
   formatChange,
+  allowMaximize,
 }: {
   array: any[]
   // showLevels: number
@@ -16,7 +17,8 @@ export const arrayTable = tag(({
   showKids: boolean
   toggleColumnDialog: any
   columnNames: string[],
-  formatChange: FormatChange
+  formatChange: FormatChange,
+  allowMaximize?: boolean,
 }) => {
   return html`<!-- array table -->
     <!-- overflow-y: scroll; -->
@@ -46,6 +48,7 @@ export const arrayTable = tag(({
                     showKids:showAll || showKids,
                     isRootDump:false,
                     formatChange,
+                    allowMaximize,
                   })}
                 </td>
               `.key(row[name]))}

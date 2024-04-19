@@ -7,6 +7,7 @@ export const arrayDisplay = tag(({
   columnNames,
   formatChange,
   toggleColumnDialog,
+  allowMaximize,
 }: {
   array: any[]
   showLevels: number
@@ -15,6 +16,7 @@ export const arrayDisplay = tag(({
   columnNames: string[]
   formatChange: FormatChange
   toggleColumnDialog: () => any
+  allowMaximize?: boolean,
 }) => {
   return html`
     ${array.map((
@@ -27,7 +29,8 @@ export const arrayDisplay = tag(({
       showKids:showAll || showKids,
       isRootDump:false,
       formatChange,
-      onHeaderClick: toggleColumnDialog
+      onHeaderClick: toggleColumnDialog,
+      allowMaximize
     })}`.key({item: item, index} as any))}
   `
 })

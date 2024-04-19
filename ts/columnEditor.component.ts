@@ -1,4 +1,4 @@
-import { html, set, setLet, tag } from "taggedjs"
+import { html, state, letState, tag } from "taggedjs"
 
 type Formula = {
   value: unknown
@@ -19,10 +19,10 @@ export const columnEditor = tag(({
   columnNames: string[]
   allColumnNames: string[]
 }) => {
-  let mouseOverEditShow = setLet(false)(x => [mouseOverEditShow, mouseOverEditShow = x])
-  let edit = setLet(false)(x => [edit, edit = x])
-  let editFormula = setLet(undefined as Formula | undefined)(x => [editFormula, editFormula = x])
-  const formulas = set([] as Formula[])
+  let mouseOverEditShow = letState(false)(x => [mouseOverEditShow, mouseOverEditShow = x])
+  let edit = letState(false)(x => [edit, edit = x])
+  let editFormula = letState(undefined as Formula | undefined)(x => [editFormula, editFormula = x])
+  const formulas = state([] as Formula[])
 
   const filterNames = () => {
     if( included ) {

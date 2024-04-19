@@ -1,6 +1,6 @@
 import { html, tag } from "taggedjs";
 import { dump } from "./index";
-export const arrayDisplay = tag(({ array, showLevels, showAll, showKids, columnNames, formatChange, toggleColumnDialog, }) => {
+export const arrayDisplay = tag(({ array, showLevels, showAll, showKids, columnNames, formatChange, toggleColumnDialog, allowMaximize, }) => {
     return html `
     ${array.map((item, index) => html `${dump({
         value: paramValueKeys(item, columnNames),
@@ -9,7 +9,8 @@ export const arrayDisplay = tag(({ array, showLevels, showAll, showKids, columnN
         showKids: showAll || showKids,
         isRootDump: false,
         formatChange,
-        onHeaderClick: toggleColumnDialog
+        onHeaderClick: toggleColumnDialog,
+        allowMaximize
     })}`.key({ item: item, index }))}
   `;
 });

@@ -1,13 +1,11 @@
 import { arraysDisplay } from "./arraysDisplay.component";
-import { html, setLet, tag, watch } from "taggedjs";
+import { html, letState, tag, watch } from "taggedjs";
 export const dumpArray = tag(({ // dumpArray
 key, value, show, showAll, showKids, 
 // arrayView,
-showLevels, formatChange,
-// showChangeValue,
- }) => {
-    let showValue = setLet(false)(x => [showValue, showValue = x]);
-    let arrayView = setLet(undefined)(x => [arrayView, arrayView = x]);
+showLevels, formatChange, allowMaximize, }) => {
+    let showValue = letState(false)(x => [showValue, showValue = x]);
+    let arrayView = letState(undefined)(x => [arrayView, arrayView = x]);
     watch([show], ([show]) => showValue = show);
     return html `<!-- array -->
   <div
@@ -27,6 +25,7 @@ showLevels, formatChange,
           onclick=${() => arrayView = arrayView === 'table' ? undefined : 'table'}>${arrayView === 'table' ? 'flex' : 'table'}</a>
       </sup>
       <sup style="opacity:80%;font-size:75%;padding-left:0.4em">[${value.length}]</sup>
+      ${allowMaximize && '🪟'}
     </div>
     
     ${(showAll || showValue || showKids || (showValue == undefined && showLevels > 0)) && html `
@@ -36,7 +35,8 @@ showLevels, formatChange,
         showLevels, showAll, showKids,
         formatChange,
         array: value,
-        arrayView: arrayView
+        arrayView: arrayView,
+        allowMaximize,
     })}
       </div>
     `}

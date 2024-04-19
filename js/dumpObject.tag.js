@@ -1,28 +1,38 @@
-import { html, setLet, tag, watch } from "taggedjs";
+import { html, letState, state, tag, watch } from "taggedjs";
 import { dump } from "./index";
 export const dumpObject = tag(({ // dumpObject
-key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, }) => {
-    let showLower = setLet(false)(x => [showLower, showLower = x]);
+key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, allowMaximize, }) => {
+    let showLower = letState(false)(x => [showLower, showLower = x]);
+    let maximize = letState(false)(x => [maximize, maximize = x]);
+    const maximizeId = state(() => 'maximize-dump-' + performance.now());
     watch([show], ([show]) => showLower = show);
     const continueDump = !key || showKids || showLower || (showLower == undefined && showLevels > 0);
+    const toggleMaximize = () => {
+        maximize = !maximize;
+        if (maximize) {
+            document.getElementById(maximizeId).showModal();
+        }
+    };
+    const minimize = () => document.getElementById(maximizeId).close();
     return html `
     <div style="flex: 1 1 10em;text-align:left;">
       <div
         style="font-size:90%;color:#111111;background-color:#d9edf7;border:1px solid black;border-radius:5px;flex-direction: column;display:flex;"
       >
         ${key && html `
-          <a
-            style=${"padding:0.2em;display:flex;justify-content:space-between;font-size:65%;color:white;border-color:white;flex-grow:1;background-color:#387ef5;" +
+          <div style=${"padding:0.2em;display:flex;justify-content:space-between;font-size:65%;color:white;border-color:white;flex-grow:1;background-color:#387ef5;" +
         (showLower ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;' : '')}
-            onclick=${() => {
-        showLower = !showLower;
-    }}
           >
-            <strong>${key}</strong>
-            <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
-              {${Object.keys(value).length}}
-            </sup>
-          </a>
+            <a onclick=${() => showLower = !showLower}>
+              <strong>${key}</strong>
+              <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
+                {${Object.keys(value).length}}
+              </sup>
+            </a>
+            ${allowMaximize && html `
+              <a onclick=${toggleMaximize}>🪟</a>
+            `}
+          </div>
         `}
         
         ${continueDump && html `
@@ -43,10 +53,30 @@ key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, })
         isRootDump: false,
         formatChange,
         onHeaderClick,
+        allowMaximize,
     })}
             `.key([key, value]))}
           </div>
         `}
+
+        <!-- maximize -->
+        <dialog id=${maximizeId} style="padding:0"
+          onmousedown="var r = this.getBoundingClientRect();(r.top<=event.clientY&&event.clientY<=r.top+r.height&&r.left<=event.clientX&&event.clientX<=r.left+r.width) || this.close()"
+          ondragstart="const {e,dt,t} = {t:this,e:event,dt:event.dataTransfer};const d=t.drag=t.drag||{x:0,y:0};d.initX=d.x;d.startX=event.clientX-t.offsetLeft;d.startY=event.clientY-t.offsetTop;t.ondragover=e.target.ondragover=(e)=>e.preventDefault();dt.effectAllowed='move';dt.dropEffect='move'"
+          ondrag="const {t,e,dt,d}={e:event,dt:event.dataTransfer,d:this.drag}; if(e.clientX===0) return;d.x = d.x + e.offsetX - d.startX; d.y = d.y + e.offsetY - d.startY; this.style.left = d.x + 'px'; this.style.top = d.y+'px';"
+          ondragend="const {t,e,d}={t:this,e:event,d:this.drag};if (d.initX === d.x) {d.x=d.x+e.offsetX-(d.startX-d.x);d.y=d.y+e.offsetY-(d.startY-d.y);this.style.transform=translate3d(d.x+'px', d.y+'px', 0)};this.draggable=false"
+        >
+          <div style="padding:.25em" onmousedown="this.parentNode.draggable=true"
+          >dialog title</div>
+          
+          ${maximize && html `
+            hello world
+          `}
+
+          <div style="padding:.25em">
+            <button type="button" onclick=${minimize}>🅧 close</button>
+          </div>
+        </dialog>
       </div>
     </div>
   `;

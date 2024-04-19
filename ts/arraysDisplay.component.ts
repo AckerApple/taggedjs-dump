@@ -1,5 +1,5 @@
 import { columnEditor } from "./columnEditor.component"
-import { html, set, setLet, tag } from "taggedjs"
+import { html, state, letState, tag } from "taggedjs"
 import { FormatChange } from "./index"
 import { arrayTable } from "./arrayTable.component"
 import { arrayDisplay } from "./arrayDisplay.tag"
@@ -11,6 +11,7 @@ export const arraysDisplay = tag(({
   array,
   arrayView,
   formatChange,
+  allowMaximize,
 }: {
   formatChange: FormatChange
   array: any[]
@@ -18,11 +19,12 @@ export const arraysDisplay = tag(({
   showLevels: number
   showAll?: boolean
   showKids: boolean
+  allowMaximize?: boolean
 }) => {
   const allColumnNames = array.length ? Object.keys(array[0]) : []
-  let columnNames = setLet(allColumnNames)(x => [columnNames, columnNames = x])
-  let showColumnDialog = setLet(false)(x => [showColumnDialog, showColumnDialog = x])
-  let uniqueId = set('columnDialog' + performance.now())
+  let columnNames = letState(allColumnNames)(x => [columnNames, columnNames = x])
+  let showColumnDialog = letState(false)(x => [showColumnDialog, showColumnDialog = x])
+  let uniqueId = state('columnDialog' + performance.now())
 
   const toggleColumnDialog = () => {
     showColumnDialog = !showColumnDialog
@@ -42,7 +44,9 @@ export const arraysDisplay = tag(({
   }) : arrayDisplay({
     array, showLevels, showAll, showKids,
     formatChange,
-    columnNames, toggleColumnDialog
+    columnNames,
+    toggleColumnDialog,
+    allowMaximize
   })
 
   return html`

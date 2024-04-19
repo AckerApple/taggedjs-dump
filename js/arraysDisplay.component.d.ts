@@ -6,4 +6,5 @@ export declare const arraysDisplay: import("taggedjs").TagComponentBase<[{
     showLevels: number;
     showAll?: boolean | undefined;
     showKids: boolean;
+    allowMaximize?: boolean | undefined;
 }]>;

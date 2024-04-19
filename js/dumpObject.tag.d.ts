@@ -8,4 +8,5 @@ export declare const dumpObject: import("taggedjs").TagComponentBase<[{
     showLevels: number;
     formatChange: FormatChange;
     onHeaderClick?: OnHeaderClick | undefined;
+    allowMaximize?: boolean | undefined;
 }]>;
