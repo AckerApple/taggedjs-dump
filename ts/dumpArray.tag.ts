@@ -28,10 +28,7 @@ export const dumpArray = tag(({// dumpArray
 
   watch([show], ([show])=> showValue = show)
 
-  return html`<!-- array -->
-  <div
-    style="color:#111111;background-color:#f2dede;border:1px solid black;border-radius:5px;flex-direction: column;display:flex"
-  >
+  const header = html`
     <div
       style=${
         "padding:0.2em;display:flex;justify-content:space-between;flex-grow:1;font-size:65%;border-color:white;color:white;background-color:#ef473a;" +
@@ -49,21 +46,29 @@ export const dumpArray = tag(({// dumpArray
         }>${arrayView === 'table' ? 'flex' : 'table'}</a>
       </sup>
       <sup style="opacity:80%;font-size:75%;padding-left:0.4em">[${value.length}]</sup>
-      ${allowMaximize && '🪟'}
+      ${/*allowMaximize && '🪟'*/false}
     </div>
-    
-    ${(showAll || showValue || showKids || (showValue==undefined && showLevels > 0)) && html`
-      <!-- array displays wrap -->
-      <div style="text-align:left;display:flex;flex-wrap:wrap;margin:0.2em;gap:0.2em">
-        ${arraysDisplay({
-          showLevels, showAll, showKids,
-          formatChange,
-          array: value,
-          arrayView: arrayView as string,
-          allowMaximize,
-        })}
-      </div>
-    `}
+  `
+
+  const body = html`
+    <!-- array displays wrap -->
+    <div style="text-align:left;display:flex;flex-wrap:wrap;margin:0.2em;gap:0.2em">
+      ${arraysDisplay({
+        showLevels, showAll, showKids,
+        formatChange,
+        array: value,
+        arrayView: arrayView as string,
+        allowMaximize,
+      })}
+    </div>
+  `
+
+  return html`<!-- array -->
+  <div
+    style="color:#111111;background-color:#f2dede;border:1px solid black;border-radius:5px;flex-direction: column;display:flex"
+  >
+    ${header}
+    ${(showAll || showValue || showKids || (showValue==undefined && showLevels > 0)) && body}
   </div>
   `
 })

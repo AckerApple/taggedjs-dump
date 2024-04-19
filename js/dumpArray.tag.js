@@ -7,10 +7,7 @@ showLevels, formatChange, allowMaximize, }) => {
     let showValue = letState(false)(x => [showValue, showValue = x]);
     let arrayView = letState(undefined)(x => [arrayView, arrayView = x]);
     watch([show], ([show]) => showValue = show);
-    return html `<!-- array -->
-  <div
-    style="color:#111111;background-color:#f2dede;border:1px solid black;border-radius:5px;flex-direction: column;display:flex"
-  >
+    const header = html `
     <div
       style=${"padding:0.2em;display:flex;justify-content:space-between;flex-grow:1;font-size:65%;border-color:white;color:white;background-color:#ef473a;" +
         (showValue ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;' : '')}
@@ -25,21 +22,27 @@ showLevels, formatChange, allowMaximize, }) => {
           onclick=${() => arrayView = arrayView === 'table' ? undefined : 'table'}>${arrayView === 'table' ? 'flex' : 'table'}</a>
       </sup>
       <sup style="opacity:80%;font-size:75%;padding-left:0.4em">[${value.length}]</sup>
-      ${allowMaximize && '🪟'}
+      ${ /*allowMaximize && '🪟'*/false}
     </div>
-    
-    ${(showAll || showValue || showKids || (showValue == undefined && showLevels > 0)) && html `
-      <!-- array displays wrap -->
-      <div style="text-align:left;display:flex;flex-wrap:wrap;margin:0.2em;gap:0.2em">
-        ${arraysDisplay({
+  `;
+    const body = html `
+    <!-- array displays wrap -->
+    <div style="text-align:left;display:flex;flex-wrap:wrap;margin:0.2em;gap:0.2em">
+      ${arraysDisplay({
         showLevels, showAll, showKids,
         formatChange,
         array: value,
         arrayView: arrayView,
         allowMaximize,
     })}
-      </div>
-    `}
+    </div>
+  `;
+    return html `<!-- array -->
+  <div
+    style="color:#111111;background-color:#f2dede;border:1px solid black;border-radius:5px;flex-direction: column;display:flex"
+  >
+    ${header}
+    ${(showAll || showValue || showKids || (showValue == undefined && showLevels > 0)) && body}
   </div>
   `;
 });
