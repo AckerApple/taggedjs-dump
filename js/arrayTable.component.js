@@ -2,7 +2,7 @@ import { html, tag } from "taggedjs";
 import { dump } from "./index";
 export const arrayTable = tag(({ array, 
 // showLevels,
-showAll, showKids, toggleColumnDialog, columnNames, formatChange, }) => {
+showAll, showKids, toggleColumnDialog, columnNames, formatChange, allowMaximize, }) => {
     return html `<!-- array table -->
     <!-- overflow-y: scroll; -->
     <div style="max-height: 800px;max-width:100vw;overflow: scroll;">
@@ -31,6 +31,7 @@ showAll, showKids, toggleColumnDialog, columnNames, formatChange, }) => {
         showKids: showAll || showKids,
         isRootDump: false,
         formatChange,
+        allowMaximize,
     })}
                 </td>
               `.key(row[name]))}

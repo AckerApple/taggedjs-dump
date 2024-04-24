@@ -7,4 +7,5 @@ export declare const arrayDisplay: import("taggedjs").TagComponentBase<[{
     columnNames: string[];
     formatChange: FormatChange;
     toggleColumnDialog: () => any;
+    allowMaximize?: boolean | undefined;
 }]>;

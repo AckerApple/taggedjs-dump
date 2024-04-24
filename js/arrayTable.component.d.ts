@@ -6,4 +6,5 @@ export declare const arrayTable: import("taggedjs").TagComponentBase<[{
     toggleColumnDialog: any;
     columnNames: string[];
     formatChange: FormatChange;
+    allowMaximize?: boolean | undefined;
 }]>;
