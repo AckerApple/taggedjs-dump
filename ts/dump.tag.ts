@@ -16,10 +16,9 @@ export const dump = tag(({// dump tag
   onHeaderClick,
   allowMaximize,
 }: DumpProps) => {
-  if(isRootDump && allowMaximize == undefined) {
+  if(isRootDump && allowMaximize === undefined) {
     allowMaximize = true
   }
-  console.log('allowMaximize',allowMaximize)
   const isObject = () => value && value instanceof Object
   const typing = value === null ? 'null' : typeof(value)
   

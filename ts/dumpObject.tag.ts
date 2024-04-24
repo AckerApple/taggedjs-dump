@@ -37,7 +37,7 @@ export const dumpObject = tag(({// dumpObject
   }
   const minimize = () => (document.getElementById(maximizeId) as any).close()
 
-  const dumpHead = html`
+  const getHead = (allowMaximize?: boolean) => html`
     <div style=${
         "padding:0.2em;display:flex;justify-content:space-between;font-size:65%;color:white;border-color:white;flex-grow:1;background-color:#387ef5;" +
         (showLower ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;' : '')
@@ -49,13 +49,13 @@ export const dumpObject = tag(({// dumpObject
           {${Object.keys(value).length}}
         </sup>
       </a>
-      ${/*allowMaximize && html`
-        <a onclick=${toggleMaximize}>🪟</a>
-      `*/false}
+      ${allowMaximize && html`
+        <a onclick=${toggleMaximize}>⏹️</a>
+      `}
     </div>
   `
 
-  const dumpBody = html`
+  const getDumpBody = (allowMaximize?: boolean) => html`
     <div style="display:flex;flex-wrap:wrap">
       ${Object.entries(value).map(([key, value]) => html`
         <!-- recurse -->
@@ -86,8 +86,8 @@ export const dumpObject = tag(({// dumpObject
       <div
         style="font-size:90%;color:#111111;background-color:#d9edf7;border:1px solid black;border-radius:5px;flex-direction: column;display:flex;"
       >
-        ${key && dumpHead}
-        ${continueDump && dumpBody}
+        ${key && getHead(allowMaximize)}
+        ${continueDump && getDumpBody(allowMaximize)}
 
         <!-- maximize -->
         <dialog id=${maximizeId} style="padding:0"
@@ -96,13 +96,11 @@ export const dumpObject = tag(({// dumpObject
           ondrag="const {t,e,dt,d}={e:event,dt:event.dataTransfer,d:this.drag}; if(e.clientX===0) return;d.x = d.x + e.offsetX - d.startX; d.y = d.y + e.offsetY - d.startY; this.style.left = d.x + 'px'; this.style.top = d.y+'px';"
           ondragend="const {t,e,d}={t:this,e:event,d:this.drag};if (d.initX === d.x) {d.x=d.x+e.offsetX-(d.startX-d.x);d.y=d.y+e.offsetY-(d.startY-d.y);this.style.transform=translate3d(d.x+'px', d.y+'px', 0)};this.draggable=false"
         >
-          <div style="padding:.25em" onmousedown="this.parentNode.draggable=true"
-          >dialog title</div>
+          <div style="padding:.25em" onmousedown="this.parentNode.draggable=true">
+            ${maximize && getHead(false)}
+          </div>
           
-          ${maximize && html`
-            ${dumpHead}
-            ${dumpBody}
-          `}
+          ${maximize && getDumpBody(false)}
 
           <div style="padding:.25em">
             <button type="button" onclick=${minimize}>🅧 close</button>

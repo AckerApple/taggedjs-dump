@@ -5,10 +5,9 @@ import { dumpObject } from "./dumpObject.tag";
 import { controlPanel } from "./controlPanel.tag";
 export const dump = tag(({ // dump tag
 key, value, showKids = false, showLevels = -1, showAll = false, format = 'flex', formatChange = x => format = x, isRootDump = true, onHeaderClick, allowMaximize, }) => {
-    if (isRootDump && allowMaximize == undefined) {
+    if (isRootDump && allowMaximize === undefined) {
         allowMaximize = true;
     }
-    console.log('allowMaximize', allowMaximize);
     const isObject = () => value && value instanceof Object;
     const typing = value === null ? 'null' : typeof (value);
     let show = letState(false)(x => [show, show = x]);
