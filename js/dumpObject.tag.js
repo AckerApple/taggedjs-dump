@@ -25,7 +25,7 @@ key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, al
         </sup>
       </a>
       ${allowMaximize && html `
-        <a onclick=${toggleMaximize}>⏹️</a>
+        &nbsp;<a onclick=${toggleMaximize}>⏹️</a>
       `}
     </div>
   `;

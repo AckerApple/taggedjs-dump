@@ -27,10 +27,8 @@ const simpleValue = tag((value) => {
         if (Date.now() - downTime > 300) {
             event.preventDefault();
             event.stopPropagation();
-            console.log('xx');
             return true; // a manual drag copy is taking place
         }
-        console.log('copied');
         copyText(value); // a regular click took place
     };
     return html `

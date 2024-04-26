@@ -32,7 +32,7 @@ showLevels, formatChange, allowMaximize, }) => {
       </sup>
       <sup style="opacity:80%;font-size:75%;padding-left:0.4em">[${value.length}]</sup>
       ${allowMaximize && html `
-        <a onclick=${toggleMaximize}>⏹️</a>
+        &nbsp;<a onclick=${toggleMaximize}>⏹️</a>
       `}
     </div>
   `;
