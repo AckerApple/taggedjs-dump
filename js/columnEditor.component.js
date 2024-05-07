@@ -20,6 +20,14 @@ export const columnEditor = tag(({ name, array, included, columnNames, allColumn
         columnNames.length = 0;
         columnNames.push(name);
     };
+    function toggle() {
+        const index = columnNames.indexOf(name);
+        if (index >= 0) {
+            columnNames.splice(index, 1);
+            return;
+        }
+        columnNames.push(name);
+    }
     const addSumFormula = () => {
         const stringFormula = `
       array.reduce((all, item) => {
@@ -38,7 +46,7 @@ export const columnEditor = tag(({ name, array, included, columnNames, allColumn
         formula.value = sandboxRunEval(newFormula, { array });
     };
     return html `
-    <a onclick=${filterNames} style="cursor:pointer;">
+    <a onclick=${toggle} style="cursor:pointer;">
       <input type="checkbox" ${included && 'checked'} />&nbsp;${name}
     </a>
 
