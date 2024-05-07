@@ -76,12 +76,21 @@ export const Dump = tag(() => {
         })}
         <hr />
         ${dump({
-          value: stripeList
+          value: stripeList,
+          everySimpleValue: (value) => {
+            if(typeof value === 'string' && value.substring(0,3) === 'pm_') {
+              return html`<a style="color:blue;">${value}</a>`
+            }
+            
+            return value
+          }
         })}
       </div>
     </div>
   `
 })
+
+//cha
 
 // execute script in private context
 function sandboxEval(
