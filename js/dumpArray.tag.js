@@ -3,8 +3,8 @@ import { html, letState, state, tag, watch } from "taggedjs";
 export const dumpArray = tag(({ // dumpArray
 key, value, show, showAll, showKids, 
 // arrayView,
-showLevels, formatChange, allowMaximize, }) => {
-    let showValue = letState(false)(x => [showValue, showValue = x]);
+showLevels, formatChange, allowMaximize, everySimpleValue, }) => {
+    let showValue = letState(undefined)(x => [showValue, showValue = x]);
     let arrayView = letState(undefined)(x => [arrayView, arrayView = x]);
     watch([show], ([show]) => showValue = show);
     let maximize = letState(false)(x => [maximize, maximize = x]);
@@ -42,6 +42,7 @@ showLevels, formatChange, allowMaximize, }) => {
         array: value,
         arrayView: arrayView,
         allowMaximize,
+        everySimpleValue,
     };
     const body = html `
     <!-- array displays wrap -->

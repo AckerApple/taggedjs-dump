@@ -1,4 +1,5 @@
 import { FormatChange } from "./index.js";
+import { EverySimpleValue } from "./dump.props";
 export declare const dumpArray: import("taggedjs").TagComponentBase<[{
     value: any;
     showLevels: number;
@@ -8,4 +9,5 @@ export declare const dumpArray: import("taggedjs").TagComponentBase<[{
     showKids: boolean;
     formatChange: FormatChange;
     allowMaximize?: boolean | undefined;
+    everySimpleValue?: EverySimpleValue | undefined;
 }]>;

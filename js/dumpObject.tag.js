@@ -1,7 +1,7 @@
 import { html, letState, state, tag, watch } from "taggedjs";
 import { dump } from "./index";
 export const dumpObject = tag(({ // dumpObject
-key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, allowMaximize, }) => {
+key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, allowMaximize, everySimpleValue, }) => {
     let showLower = letState(false)(x => [showLower, showLower = x]);
     let maximize = letState(false)(x => [maximize, maximize = x]);
     const maximizeId = state(() => 'maximize-dump-' + performance.now());
@@ -48,6 +48,7 @@ key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, al
         formatChange,
         onHeaderClick,
         allowMaximize,
+        everySimpleValue,
     })}
       `.key([key, value]))}
     </div>
