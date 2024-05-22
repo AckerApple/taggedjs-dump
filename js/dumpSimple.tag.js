@@ -1,7 +1,15 @@
 import { html, letState, tag } from "taggedjs";
 import { copyText } from "./copyText.function";
-export function dumpSimple({ key, value, onHeaderClick }) {
+export function dumpSimple({ key, value, onHeaderClick, everySimpleValue }) {
     const isLinkValue = value.search && (value.slice(0, 8) === 'https://' || value.slice(0, 7) === 'http://');
+    // const result = everySimpleValue && everySimpleValue(value, key)
+    let displayValue;
+    if (everySimpleValue) {
+        displayValue = simpleValue({ value, everySimpleValue });
+    }
+    else {
+        displayValue = isLinkValue ? linkValue(value) : simpleValue({ value });
+    }
     return html `
     <div style="font-size:75%;flex:1 1 10em;color:#111111">
       ${key && html `
@@ -10,11 +18,11 @@ export function dumpSimple({ key, value, onHeaderClick }) {
           onclick=${onHeaderClick}
         >${key}</div>
       `}
-      ${isLinkValue ? linkValue(value) : simpleValue(value)}
+      ${displayValue}
     </div>
   `;
 }
-const simpleValue = tag((value) => {
+const simpleValue = tag(({ value, everySimpleValue }) => {
     const isLikeNull = [undefined, null, 'null'].includes(value);
     const number = value;
     const isLargeNumber = !isNaN(number) && number > 1000000000;
@@ -27,12 +35,15 @@ const simpleValue = tag((value) => {
         if (Date.now() - downTime > 300) {
             event.preventDefault();
             event.stopPropagation();
-            console.log('xx');
             return true; // a manual drag copy is taking place
         }
-        console.log('copied');
         copyText(value); // a regular click took place
     };
+    let displayValue = value;
+    if (everySimpleValue) {
+        displayValue = everySimpleValue(value);
+    }
+    displayValue = displayValue === null && 'null' || displayValue === false && 'false' || displayValue === undefined && 'undefined' || displayValue;
     return html `
     <div class="hover-bg-warning active-bg-energized"
       onmousedown=${startMouseDown}
@@ -43,7 +54,7 @@ const simpleValue = tag((value) => {
         (value === false && '#e42112') ||
         isLikeNull && 'white' || ''}
       title=${title}
-    >${value === null && 'null' || value === false && 'false' || value === undefined && 'undefined' || value}</div>
+    >${displayValue}</div>
   `;
 });
 function getLargeNumberTitle(number) {

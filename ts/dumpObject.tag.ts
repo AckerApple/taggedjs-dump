@@ -1,5 +1,6 @@
 import { html, letState, state, tag, watch } from "taggedjs"
 import { FormatChange, OnHeaderClick, dump } from "./index"
+import { EverySimpleValue } from "./dump.props"
 
 export const dumpObject = tag(({// dumpObject
   key, showKids,
@@ -10,6 +11,7 @@ export const dumpObject = tag(({// dumpObject
   onHeaderClick,
   formatChange,
   allowMaximize,
+  everySimpleValue,
 }:{
   key?: string
   value: any
@@ -20,12 +22,13 @@ export const dumpObject = tag(({// dumpObject
   formatChange: FormatChange
   onHeaderClick?: OnHeaderClick
   allowMaximize?: boolean
+  everySimpleValue?: EverySimpleValue
 }) => {
   let showLower = letState(false)(x => [showLower, showLower = x])
   let maximize = letState(false)(x => [maximize, maximize = x])
   const maximizeId = state(() => 'maximize-dump-' + performance.now())
 
-  watch([show], ([show]) => showLower = show)
+  watch.noInit([show], ([show]) => showLower = show)
 
   const continueDump = !key || showKids || showLower || (showLower==undefined && showLevels > 0)
 
@@ -50,7 +53,7 @@ export const dumpObject = tag(({// dumpObject
         </sup>
       </a>
       ${allowMaximize && html`
-        <a onclick=${toggleMaximize}>⏹️</a>
+        &nbsp;<a onclick=${toggleMaximize}><span style="width:10px;height:10px;border:1px solid white;border-top-width:3px;display:inline-block;"></span></a>
       `}
     </div>
   `
@@ -76,6 +79,7 @@ export const dumpObject = tag(({// dumpObject
             formatChange,
             onHeaderClick,
             allowMaximize,
+            everySimpleValue,
           })}
       `.key([key, value]))}
     </div>
@@ -90,7 +94,7 @@ export const dumpObject = tag(({// dumpObject
         ${continueDump && getDumpBody(allowMaximize)}
 
         <!-- maximize -->
-        <dialog id=${maximizeId} style="padding:0"
+        <dialog id=${maximizeId} class="dump-dialog" style="padding:0"
           onmousedown="var r = this.getBoundingClientRect();(r.top<=event.clientY&&event.clientY<=r.top+r.height&&r.left<=event.clientX&&event.clientX<=r.left+r.width) || this.close()"
           ondragstart="const {e,dt,t} = {t:this,e:event,dt:event.dataTransfer};const d=t.drag=t.drag||{x:0,y:0};d.initX=d.x;d.startX=event.clientX-t.offsetLeft;d.startY=event.clientY-t.offsetTop;t.ondragover=e.target.ondragover=(e)=>e.preventDefault();dt.effectAllowed='move';dt.dropEffect='move'"
           ondrag="const {t,e,dt,d}={e:event,dt:event.dataTransfer,d:this.drag}; if(e.clientX===0) return;d.x = d.x + e.offsetX - d.startX; d.y = d.y + e.offsetY - d.startY; this.style.left = d.x + 'px'; this.style.top = d.y+'px';"
@@ -103,7 +107,7 @@ export const dumpObject = tag(({// dumpObject
           ${maximize && getDumpBody(false)}
 
           <div style="padding:.25em">
-            <button type="button" onclick=${minimize}>🅧 close</button>
+            <button type="button" onclick=${minimize} style="width:100%">🅧 close</button>
           </div>
         </dialog>
       </div>

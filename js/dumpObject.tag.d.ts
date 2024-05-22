@@ -1,12 +1,16 @@
 import { FormatChange, OnHeaderClick } from "./index";
-export declare const dumpObject: import("taggedjs").TagComponentBase<[{
-    key?: string | undefined;
+import { EverySimpleValue } from "./dump.props";
+export declare const dumpObject: (({ key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, allowMaximize, everySimpleValue, }: {
+    key?: string;
     value: any;
-    showAll?: boolean | undefined;
+    showAll?: boolean;
     showKids: boolean;
     show: boolean;
     showLevels: number;
     formatChange: FormatChange;
-    onHeaderClick?: OnHeaderClick | undefined;
-    allowMaximize?: boolean | undefined;
-}]>;
+    onHeaderClick?: OnHeaderClick;
+    allowMaximize?: boolean;
+    everySimpleValue?: EverySimpleValue;
+}) => import("taggedjs").Tag) & {
+    original: Function;
+};

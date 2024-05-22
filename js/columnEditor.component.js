@@ -4,14 +4,6 @@ export const columnEditor = tag(({ name, array, included, columnNames, allColumn
     let edit = letState(false)(x => [edit, edit = x]);
     let editFormula = letState(undefined)(x => [editFormula, editFormula = x]);
     const formulas = state([]);
-    const filterNames = () => {
-        if (included) {
-            columnNames.length = 0;
-            columnNames.push(...columnNames.filter(n => n !== name));
-            return;
-        }
-        columnNames.push(name);
-    };
     const goAll = () => {
         columnNames.length = 0;
         columnNames.push(...allColumnNames);
@@ -20,6 +12,14 @@ export const columnEditor = tag(({ name, array, included, columnNames, allColumn
         columnNames.length = 0;
         columnNames.push(name);
     };
+    function toggle() {
+        const index = columnNames.indexOf(name);
+        if (index >= 0) {
+            columnNames.splice(index, 1);
+            return;
+        }
+        columnNames.push(name);
+    }
     const addSumFormula = () => {
         const stringFormula = `
       array.reduce((all, item) => {
@@ -32,14 +32,13 @@ export const columnEditor = tag(({ name, array, included, columnNames, allColumn
             stringFormula,
             value: sandboxRunEval(stringFormula, { array })
         });
-        // console.log('formulas', formulas.length)
     };
     const updateFormula = (formula, newFormula) => {
         formula.stringFormula = newFormula;
         formula.value = sandboxRunEval(newFormula, { array });
     };
     return html `
-    <a onclick=${filterNames} style="cursor:pointer;">
+    <a onclick=${toggle} style="cursor:pointer;">
       <input type="checkbox" ${included && 'checked'} />&nbsp;${name}
     </a>
 

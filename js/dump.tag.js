@@ -1,18 +1,18 @@
-import { html, onInit, letState, setProp, tag } from "taggedjs";
+import { html, onInit, letState, tag, letProp } from "taggedjs";
 import { dumpArray } from "./dumpArray.tag";
 import { dumpSimple } from "./dumpSimple.tag";
 import { dumpObject } from "./dumpObject.tag";
 import { controlPanel } from "./controlPanel.tag";
 export const dump = tag(({ // dump tag
-key, value, showKids = false, showLevels = -1, showAll = false, format = 'flex', formatChange = x => format = x, isRootDump = true, onHeaderClick, allowMaximize, }) => {
+key, value, showKids = false, showLevels = -1, showAll = false, format = 'flex', formatChange = x => format = x, isRootDump = true, onHeaderClick, allowMaximize, everySimpleValue, }) => {
     if (isRootDump && allowMaximize === undefined) {
         allowMaximize = true;
     }
     const isObject = () => value && value instanceof Object;
     const typing = value === null ? 'null' : typeof (value);
     let show = letState(false)(x => [show, show = x]);
-    setProp(x => [format, format = x]);
-    setProp(x => [showAll, showAll = x]);
+    letProp(format)(x => [format, format = x]);
+    letProp(showAll)(x => [showAll, showAll = x]);
     let arrayView = letState(undefined)(x => [arrayView, arrayView = x]);
     onInit(() => {
         const levelsDefined = (showLevels >= 0 && showLevels);
@@ -32,7 +32,8 @@ key, value, showKids = false, showLevels = -1, showAll = false, format = 'flex',
             return dumpSimple({
                 key: key,
                 value: 'null',
-                onHeaderClick
+                onHeaderClick,
+                everySimpleValue,
             });
         }
         const isArray = (!format || format === 'flex') && (value.push && value.pop);
@@ -58,6 +59,7 @@ key, value, showKids = false, showLevels = -1, showAll = false, format = 'flex',
             showLevels,
             formatChange,
             allowMaximize,
+            everySimpleValue,
         })) ||
             dumpObject({
                 key,
@@ -70,6 +72,7 @@ key, value, showKids = false, showLevels = -1, showAll = false, format = 'flex',
                 formatChange,
                 onHeaderClick,
                 allowMaximize,
+                everySimpleValue,
             }))}
       </div>
     `;
@@ -79,12 +82,13 @@ key, value, showKids = false, showLevels = -1, showAll = false, format = 'flex',
         return dumpSimple({
             key: key,
             value: typing,
-            onHeaderClick
+            onHeaderClick,
+            everySimpleValue,
         });
     }
     /* IF 2: simple value ELSE goto objectTemplate */
     if (['boolean', 'number', 'string'].includes(typing)) {
-        return dumpSimple({ key: key, value, onHeaderClick });
+        return dumpSimple({ key: key, value, onHeaderClick, everySimpleValue });
     }
     return objectTemplate();
 });

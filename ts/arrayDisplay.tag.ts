@@ -1,5 +1,6 @@
 import { html, tag } from "taggedjs"
 import { FormatChange, dump } from "./index"
+import { EverySimpleValue } from "./dump.props"
 
 export const arrayDisplay = tag(({
   array, showLevels,
@@ -8,6 +9,7 @@ export const arrayDisplay = tag(({
   formatChange,
   toggleColumnDialog,
   allowMaximize,
+  everySimpleValue,
 }: {
   array: any[]
   showLevels: number
@@ -17,6 +19,7 @@ export const arrayDisplay = tag(({
   formatChange: FormatChange
   toggleColumnDialog: () => any
   allowMaximize?: boolean,
+  everySimpleValue?: EverySimpleValue,
 }) => {
   return html`
     ${array.map((
@@ -30,7 +33,8 @@ export const arrayDisplay = tag(({
       isRootDump:false,
       formatChange,
       onHeaderClick: toggleColumnDialog,
-      allowMaximize
+      allowMaximize,
+      everySimpleValue,
     })}`.key({item: item, index} as any))}
   `
 })

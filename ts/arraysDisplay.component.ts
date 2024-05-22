@@ -3,6 +3,7 @@ import { html, state, letState, tag } from "taggedjs"
 import { FormatChange } from "./index"
 import { arrayTable } from "./arrayTable.component"
 import { arrayDisplay } from "./arrayDisplay.tag"
+import { EverySimpleValue } from "./dump.props"
 
 export const arraysDisplay = tag(({
   showLevels,
@@ -12,6 +13,7 @@ export const arraysDisplay = tag(({
   arrayView,
   formatChange,
   allowMaximize,
+  everySimpleValue,
 }: {
   formatChange: FormatChange
   array: any[]
@@ -20,6 +22,7 @@ export const arraysDisplay = tag(({
   showAll?: boolean
   showKids: boolean
   allowMaximize?: boolean
+  everySimpleValue?: EverySimpleValue
 }) => {
   const allColumnNames = array.length ? Object.keys(array[0]) : []
   let columnNames = letState(allColumnNames)(x => [columnNames, columnNames = x])
@@ -40,13 +43,13 @@ export const arraysDisplay = tag(({
   const arrayTag = arrayView === 'table' ? arrayTable({
     showAll, showKids,
     array, toggleColumnDialog, columnNames,
-    formatChange,
+    formatChange, everySimpleValue,
   }) : arrayDisplay({
     array, showLevels, showAll, showKids,
     formatChange,
     columnNames,
     toggleColumnDialog,
-    allowMaximize
+    allowMaximize, everySimpleValue
   })
 
   return html`

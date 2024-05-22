@@ -1,13 +1,26 @@
-import { html, letState, tag } from "taggedjs"
+import { Tag, html, letState, tag } from "taggedjs"
 import { OnHeaderClick } from "./index"
 import { copyText } from "./copyText.function"
+import { EverySimpleValue, SimpleValue } from "./dump.props"
 
-export function dumpSimple({key, value, onHeaderClick}: {
-  key: string
+export function dumpSimple({
+  key, value, onHeaderClick, everySimpleValue
+}: {
+  key: string | undefined
   value: any
-  onHeaderClick?: OnHeaderClick
+  onHeaderClick?: OnHeaderClick,
+  everySimpleValue?: EverySimpleValue,
 }) {
   const isLinkValue = value.search && (value.slice(0,8)==='https://' || value.slice(0,7)==='http://')
+
+  // const result = everySimpleValue && everySimpleValue(value, key)
+  let displayValue: SimpleValue | Tag
+
+  if(everySimpleValue) {
+    displayValue = simpleValue({value, everySimpleValue})
+  } else {
+    displayValue = isLinkValue ? linkValue(value) : simpleValue({value})
+  }
   
   return html`
     <div style="font-size:75%;flex:1 1 10em;color:#111111">
@@ -17,14 +30,15 @@ export function dumpSimple({key, value, onHeaderClick}: {
           onclick=${onHeaderClick}
         >${key}</div>
       `}
-      ${isLinkValue ? linkValue(value) : simpleValue(value)}
+      ${displayValue}
     </div>
   `
 }
 
-const simpleValue = tag((
-  value: string | undefined | null | boolean
-) => {
+const simpleValue = tag(({value, everySimpleValue}: {
+  value: string | undefined | null | boolean,
+  everySimpleValue?: EverySimpleValue,
+}) => {
   const isLikeNull = [undefined,null,'null'].includes(value as null | undefined)
   const number = value as unknown as number
   const isLargeNumber = !isNaN(number) && number > 1000000000
@@ -39,13 +53,19 @@ const simpleValue = tag((
     if(Date.now() - downTime > 300) {
       event.preventDefault()
       event.stopPropagation()
-      console.log('xx')
       return true // a manual drag copy is taking place
     }
 
-    console.log('copied')
     copyText(value as string) // a regular click took place
   }
+
+  let displayValue = value
+
+  if(everySimpleValue) {
+    displayValue = everySimpleValue(value) as any
+  }
+
+  displayValue = displayValue === null && 'null' || displayValue === false && 'false' || displayValue === undefined && 'undefined' || displayValue
 
   return html`
     <div class="hover-bg-warning active-bg-energized"
@@ -59,7 +79,7 @@ const simpleValue = tag((
         isLikeNull && 'white' || ''
       }
       title=${title}
-    >${value === null && 'null' || value === false && 'false' || value === undefined && 'undefined' || value}</div>
+    >${displayValue}</div>
   `
 })
 

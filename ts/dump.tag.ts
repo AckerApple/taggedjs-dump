@@ -1,4 +1,4 @@
-import { html, onInit, letState, setProp, tag, Tag } from "taggedjs"
+import { html, onInit, letState, tag, Tag, letProp } from "taggedjs"
 import { dumpArray } from "./dumpArray.tag"
 import { dumpSimple } from "./dumpSimple.tag"
 import { dumpObject } from "./dumpObject.tag"
@@ -15,6 +15,7 @@ export const dump = tag(({// dump tag
   isRootDump = true,
   onHeaderClick,
   allowMaximize,
+  everySimpleValue,
 }: DumpProps) => {
   if(isRootDump && allowMaximize === undefined) {
     allowMaximize = true
@@ -23,8 +24,8 @@ export const dump = tag(({// dump tag
   const typing = value === null ? 'null' : typeof(value)
   
   let show = letState(false)(x => [show, show = x])
-  setProp(x => [format, format = x])
-  setProp(x => [showAll, showAll = x])
+  letProp(format)(x => [format, format = x])
+  letProp(showAll)(x => [showAll, showAll = x])
   let arrayView = letState(undefined as undefined | 'table')(x => [arrayView, arrayView = x])
 
   onInit(() => {
@@ -48,7 +49,8 @@ export const dump = tag(({// dump tag
       return dumpSimple({
         key: key as string,
         value: 'null',
-        onHeaderClick
+        onHeaderClick,
+        everySimpleValue,
       })
     }
 
@@ -77,6 +79,7 @@ export const dump = tag(({// dump tag
             showLevels,
             formatChange,
             allowMaximize,
+            everySimpleValue,
           })) ||
           dumpObject({
             key,
@@ -89,6 +92,7 @@ export const dump = tag(({// dump tag
             formatChange,
             onHeaderClick,
             allowMaximize,
+            everySimpleValue,
           })
         )}
       </div>
@@ -100,13 +104,14 @@ export const dump = tag(({// dump tag
     return dumpSimple({
       key: key as string,
       value: typing,
-      onHeaderClick
+      onHeaderClick,
+      everySimpleValue,
     })
   }
   
   /* IF 2: simple value ELSE goto objectTemplate */
   if(['boolean','number','string'].includes(typing)) {
-    return dumpSimple({key:key as string, value, onHeaderClick})
+    return dumpSimple({key:key as string, value, onHeaderClick, everySimpleValue})
   }
 
   return objectTemplate()

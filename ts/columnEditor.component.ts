@@ -24,16 +24,6 @@ export const columnEditor = tag(({
   let editFormula = letState(undefined as Formula | undefined)(x => [editFormula, editFormula = x])
   const formulas = state([] as Formula[])
 
-  const filterNames = () => {
-    if( included ) {
-      columnNames.length=0
-      columnNames.push(...columnNames.filter(n => n !== name))
-      return
-    }
-    
-    columnNames.push(name)
-  }
-
   const goAll = () => {
     columnNames.length = 0
     columnNames.push(...allColumnNames)
@@ -41,6 +31,17 @@ export const columnEditor = tag(({
 
   const goOnly = () => {
     columnNames.length = 0
+    columnNames.push(name)
+  }
+
+  function toggle() {
+    const index = columnNames.indexOf(name)
+
+    if(index >= 0) {
+      columnNames.splice(index, 1)
+      return
+    }
+
     columnNames.push(name)
   }
 
@@ -57,8 +58,6 @@ export const columnEditor = tag(({
       stringFormula,
       value: sandboxRunEval(stringFormula, {array})
     })
-
-    // console.log('formulas', formulas.length)
   }
 
   const updateFormula = (formula: Formula, newFormula: string) => {
@@ -67,7 +66,7 @@ export const columnEditor = tag(({
   }
 
   return html`
-    <a onclick=${filterNames} style="cursor:pointer;">
+    <a onclick=${toggle} style="cursor:pointer;">
       <input type="checkbox" ${included && 'checked'} />&nbsp;${name}
     </a>
 

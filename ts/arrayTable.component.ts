@@ -1,5 +1,6 @@
 import { html, tag } from "taggedjs"
 import { FormatChange, dump } from "./index"
+import { EverySimpleValue } from "./dump.props"
 
 export const arrayTable = tag(({
   array,
@@ -10,6 +11,7 @@ export const arrayTable = tag(({
   columnNames,
   formatChange,
   allowMaximize,
+  everySimpleValue,
 }: {
   array: any[]
   // showLevels: number
@@ -19,6 +21,7 @@ export const arrayTable = tag(({
   columnNames: string[],
   formatChange: FormatChange,
   allowMaximize?: boolean,
+  everySimpleValue?: EverySimpleValue
 }) => {
   return html`<!-- array table -->
     <!-- overflow-y: scroll; -->
