@@ -1,7 +1,7 @@
 {
   "name": "taggedjs-dump",
   "private": true,
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "visually dump and interact with javascript and json objects",
   "main": "js/index.js",
   "scripts": {
