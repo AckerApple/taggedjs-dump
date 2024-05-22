@@ -4,14 +4,6 @@ export const columnEditor = tag(({ name, array, included, columnNames, allColumn
     let edit = letState(false)(x => [edit, edit = x]);
     let editFormula = letState(undefined)(x => [editFormula, editFormula = x]);
     const formulas = state([]);
-    const filterNames = () => {
-        if (included) {
-            columnNames.length = 0;
-            columnNames.push(...columnNames.filter(n => n !== name));
-            return;
-        }
-        columnNames.push(name);
-    };
     const goAll = () => {
         columnNames.length = 0;
         columnNames.push(...allColumnNames);

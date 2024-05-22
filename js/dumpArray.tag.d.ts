@@ -1,13 +1,15 @@
 import { FormatChange } from "./index.js";
 import { EverySimpleValue } from "./dump.props";
-export declare const dumpArray: import("taggedjs").TagComponentBase<[{
+export declare const dumpArray: (({ key, value, show, showAll, showKids, showLevels, formatChange, allowMaximize, everySimpleValue, }: {
     value: any;
     showLevels: number;
-    key?: string | undefined;
+    key?: string;
     show: boolean;
-    showAll?: boolean | undefined;
+    showAll?: boolean;
     showKids: boolean;
     formatChange: FormatChange;
-    allowMaximize?: boolean | undefined;
-    everySimpleValue?: EverySimpleValue | undefined;
-}]>;
+    allowMaximize?: boolean;
+    everySimpleValue?: EverySimpleValue;
+}) => import("taggedjs").Tag) & {
+    original: Function;
+};

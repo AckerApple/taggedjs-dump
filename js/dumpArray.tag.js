@@ -6,7 +6,7 @@ key, value, show, showAll, showKids,
 showLevels, formatChange, allowMaximize, everySimpleValue, }) => {
     let showValue = letState(undefined)(x => [showValue, showValue = x]);
     let arrayView = letState(undefined)(x => [arrayView, arrayView = x]);
-    watch([show], ([show]) => showValue = show);
+    watch.noInit([show], ([show]) => showValue = show);
     let maximize = letState(false)(x => [maximize, maximize = x]);
     const maximizeId = state(() => 'maximize-dump-' + performance.now());
     const toggleMaximize = () => {

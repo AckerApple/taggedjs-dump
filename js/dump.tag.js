@@ -1,4 +1,4 @@
-import { html, onInit, letState, setProp, tag } from "taggedjs";
+import { html, onInit, letState, tag, letProp } from "taggedjs";
 import { dumpArray } from "./dumpArray.tag";
 import { dumpSimple } from "./dumpSimple.tag";
 import { dumpObject } from "./dumpObject.tag";
@@ -11,8 +11,8 @@ key, value, showKids = false, showLevels = -1, showAll = false, format = 'flex',
     const isObject = () => value && value instanceof Object;
     const typing = value === null ? 'null' : typeof (value);
     let show = letState(false)(x => [show, show = x]);
-    setProp(x => [format, format = x]);
-    setProp(x => [showAll, showAll = x]);
+    letProp(format)(x => [format, format = x]);
+    letProp(showAll)(x => [showAll, showAll = x]);
     let arrayView = letState(undefined)(x => [arrayView, arrayView = x]);
     onInit(() => {
         const levelsDefined = (showLevels >= 0 && showLevels);

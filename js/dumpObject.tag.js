@@ -5,7 +5,7 @@ key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, al
     let showLower = letState(false)(x => [showLower, showLower = x]);
     let maximize = letState(false)(x => [maximize, maximize = x]);
     const maximizeId = state(() => 'maximize-dump-' + performance.now());
-    watch([show], ([show]) => showLower = show);
+    watch.noInit([show], ([show]) => showLower = show);
     const continueDump = !key || showKids || showLower || (showLower == undefined && showLevels > 0);
     const toggleMaximize = () => {
         maximize = !maximize;
