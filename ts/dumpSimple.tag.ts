@@ -1,4 +1,4 @@
-import { Tag, html, letState, tag } from "taggedjs"
+import { Tag, html, states, tag } from "taggedjs"
 import { OnHeaderClick } from "./index"
 import { copyText } from "./copyText.function"
 import { EverySimpleValue, SimpleValue } from "./dump.props"
@@ -43,7 +43,9 @@ const simpleValue = tag(({value, everySimpleValue}: {
   const number = value as unknown as number
   const isLargeNumber = !isNaN(number) && number > 1000000000
   const title = !isLargeNumber ? '' : getLargeNumberTitle(number)
-  let downTime = letState(0)(x => [downTime, downTime = x])
+  let downTime = 0
+  
+  states(get => [downTime] = get(downTime))
 
   const startMouseDown = () => {
     downTime = Date.now()

@@ -1,13 +1,14 @@
 import { arraysDisplay } from "./arraysDisplay.component";
-import { html, letState, state, tag, watch } from "taggedjs";
+import { html, state, states, tag, watch } from "taggedjs";
 export const dumpArray = tag(({ // dumpArray
 key, value, show, showAll, showKids, 
 // arrayView,
 showLevels, formatChange, allowMaximize, everySimpleValue, }) => {
-    let showValue = letState(undefined)(x => [showValue, showValue = x]);
-    let arrayView = letState(undefined)(x => [arrayView, arrayView = x]);
+    let showValue = undefined;
+    let arrayView = undefined;
+    let maximize = false;
+    states(get => [{ showValue, arrayView, maximize }] = get({ showValue, arrayView, maximize }));
     watch.noInit([show], ([show]) => showValue = show);
-    let maximize = letState(false)(x => [maximize, maximize = x]);
     const maximizeId = state(() => 'maximize-dump-' + performance.now());
     const toggleMaximize = () => {
         maximize = !maximize;

@@ -1,10 +1,11 @@
-import { html, letState, state, tag, watch } from "taggedjs";
+import { html, state, states, tag, watch } from "taggedjs";
 import { dump } from "./index";
 export const dumpObject = tag(({ // dumpObject
 key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, allowMaximize, everySimpleValue, }) => {
-    let showLower = letState(false)(x => [showLower, showLower = x]);
-    let maximize = letState(false)(x => [maximize, maximize = x]);
+    let showLower = false;
+    let maximize = false;
     const maximizeId = state(() => 'maximize-dump-' + performance.now());
+    states(get => [{ showLower, maximize }] = get({ showLower, maximize }));
     watch.noInit([show], ([show]) => showLower = show);
     const continueDump = !key || showKids || showLower || (showLower == undefined && showLevels > 0);
     const toggleMaximize = () => {

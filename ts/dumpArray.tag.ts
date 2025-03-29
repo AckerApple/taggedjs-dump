@@ -1,5 +1,5 @@
 import { arraysDisplay } from "./arraysDisplay.component"
-import { html, letState, state, tag, watch } from "taggedjs"
+import { html, state, states, tag, watch } from "taggedjs"
 import { FormatChange } from "./index.js"
 import { EverySimpleValue } from "./dump.props"
 
@@ -26,12 +26,14 @@ export const dumpArray = tag(({// dumpArray
   allowMaximize?: boolean
   everySimpleValue?: EverySimpleValue
 }) => {
-  let showValue = letState(undefined as boolean | undefined)(x => [showValue, showValue = x])
-  let arrayView = letState(undefined as undefined | 'table')(x => [arrayView, arrayView = x])
-
+  let showValue = undefined as boolean | undefined
+  let arrayView = undefined as undefined | 'table'
+  let maximize = false
+  
+  states(get => [{showValue, arrayView, maximize}] = get({showValue, arrayView, maximize}))
+  
   watch.noInit([show], ([show])=> showValue = show)
 
-  let maximize = letState(false)(x => [maximize, maximize = x])
   const maximizeId = state(() => 'maximize-dump-' + performance.now())
   const toggleMaximize = () => {
     maximize = !maximize

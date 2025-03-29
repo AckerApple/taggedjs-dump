@@ -1,4 +1,3 @@
-import { Tag } from "taggedjs";
 import { OnHeaderClick } from "./index";
 import { EverySimpleValue } from "./dump.props";
 export declare function dumpSimple({ key, value, onHeaderClick, everySimpleValue }: {
@@ -6,4 +5,4 @@ export declare function dumpSimple({ key, value, onHeaderClick, everySimpleValue
     value: any;
     onHeaderClick?: OnHeaderClick;
     everySimpleValue?: EverySimpleValue;
-}): Tag;
+}): import("taggedjs").StringTag;

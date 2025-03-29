@@ -1,7 +1,7 @@
-import { html, state, letState, tag } from "taggedjs"
+import { html, state, states, tag } from "taggedjs"
 
 type Formula = {
-  value: unknown
+  value: any // unknown
   title: string
   stringFormula: string
 }
@@ -19,10 +19,16 @@ export const columnEditor = tag(({
   columnNames: string[]
   allColumnNames: string[]
 }) => {
-  let mouseOverEditShow = letState(false)(x => [mouseOverEditShow, mouseOverEditShow = x])
-  let edit = letState(false)(x => [edit, edit = x])
-  let editFormula = letState(undefined as Formula | undefined)(x => [editFormula, editFormula = x])
+  let mouseOverEditShow = false
+  let edit = false
+  let editFormula = undefined as Formula | undefined
   const formulas = state([] as Formula[])
+
+  states(get => [{
+    mouseOverEditShow, edit, editFormula
+  }] = get({
+    mouseOverEditShow, edit, editFormula
+  }))
 
   const goAll = () => {
     columnNames.length = 0

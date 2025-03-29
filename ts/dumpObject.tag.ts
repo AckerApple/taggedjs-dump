@@ -1,4 +1,4 @@
-import { html, letState, state, tag, watch } from "taggedjs"
+import { html, state, states, tag, watch } from "taggedjs"
 import { FormatChange, OnHeaderClick, dump } from "./index"
 import { EverySimpleValue } from "./dump.props"
 
@@ -24,9 +24,11 @@ export const dumpObject = tag(({// dumpObject
   allowMaximize?: boolean
   everySimpleValue?: EverySimpleValue
 }) => {
-  let showLower = letState(false)(x => [showLower, showLower = x])
-  let maximize = letState(false)(x => [maximize, maximize = x])
+  let showLower = false
+  let maximize = false
   const maximizeId = state(() => 'maximize-dump-' + performance.now())
+
+  states(get => [{showLower, maximize}] = get({showLower, maximize}))
 
   watch.noInit([show], ([show]) => showLower = show)
 

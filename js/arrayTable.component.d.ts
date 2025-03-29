@@ -1,6 +1,6 @@
 import { FormatChange } from "./index";
 import { EverySimpleValue } from "./dump.props";
-export declare const arrayTable: (({ array, showAll, showKids, toggleColumnDialog, columnNames, formatChange, allowMaximize, everySimpleValue, }: {
+export declare const arrayTable: import("taggedjs").TaggedFunction<({ array, showAll, showKids, toggleColumnDialog, columnNames, formatChange, allowMaximize, everySimpleValue, }: {
     array: any[];
     showAll?: boolean;
     showKids: boolean;
@@ -9,6 +9,4 @@ export declare const arrayTable: (({ array, showAll, showKids, toggleColumnDialo
     formatChange: FormatChange;
     allowMaximize?: boolean;
     everySimpleValue?: EverySimpleValue;
-}) => import("taggedjs").Tag) & {
-    original: Function;
-};
+}) => import("taggedjs").StringTag>;
