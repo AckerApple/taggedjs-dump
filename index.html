@@ -25,15 +25,9 @@
     </tr>
   </table>
   <script type="module">
-    import { Dump, tagElement } from './assets/dist/bundle.js'
-    const element = document.getElementsByTagName('app')[0]
-    tagElement(Dump, element)
+    import { run } from './assets/dist/bundle.js'
+    run()
   </script>
-  <!--
-  <script type="module">
-    import './assets/dist/bundle.js'
-  </script>
-  -->
 </body>
 
 </html>
