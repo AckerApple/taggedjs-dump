@@ -1,4 +1,4 @@
-import { html, letState, tag } from "taggedjs";
+import { html, states, tag } from "taggedjs";
 import { copyText } from "./copyText.function";
 export function dumpSimple({ key, value, onHeaderClick, everySimpleValue }) {
     const isLinkValue = value.search && (value.slice(0, 8) === 'https://' || value.slice(0, 7) === 'http://');
@@ -13,7 +13,7 @@ export function dumpSimple({ key, value, onHeaderClick, everySimpleValue }) {
     return html `
     <div style="font-size:75%;flex:1 1 10em;color:#111111">
       ${key && html `
-        <div style="border-bottom-width:1px;border-bottom-style:solid;border-color:black;font-size:65%;border-color:white;line-height: 95%;font-weight:bold;"
+        <div class="taggedjs-simple-label"
           style.cursor=${onHeaderClick && "pointer"}
           onclick=${onHeaderClick}
         >${key}</div>
@@ -27,7 +27,8 @@ const simpleValue = tag(({ value, everySimpleValue }) => {
     const number = value;
     const isLargeNumber = !isNaN(number) && number > 1000000000;
     const title = !isLargeNumber ? '' : getLargeNumberTitle(number);
-    let downTime = letState(0)(x => [downTime, downTime = x]);
+    let downTime = 0;
+    states(get => [downTime] = get(downTime));
     const startMouseDown = () => {
         downTime = Date.now();
     };

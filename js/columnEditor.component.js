@@ -1,9 +1,14 @@
-import { html, state, letState, tag } from "taggedjs";
+import { html, state, states, tag } from "taggedjs";
 export const columnEditor = tag(({ name, array, included, columnNames, allColumnNames }) => {
-    let mouseOverEditShow = letState(false)(x => [mouseOverEditShow, mouseOverEditShow = x]);
-    let edit = letState(false)(x => [edit, edit = x]);
-    let editFormula = letState(undefined)(x => [editFormula, editFormula = x]);
+    let mouseOverEditShow = false;
+    let edit = false;
+    let editFormula = undefined;
     const formulas = state([]);
+    states(get => [{
+            mouseOverEditShow, edit, editFormula
+        }] = get({
+        mouseOverEditShow, edit, editFormula
+    }));
     const goAll = () => {
         columnNames.length = 0;
         columnNames.push(...allColumnNames);

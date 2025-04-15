@@ -1,12 +1,15 @@
-import { html, letState, state, tag, watch } from "taggedjs";
+import { html, letProp, state, states, tag, watch } from "taggedjs";
 import { dump } from "./index";
 export const dumpObject = tag(({ // dumpObject
 key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, allowMaximize, everySimpleValue, }) => {
-    let showLower = letState(false)(x => [showLower, showLower = x]);
-    let maximize = letState(false)(x => [maximize, maximize = x]);
+    let showLower = undefined;
+    let maximize = false;
     const maximizeId = state(() => 'maximize-dump-' + performance.now());
+    states(get => [{ showLower, maximize }] = get({ showLower, maximize }));
+    letProp(get => [showKids] = get(showKids));
     watch.noInit([show], ([show]) => showLower = show);
-    const continueDump = !key || showKids || showLower || (showLower == undefined && showLevels > 0);
+    watch.noInit([showAll], ([showAll]) => showLower = showAll);
+    const continueDump = !key || showKids || showLower || (showLower === undefined && showLevels > 0);
     const toggleMaximize = () => {
         maximize = !maximize;
         if (maximize) {
@@ -15,10 +18,13 @@ key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, al
     };
     const minimize = () => document.getElementById(maximizeId).close();
     const getHead = (allowMaximize) => html `
-    <div style=${"padding:0.2em;display:flex;justify-content:space-between;font-size:65%;color:white;border-color:white;flex-grow:1;background-color:#387ef5;" +
-        (showLower ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;' : '')}
-    >
-      <a onclick=${() => showLower = !showLower}>
+    <div class="taggedjs-object-label">
+      <a onclick=${() => {
+        if (showLower === undefined) {
+            return showAll = showKids = showLower = !continueDump;
+        }
+        showKids = showLower = !showLower;
+    }}>
         <strong>${key}</strong>
         <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
           {${Object.keys(value).length}}
@@ -30,12 +36,11 @@ key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, al
     </div>
   `;
     const getDumpBody = (allowMaximize) => html `
-    <div style="display:flex;flex-wrap:wrap">
+    <div class="taggedjs-object-body-wrap">
       ${Object.entries(value).map(([key, value]) => html `
         <!-- recurse -->
-        <div class="child-margin-xxs"
-          style=${'padding:0.2em;overflow:auto;display:flex;flex-wrap:wrap;' +
-        (!value || typeof (value) !== 'object' ? 'flex: 1 1 10em;' : 'flex-grow:1;')}
+        <div class="taggedjs-object"
+          style=${!value || typeof (value) !== 'object' ? 'flex: 1 1 10em;' : 'flex-grow:1;'}
         >
           ${dump({
         value,
@@ -50,14 +55,12 @@ key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, al
         allowMaximize,
         everySimpleValue,
     })}
-      `.key([key, value]))}
+      `.key(key))}
     </div>
   `;
     return html `
     <div style="flex: 1 1 10em;text-align:left;">
-      <div
-        style="font-size:90%;color:#111111;background-color:#d9edf7;border:1px solid black;border-radius:5px;flex-direction: column;display:flex;"
-      >
+      <div class="taggedjs-object-wrap">
         ${key && getHead(allowMaximize)}
         ${continueDump && getDumpBody(allowMaximize)}
 
@@ -75,7 +78,7 @@ key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, al
           ${maximize && getDumpBody(false)}
 
           <div style="padding:.25em">
-            <button type="button" onclick=${minimize} style="width:100%">🅧 close</button>
+            <button type="button" onclick=${minimize} style="width:100%">🅧 close object</button>
           </div>
         </dialog>
       </div>
