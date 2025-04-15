@@ -4,28 +4,61 @@ import { dump } from 'taggedjs-dump'
 import { stripeList } from './sampleData'
 export { tagElement } from 'taggedjs'
 
+const sampleDump = {
+  value: {
+    test: {
+      anotherOne: 22
+    },
+    arrayTest: [{
+      name:'something',
+      location: {street: '4361'},
+    }, {
+      name:'in this',
+      location: {street: '2235'},
+    }, {
+      name:'world',
+      location: {street: '4785'},
+    }]
+  }
+}
+
+const stripeDump = {
+  value: stripeList,
+  everySimpleValue: (value: any) => {
+    if(typeof value === 'string' && value.substring(0,3) === 'pm_') {
+      return html`<a style="color:blue;">${value}</a>`
+    }
+    
+    return value
+  }
+}
+
 export const App = tag(() => {
   let userJsonString = ''
+  let renderCount = 0
+  let userJson: any = ''
+  let badEval = false
   
-  states(get => [userJsonString] = get(userJsonString))
+  states(get => [{userJsonString, renderCount, userJson, badEval}] = get({userJsonString, renderCount, userJson, badEval}))
+
+  ++renderCount
   
   // const userJson = JSON.parse(userJsonString)
-  let badEval = false
-  let userJson
-  try {
-    userJson = sandboxEval(userJsonString, {})
-    userJsonString = JSON.stringify(userJson, null, 2)
-  } catch(err: any) {
-    badEval = true
-    try {
-      JSON.parse(userJsonString)
-    } catch (err: any) {
-      userJson = Object.getOwnPropertyNames(err).reduce((a, key) => (a[key] = err[key]) && a || a, {} as any)
-    }
-  }
 
   const change = (event: any) => {
     userJsonString = event.target.value
+
+    try {
+      userJson = sandboxEval(userJsonString, {})
+      userJsonString = JSON.stringify(userJson, null, 2)
+    } catch(err: any) {
+      badEval = true
+      try {
+        JSON.parse(userJsonString)
+      } catch (err: any) {
+        userJson = Object.getOwnPropertyNames(err).reduce((a, key) => (a[key] = err[key]) && a || a, {} as any)
+      }
+    }
   }
   
   return html`
@@ -60,34 +93,9 @@ export const App = tag(() => {
 
     <div style="display:flex;flex-wrap:wrap;align-item:center;justify-content: center;gap:1em;">      
       <div style="max-width:900px">
-        ${dump({
-          value: {
-            test: {
-              anotherOne: 22
-            },
-            arrayTest: [{
-              name:'something',
-              location: {street: '4361'},
-            }, {
-              name:'in this',
-              location: {street: '2235'},
-            }, {
-              name:'world',
-              location: {street: '4785'},
-            }]
-          }
-        })}
+        ${dump(sampleDump)}
         <hr />
-        ${/*dump({
-          value: stripeList,
-          everySimpleValue: (value) => {
-            if(typeof value === 'string' && value.substring(0,3) === 'pm_') {
-              return html`<a style="color:blue;">${value}</a>`
-            }
-            
-            return value
-          }
-        })*/null}
+        ${dump(stripeDump)}
       </div>
     </div>
   `
