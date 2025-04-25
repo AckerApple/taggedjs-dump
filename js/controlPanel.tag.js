@@ -9,6 +9,8 @@ export const controlPanel = tag(({ value, format, showAll, formatChange, showAll
 
       .child-margin-xxs {margin:0.2em;}
       
+      .taggedjs-dump {flex-grow:1}
+
       .taggedjs-dump .hover-bg-warning:hover {background-color:#fcf8e3}
       .taggedjs-dump .hover-bg-balanced:hover {background-color:#33cd5f}
       .taggedjs-dump .active-bg-energized:active {background-color:#ffc900}

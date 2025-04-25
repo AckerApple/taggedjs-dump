@@ -4,7 +4,9 @@ import { dumpSimple } from "./dumpSimple.tag";
 import { dumpObject } from "./dumpObject.tag";
 import { controlPanel } from "./controlPanel.tag";
 export const dump = tag(({ // dump tag
-key, value, showKids = false, showLevels = -1, showAll = false, format = 'flex', formatChange = x => format = x, isRootDump = true, onHeaderClick, allowMaximize, everySimpleValue, }) => {
+value, key, // when object key is being dumped
+index, // when array item is being dumped
+showKids = false, showLevels = -1, showAll = false, format = 'flex', formatChange = x => format = x, isRootDump = true, onHeaderClick, allowMaximize, everySimpleValue, }) => {
     if (isRootDump && allowMaximize === undefined) {
         allowMaximize = true;
     }
@@ -42,6 +44,7 @@ key, value, showKids = false, showLevels = -1, showAll = false, format = 'flex',
         value,
         showKids,
         key,
+        index,
         onHeaderClick,
         everySimpleValue,
         format,
@@ -55,7 +58,7 @@ key, value, showKids = false, showLevels = -1, showAll = false, format = 'flex',
     });
 });
 let dumpCount = 0;
-const getObjectTemplate = ({ value, showKids, key, onHeaderClick, everySimpleValue, format, isRootDump, showAll, showAllChange, formatChange, show, showLevels, allowMaximize, }) => {
+const getObjectTemplate = ({ value, showKids, key, index, onHeaderClick, everySimpleValue, format, isRootDump, showAll, showAllChange, formatChange, show, showLevels, allowMaximize, }) => {
     if (value === null) {
         if (!showKids) {
             return html `no kids`;
@@ -115,7 +118,7 @@ const getObjectTemplate = ({ value, showKids, key, onHeaderClick, everySimpleVal
     })}
 
       ${!isRootDump && !isArray && !key && html `
-        <div style="position:relative;display:flex;">
+        <div style="position:relative;display:flex;flex:1">
           <a title="collapse/expand" onclick=${() => {
         if (show === false && showKids) {
             showKids = false;
@@ -123,17 +126,20 @@ const getObjectTemplate = ({ value, showKids, key, onHeaderClick, everySimpleVal
         show = !show;
     }}
             style="
-              font-size: 0.7em;
               right: 0;
               border: 1px solid black;
               border-radius: 0.25em;
-              width: 1em;
               height: 1em;
               line-height: 1em;
               text-align: center;
+              background-color:white;
+              color:black;
+              flex:1;
             "
+            style.width = ${show ? '1em' : 'auto'}
             style.position = ${show ? 'absolute' : ''}
-          >${show ? '-' : '+'}</a>
+            style.font-size = ${show ? '0.7em' : '0.5em'}
+          >${show ? '-' : `index ${index}`}</a>
         </div>
       `}
 

@@ -14,6 +14,7 @@ export const arrayDisplay = tag(({ array, showLevels, showAll, showKids, columnN
             onHeaderClick: toggleColumnDialog,
             allowMaximize,
             everySimpleValue,
+            index,
         })}`.key(index);
     })}
   `;

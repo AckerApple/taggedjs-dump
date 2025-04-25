@@ -77,7 +77,7 @@ var t={d:(e,n)=>{for(var o in n)t.o(n,o)&&!t.o(e,o)&&Object.defineProperty(e,o,{
       </table>
     </div>
   `)),Cn=rt((({array:t,showLevels:e,showAll:n,showKids:o,columnNames:r,formatChange:s,toggleColumnDialog:a,allowMaximize:i,everySimpleValue:l})=>wn`
-    ${t.map(((t,o)=>{const c=function(t,e){if(["string","number","boolean"].includes(typeof t))return t;if(Array.isArray(t))return t;return function(t,e){if(!e)return t;const n={};return e.forEach((e=>{(t.hasOwnProperty(e)||e in t)&&(n[e]=t[e])})),n}(t,e)}(t,r);return wn`${Pn({value:c,showLevels:e,showAll:n,showKids:!0,isRootDump:!1,formatChange:s,onHeaderClick:a,allowMaximize:i,everySimpleValue:l})}`.key(o)}))}
+    ${t.map(((t,o)=>{const c=function(t,e){if(["string","number","boolean"].includes(typeof t))return t;if(Array.isArray(t))return t;return function(t,e){if(!e)return t;const n={};return e.forEach((e=>{(t.hasOwnProperty(e)||e in t)&&(n[e]=t[e])})),n}(t,e)}(t,r);return wn`${Pn({value:c,showLevels:e,showAll:n,showKids:!0,isRootDump:!1,formatChange:s,onHeaderClick:a,allowMaximize:i,everySimpleValue:l,index:o})}`.key(o)}))}
   `));const $n=rt((({showLevels:t,showAll:e,showKids:n,array:o,arrayView:r,formatChange:s,allowMaximize:a,everySimpleValue:i})=>{const l=T([o,o.length],(()=>o.length?function(t){return t.reduce(((t,e)=>{if(e&&"object"==typeof e){if(Array.isArray(e))return t;Object.keys(e).forEach((e=>{t.includes(e)||t.push(e)}))}return t}),[])}(o):[]));let c;const u=T([l],(()=>[...l]));let d=!1;const f=v((()=>"columnDialog"+performance.now()));J((t=>[{columnNames:c,showColumnDialog:d}]=t({columnNames:c,showColumnDialog:d}))),T.noInit([u.length],(()=>{c||(c=u)}));const p=()=>{d=!d;const t=document.getElementById(f);d?t.showModal():t.close()};return wn`
     ${"table"===r?jn({showAll:e,showKids:n,array:o,toggleColumnDialog:p,columnNames:c||l,formatChange:s,everySimpleValue:i}):Cn({array:o,showLevels:t,showAll:e,showKids:n,formatChange:s,columnNames:c||l,toggleColumnDialog:p,allowMaximize:a,everySimpleValue:i})}
 
@@ -108,12 +108,14 @@ var t={d:(e,n)=>{for(var o in n)t.o(n,o)&&!t.o(e,o)&&Object.defineProperty(e,o,{
       <a style="flex-grow:1" onclick=${()=>{if(void 0===c)return o=r=c=!g;o=r=c=!c}}>
         <strong>${t}</strong>
       </a>
-      <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
-        <a style="text-decoration:underline;" style.font-weight=${"table"===u?"bold":""}
-          onclick=${()=>u="table"===u?void 0:"table"}>${"table"===u?"flex":"table"}</a>
-      </sup>
+      ${e.length>0&&wn`
+        <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
+          <a style="text-decoration:underline;" style.font-weight=${"table"===u?"bold":""}
+            onclick=${()=>u="table"===u?void 0:"table"}>${"table"===u?"flex":"table"}</a>
+        </sup>
+      `}
       <sup style="opacity:80%;font-size:75%;padding-left:0.4em">[${e.length}]</sup>
-      ${n&&wn`
+      ${n&&e.length>0&&wn`
         &nbsp;<a onclick=${p}><span style="width:10px;height:10px;border:1px solid white;border-top-width:3px;display:inline-block;"></span></a>
       `}
     </div>
@@ -233,6 +235,8 @@ var t={d:(e,n)=>{for(var o in n)t.o(n,o)&&!t.o(e,o)&&Object.defineProperty(e,o,{
 
       .child-margin-xxs {margin:0.2em;}
       
+      .taggedjs-dump {flex-grow:1}
+
       .taggedjs-dump .hover-bg-warning:hover {background-color:#fcf8e3}
       .taggedjs-dump .hover-bg-balanced:hover {background-color:#33cd5f}
       .taggedjs-dump .active-bg-energized:active {background-color:#ffc900}
@@ -308,33 +312,36 @@ var t={d:(e,n)=>{for(var o in n)t.o(n,o)&&!t.o(e,o)&&Object.defineProperty(e,o,{
         </div>
       </div>
     </div>
-  `));const Pn=rt((({key:t,value:e,showKids:n=!1,showLevels:o=-1,showAll:r=!1,format:s="flex",formatChange:a=(t=>s=t),isRootDump:i=!0,onHeaderClick:l,allowMaximize:c,everySimpleValue:u})=>{i&&void 0===c&&(c=!0);const d=null===e?"null":typeof e;let f,p=!0;return L((t=>[s]=t(s))),L((t=>[r]=t(r))),L((t=>[o]=t(o))),J((t=>[{show:p,arrayView:f}]=t({show:p,arrayView:f}))),function(t){v(t)}((()=>{(o=o>=0&&o||(-1===o&&!t&&e&&e instanceof Object?2:0))>0&&(p=!0)})),[null,void 0].includes(e)?En({key:t,value:d,onHeaderClick:l,everySimpleValue:u}):["boolean","number","string"].includes(d)?En({key:t,value:e,onHeaderClick:l,everySimpleValue:u}):Ln({value:e,showKids:n,key:t,onHeaderClick:l,everySimpleValue:u,format:s,isRootDump:i,showAll:r,showAllChange:t=>r=t,formatChange:a,show:p,showLevels:o,allowMaximize:c})}));let Jn=0;const Ln=({value:t,showKids:e,key:n,onHeaderClick:o,everySimpleValue:r,format:s,isRootDump:a,showAll:i,showAllChange:l,formatChange:c,show:u,showLevels:d,allowMaximize:f})=>{if(null===t)return e?En({key:n,value:"null",onHeaderClick:o,everySimpleValue:r}):wn`no kids`;const p=Array.isArray(t);return L((t=>[u]=t(u))),L((t=>[e]=t(e))),wn`
+  `));const Pn=rt((({value:t,key:e,index:n,showKids:o=!1,showLevels:r=-1,showAll:s=!1,format:a="flex",formatChange:i=(t=>a=t),isRootDump:l=!0,onHeaderClick:c,allowMaximize:u,everySimpleValue:d})=>{l&&void 0===u&&(u=!0);const f=null===t?"null":typeof t;let p,g=!0;return L((t=>[a]=t(a))),L((t=>[s]=t(s))),L((t=>[r]=t(r))),J((t=>[{show:g,arrayView:p}]=t({show:g,arrayView:p}))),function(t){v(t)}((()=>{(r=r>=0&&r||(-1===r&&!e&&t&&t instanceof Object?2:0))>0&&(g=!0)})),[null,void 0].includes(t)?En({key:e,value:f,onHeaderClick:c,everySimpleValue:d}):["boolean","number","string"].includes(f)?En({key:e,value:t,onHeaderClick:c,everySimpleValue:d}):Ln({value:t,showKids:o,key:e,index:n,onHeaderClick:c,everySimpleValue:d,format:a,isRootDump:l,showAll:s,showAllChange:t=>s=t,formatChange:i,show:g,showLevels:r,allowMaximize:u})}));let Jn=0;const Ln=({value:t,showKids:e,key:n,index:o,onHeaderClick:r,everySimpleValue:s,format:a,isRootDump:i,showAll:l,showAllChange:c,formatChange:u,show:d,showLevels:f,allowMaximize:p})=>{if(null===t)return e?En({key:n,value:"null",onHeaderClick:r,everySimpleValue:s}):wn`no kids`;const g=Array.isArray(t);return L((t=>[d]=t(d))),L((t=>[e]=t(e))),wn`
     <div class="taggedjs-dump" id=${"taggedjs-dump-"+ ++Jn}>
-      ${a&&Nn({value:t,format:s,showAll:i,showAllChange:l,formatChange:c})}
+      ${i&&Nn({value:t,format:a,showAll:l,showAllChange:c,formatChange:u})}
 
-      ${!a&&!p&&!n&&wn`
-        <div style="position:relative;display:flex;">
-          <a title="collapse/expand" onclick=${()=>{!1===u&&e&&(e=!1),u=!u}}
+      ${!i&&!g&&!n&&wn`
+        <div style="position:relative;display:flex;flex:1">
+          <a title="collapse/expand" onclick=${()=>{!1===d&&e&&(e=!1),d=!d}}
             style="
-              font-size: 0.7em;
               right: 0;
               border: 1px solid black;
               border-radius: 0.25em;
-              width: 1em;
               height: 1em;
               line-height: 1em;
               text-align: center;
+              background-color:white;
+              color:black;
+              flex:1;
             "
-            style.position = ${u?"absolute":""}
-          >${u?"-":"+"}</a>
+            style.width = ${d?"1em":"auto"}
+            style.position = ${d?"absolute":""}
+            style.font-size = ${d?"0.7em":"0.5em"}
+          >${d?"-":`index ${o}`}</a>
         </div>
       `}
 
-      ${u&&("json"===s&&wn`
+      ${d&&("json"===a&&wn`
     <textarea disabled wrap="off"
       style="width:100%;height:25vh;min-height:400px;color:white;background-color:black;"
     >${JSON.stringify(t,null,2)}</textarea>
-  `||(p?Sn({key:n,value:t,show:u,showAll:i,showKids:e,showLevels:d,formatChange:c,allowMaximize:f,everySimpleValue:r}):On({key:n,show:u,showKids:e,showLevels:d,value:t,showAll:i,formatChange:c,onHeaderClick:o,allowMaximize:f,everySimpleValue:r})))}
+  `||(g?Sn({key:n,value:t,show:d,showAll:l,showKids:e,showLevels:f,formatChange:u,allowMaximize:p,everySimpleValue:s}):On({key:n,show:d,showKids:e,showLevels:f,value:t,showAll:l,formatChange:u,onHeaderClick:r,allowMaximize:p,everySimpleValue:s})))}
     </div>
   `};var zn=e.B;export{zn as dump};
 //# sourceMappingURL=bundle.js.map

@@ -31,12 +31,14 @@ showLevels, formatChange, allowMaximize, everySimpleValue, }) => {
     }}>
         <strong>${key}</strong>
       </a>
-      <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
-        <a style="text-decoration:underline;" style.font-weight=${arrayView === 'table' ? 'bold' : ''}
-          onclick=${() => arrayView = arrayView === 'table' ? undefined : 'table'}>${arrayView === 'table' ? 'flex' : 'table'}</a>
-      </sup>
+      ${value.length > 0 && html `
+        <sup style="opacity:80%;font-size:75%;padding-left:0.4em">
+          <a style="text-decoration:underline;" style.font-weight=${arrayView === 'table' ? 'bold' : ''}
+            onclick=${() => arrayView = arrayView === 'table' ? undefined : 'table'}>${arrayView === 'table' ? 'flex' : 'table'}</a>
+        </sup>
+      `}
       <sup style="opacity:80%;font-size:75%;padding-left:0.4em">[${value.length}]</sup>
-      ${allowMaximize && html `
+      ${allowMaximize && value.length > 0 && html `
         &nbsp;<a onclick=${toggleMaximize}><span style="width:10px;height:10px;border:1px solid white;border-top-width:3px;display:inline-block;"></span></a>
       `}
     </div>

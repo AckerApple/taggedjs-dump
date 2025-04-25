@@ -6,6 +6,7 @@ export type SimpleValue = boolean | number | string | undefined | null;
 export type DumpProps<T> = {
     value: T;
     key?: string;
+    index?: string | number;
     show?: boolean;
     showKids?: boolean;
     showLevels?: number;
