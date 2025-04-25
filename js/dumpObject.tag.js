@@ -18,10 +18,10 @@ key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, al
     };
     const minimize = () => document.getElementById(maximizeId).close();
     const getHead = (allowMaximize) => html `
-    <div class="taggedjs-object-label">
+    <div class="taggedjs-object-label" style=${showLower ? 'border-bottom-width:1px;border-bottom-style:solid;border-color:black;' : ''}>
       <a onclick=${() => {
         if (showLower === undefined) {
-            return showAll = showKids = showLower = !continueDump;
+            return showAll = showKids = showLower = !(showAll || showKids || showLower);
         }
         showKids = showLower = !showLower;
     }}>
@@ -31,7 +31,10 @@ key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, al
         </sup>
       </a>
       ${allowMaximize && html `
-        &nbsp;<a onclick=${toggleMaximize}><span style="width:10px;height:10px;border:1px solid white;border-top-width:3px;display:inline-block;"></span></a>
+        &nbsp;
+        <a onclick=${toggleMaximize}>
+          <span style="width:10px;height:10px;border:1px solid white;border-top-width:3px;display:inline-block;"></span>
+        </a>
       `}
     </div>
   `;
@@ -55,6 +58,7 @@ key, showKids, show, showLevels, value, showAll, onHeaderClick, formatChange, al
         allowMaximize,
         everySimpleValue,
     })}
+        </div>
       `.key(key))}
     </div>
   `;

@@ -15,7 +15,15 @@ export const controlPanel = tag(({ value, format, showAll, formatChange, showAll
       .taggedjs-dump .bg-dark {background-color:#444444}
       .taggedjs-dump .bg-balanced {background-color:#33cd5f}
       
-      .taggedjs-dump .taggedjs-object {margin:0.2em;padding:0.2em;overflow:auto;display:flex;flex-wrap:wrap;}
+      .taggedjs-dump .taggedjs-object {
+        overflow:auto;display:flex;flex-wrap:wrap;
+        padding:0.2em;
+      }
+
+      .taggedjs-dump-simple-wrap {
+        font-size:75%;flex:1 1 10em;color:#111111
+      }
+
       .taggedjs-dump .taggedjs-object-label {
         padding:0.2em;display:flex;justify-content:space-between;font-size:65%;color:white;
         border-color:white;flex-grow:1;
@@ -27,11 +35,14 @@ export const controlPanel = tag(({ value, format, showAll, formatChange, showAll
       }
 
       .taggedjs-dump .taggedjs-object-body-wrap {
-        display:flex;flex-wrap:wrap
+        display:flex;flex-wrap:wrap;
+        /*gap:0.4em;padding:0.2em;*/
       }
 
       .taggedjs-dump .taggedjs-object-wrap {
-        font-size:90%;color:#111111;background-color:#d9edf7;border:1px solid black;border-radius:5px;flex-direction: column;display:flex;
+        font-size:95%;
+        color:#111111;background-color:#d9edf7;
+        border:1px solid black;border-radius:5px;flex-direction:column;display:flex;
       }
       
       .taggedjs-dump .taggedjs-array-label {

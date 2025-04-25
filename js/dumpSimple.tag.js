@@ -11,7 +11,7 @@ export function dumpSimple({ key, value, onHeaderClick, everySimpleValue }) {
         displayValue = isLinkValue ? linkValue(value) : simpleValue({ value });
     }
     return html `
-    <div style="font-size:75%;flex:1 1 10em;color:#111111">
+    <div class="taggedjs-dump-simple-wrap">
       ${key && html `
         <div class="taggedjs-simple-label"
           style.cursor=${onHeaderClick && "pointer"}

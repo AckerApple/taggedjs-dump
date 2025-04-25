@@ -11,4 +11,4 @@ export declare const dumpObject: import("taggedjs").TaggedFunction<(<T>({ key, s
     onHeaderClick?: OnHeaderClick;
     allowMaximize?: boolean;
     everySimpleValue?: EverySimpleValue;
-}) => import("taggedjs").StringTag)>;
+}) => import("taggedjs").Tag)>;

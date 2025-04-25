@@ -1,6 +1,6 @@
 {
   "name": "taggedjs-dump",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "visually dump and interact with javascript and json objects",
   "main": "js/index.js",
   "keywords": [
@@ -18,7 +18,7 @@
   "author": "Acker Dawn Apple",
   "license": "MIT",
   "peerDependencies": {
-    "taggedjs": "^2.8.14"
+    "taggedjs": "^2.8.24"
   },
   "dependencies": {
     "taggedjs-cli": "^0.1.19"

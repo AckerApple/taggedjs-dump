@@ -10,4 +10,4 @@ export declare const dumpArray: import("taggedjs").TaggedFunction<({ key, value,
     formatChange: FormatChange;
     allowMaximize?: boolean;
     everySimpleValue?: EverySimpleValue;
-}) => import("taggedjs").StringTag>;
+}) => import("taggedjs").Tag>;
