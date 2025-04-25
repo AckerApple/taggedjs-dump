@@ -78,7 +78,7 @@ export const App = tag(() => {
       >${userJson === "" ? "" : userJsonString}</textarea>
 
       ${userJson === "" ? "" : html`
-        <div style="flex-grow:2;min-width:110px;max-width:98vw;width:100%;background-color:rgba(255,255,255,.5);min-width:300px">
+        <div style="justify-content:center;display:flex;flex-grow:2;min-width:110px;max-width:98vw;width:100%;background-color:rgba(255,255,255,.5);min-width:300px">
           <div style="max-width:1400px;">
             ${dump({
               value: userJson
