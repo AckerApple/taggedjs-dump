@@ -1,23 +1,29 @@
-const path = require('path');
-const outPath = path.resolve(__dirname, 'dist')
+ 
 
-console.debug(`🖊️ Writing bundle to ${outPath}`)
+const path = require('path');
+const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
+const { ResolveTsForJsPlugin } = require('./node_modules/taggedjs-cli/bin/bundle');
+
+const out = path.resolve(__dirname, 'dist');
+console.debug(`🖊️ Writing bundle to ${out}`);
 
 module.exports = {
-  mode: 'production',
-  entry: './ts/index.ts', // Your entry file
+  mode: 'production', // development
+  devtool: 'source-map',
+  entry: './ts/index.ts', // Entry point of your TypeScript application
   output: {
-    filename: 'index.js',
-    path: outPath,
+    filename: 'bundle.js',
+    path: out,
     libraryTarget: 'module',
-    chunkFormat: 'module', // Specify the chunkFormat
+    chunkFormat: 'module',
   },
   experiments: {
-    outputModule: true, // Enable experiments.outputModule
+    outputModule: true,
   },
   target: 'node',
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'], // Include '.js' extension
+    extensions: ['.tsx', '.ts', '.js'],
   },
   module: {
     rules: [
@@ -28,4 +34,18 @@ module.exports = {
       },
     ],
   },
-}
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+    splitChunks: false,
+    // splitChunks: { chunks: 'all' },
+  },
+  plugins: [
+    new ResolveTsForJsPlugin(),
+    new webpack.BannerPlugin({
+      banner: '"use strict";',
+      raw: true,
+    }),
+    // new CompressionPlugin({algorithm: 'gzip'}),
+  ],
+};

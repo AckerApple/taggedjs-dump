@@ -1,13 +1,14 @@
 {
   "name": "taggedjs-dump",
   "private": true,
-  "version": "0.1.6",
+  "version": "0.1.8",
   "description": "visually dump and interact with javascript and json objects",
   "main": "js/index.js",
   "scripts": {
     "build:js": "tsc -p tsconfig.json",
     "build": "npm-run-all --sequential build:js build:webpack build:dist:only build:gh-pages && echo \"✅ Build completed\"",
     "build:webpack": "npx webpack",
+    "build:gh-pages:old": "cd ../gh-pages && npm install --install-links=false file:../main/dist --no-save && npm run build && echo \"🔬 Built gh-pages\"",
     "build:gh-pages": "cp -R js/. ../gh-pages/node_modules/taggedjs-dump/js && cd ../gh-pages && npm run build && echo \"🔭 Built gh-pages\"",
     "build:gh-pages:full": "npm run build:js && npm run build:dist:only && npm run build:gh-pages",
     "build:watch:gh-pages": "chokidar 'ts/**/*' -c 'npm run build:gh-pages:full'",
@@ -37,7 +38,7 @@
   "author": "Acker Dawn Apple",
   "license": "MIT",
   "peerDependencies": {
-    "taggedjs": "^2.8.8"
+    "taggedjs": "^2.8.24"
   },
   "devDependencies": {
     "@babel/core": "^7.23.6",
@@ -49,5 +50,8 @@
     "typescript": "^5.3.3",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "taggedjs-cli": "^0.1.19"
   }
 }

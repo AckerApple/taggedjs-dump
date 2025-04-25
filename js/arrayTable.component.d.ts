@@ -9,4 +9,4 @@ export declare const arrayTable: import("taggedjs").TaggedFunction<({ array, sho
     formatChange: FormatChange;
     allowMaximize?: boolean;
     everySimpleValue?: EverySimpleValue;
-}) => import("taggedjs").StringTag>;
+}) => import("taggedjs").Tag>;

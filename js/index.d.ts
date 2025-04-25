@@ -1,2 +1,2 @@
 export { dump } from './dump.tag';
-export { OnHeaderClick, FormatChange } from './dump.props';
+export type { OnHeaderClick, FormatChange } from './dump.props';

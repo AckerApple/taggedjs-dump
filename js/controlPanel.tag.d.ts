@@ -5,4 +5,4 @@ export declare const controlPanel: import("taggedjs").TaggedFunction<({ value, f
     showAll?: boolean;
     showAllChange: (x: boolean) => unknown;
     formatChange: FormatChange;
-}) => import("taggedjs").StringTag>;
+}) => import("taggedjs").Tag>;

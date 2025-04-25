@@ -15,7 +15,7 @@ export const arrayDisplay = tag(({
   showLevels: number
   showAll?: boolean
   showKids: boolean
-  columnNames: string[]
+  columnNames?: string[]
   formatChange: FormatChange
   toggleColumnDialog: () => any
   allowMaximize?: boolean,
@@ -25,25 +25,33 @@ export const arrayDisplay = tag(({
     ${array.map((
       item: any,
       index: number
-    ) => html`${dump({
-      value: paramValueKeys(item, columnNames),
-      showLevels,
-      showAll,
-      showKids:showAll || showKids,
-      isRootDump:false,
-      formatChange,
-      onHeaderClick: toggleColumnDialog,
-      allowMaximize,
-      everySimpleValue,
-    })}`.key({item: item, index} as any))}
+    ) => {
+      const value = paramValueKeys(item, columnNames)
+      return html`${dump({
+        value,
+        showLevels,
+        showAll,
+        showKids: true, // showAll || showKids,
+        isRootDump:false,
+        formatChange,
+        onHeaderClick: toggleColumnDialog,
+        allowMaximize,
+        everySimpleValue,
+        index,
+      })}`.key(index)
+    })}
   `
 })
 
 function paramValueKeys(
   inputObject: Record<string, any> | string,
-  keysArray: string[]
+  keysArray?: string[]
 ) {
   if(['string','number','boolean'].includes(typeof(inputObject))) {
+    return inputObject
+  }
+
+  if(Array.isArray(inputObject)) {
     return inputObject
   }
 
@@ -52,15 +60,21 @@ function paramValueKeys(
 
 function filterObjectByKeys(
   inputObject: Record<string, any>,
-  keysArray: string[]
+  keysArray?: string[]
 ) {
-  const filteredObject: Record<string, any> = {};
+  if(!keysArray) {
+    // keysArray = Object.keys(inputObject)
+    // return {...inputObject} // must be clone so unchecking items does not change original object
+    return inputObject
+  }
+
+  const filteredObject: Record<string, any> = {}
 
   keysArray.forEach(key => {
-    if (inputObject.hasOwnProperty(key)) {
-      filteredObject[key] = inputObject[key];
+    if (inputObject.hasOwnProperty(key) || key in inputObject) {
+      filteredObject[key] = inputObject[key]
     }
-  });
+  })
 
-  return filteredObject;
+  return filteredObject
 }

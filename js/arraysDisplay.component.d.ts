@@ -9,4 +9,5 @@ export declare const arraysDisplay: import("taggedjs").TaggedFunction<({ showLev
     showKids: boolean;
     allowMaximize?: boolean;
     everySimpleValue?: EverySimpleValue;
-}) => import("taggedjs").StringTag>;
+}) => import("taggedjs").Tag>;
+export declare function getAllKeys(array: any[]): string[];

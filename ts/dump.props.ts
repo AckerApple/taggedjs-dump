@@ -6,9 +6,10 @@ export type FormatChange = (format: 'json' | 'flex') => unknown
 
 export type SimpleValue = boolean | number | string | undefined | null
 
-export type DumpProps = {
-  value: any
+export type DumpProps<T> = {
+  value: T
   key?: string // dump a key within the provided value
+  index?: string | number // dump a key within the provided value
   show?: boolean // hide entire results
   showKids?: boolean // force children to be shown by true value
   showLevels?: number // unfolded shown levels of depth. Default is auto decide

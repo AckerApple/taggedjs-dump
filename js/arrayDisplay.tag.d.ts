@@ -5,9 +5,9 @@ export declare const arrayDisplay: import("taggedjs").TaggedFunction<({ array, s
     showLevels: number;
     showAll?: boolean;
     showKids: boolean;
-    columnNames: string[];
+    columnNames?: string[];
     formatChange: FormatChange;
     toggleColumnDialog: () => any;
     allowMaximize?: boolean;
     everySimpleValue?: EverySimpleValue;
-}) => import("taggedjs").StringTag>;
+}) => import("taggedjs").Tag>;

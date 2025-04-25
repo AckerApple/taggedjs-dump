@@ -4,4 +4,4 @@ export declare const columnEditor: import("taggedjs").TaggedFunction<({ name, ar
     included: boolean;
     columnNames: string[];
     allColumnNames: string[];
-}) => import("taggedjs").StringTag>;
+}) => import("taggedjs").Tag>;

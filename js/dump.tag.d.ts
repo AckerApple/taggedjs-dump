@@ -1,3 +1,3 @@
-import { StringTag } from "taggedjs";
+import { Tag } from "taggedjs";
 import { DumpProps } from "./dump.props";
-export declare const dump: import("taggedjs").TaggedFunction<({ key, value, showKids, showLevels, showAll, format, formatChange, isRootDump, onHeaderClick, allowMaximize, everySimpleValue, }: DumpProps) => StringTag>;
+export declare const dump: import("taggedjs").TaggedFunction<(<T>({ value, key, index, showKids, showLevels, showAll, format, formatChange, isRootDump, onHeaderClick, allowMaximize, everySimpleValue, }: DumpProps<T>) => Tag)>;

@@ -3,9 +3,10 @@ type ShowChange = (show: boolean) => any;
 export type OnHeaderClick = () => any;
 export type FormatChange = (format: 'json' | 'flex') => unknown;
 export type SimpleValue = boolean | number | string | undefined | null;
-export type DumpProps = {
-    value: any;
+export type DumpProps<T> = {
+    value: T;
     key?: string;
+    index?: string | number;
     show?: boolean;
     showKids?: boolean;
     showLevels?: number;
