@@ -24,7 +24,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "taggedjs": "^2.8.14",
+    "taggedjs": "^2.8.24",
     "taggedjs-cli": "^0.1.19",
     "taggedjs-dump": "^0.1.6"
   }

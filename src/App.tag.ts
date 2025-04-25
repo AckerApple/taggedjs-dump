@@ -71,17 +71,19 @@ export const App = tag(() => {
       >Input data appears to be invalid</div>
     `}
     
-    <div style="display:flex;flex-wrap:wrap;align-item:center;justify-content: center;gap:.5em;padding:.5em;">
+    <div style="display:flex;flex-wrap:wrap;align-item:center;justify-content: center;gap:.5em;padding:.5em;flex-wrap:wrap">
       <textarea wrap="off" placeholder="paste json here"
         onchange=${change}
-        style="min-width:300px;min-height:400px;flex:1"
+        style="min-width:300px;height:400px;flex-grow:.5;"
       >${userJson === "" ? "" : userJsonString}</textarea>
 
       ${userJson === "" ? "" : html`
-        <div style="flex:1;min-width:110px;width:100%;max-width:900px;background-color:rgba(255,255,255,.5);min-width:300px">
-          ${dump({
-            value: userJson
-          })}
+        <div style="flex-grow:2;min-width:110px;max-width:98vw;width:100%;background-color:rgba(255,255,255,.5);min-width:300px">
+          <div style="max-width:1400px;">
+            ${dump({
+              value: userJson
+            })}
+          </div>
         </div>
       `}
     </div>
@@ -92,7 +94,7 @@ export const App = tag(() => {
     <hr />
 
     <div style="display:flex;flex-wrap:wrap;align-item:center;justify-content: center;gap:1em;">      
-      <div style="max-width:900px">
+      <div style="max-width:1400px">
         ${dump(sampleDump)}
         <hr />
         ${dump(stripeDump)}
